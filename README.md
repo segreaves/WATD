@@ -1,2 +1,2 @@
 # WATD
-Action game.
+Action game made with Unity.
