@@ -466,6 +466,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ab5c35706c9d574d90f0bf22506013d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <MovementData>k__BackingField: {fileID: 11400000, guid: 1a44e27ee9fa598448c239d639757c3b,
+    type: 2}
   currentVelocity: 3
 --- !u!114 &663811185
 MonoBehaviour:
