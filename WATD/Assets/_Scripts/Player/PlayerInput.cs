@@ -22,6 +22,11 @@ public class PlayerInput : MonoBehaviour, Controls.IPlayerActions
         controls.Player.Enable();
     }
 
+    private void Update()
+    {
+        OnMovement?.Invoke(MovementValue);
+    }
+
     private void OnDestroy()
     {
         controls.Player.Disable();
@@ -39,6 +44,5 @@ public class PlayerInput : MonoBehaviour, Controls.IPlayerActions
         if (MovementValue.magnitude < 0.1f) {
             MovementValue = Vector2.zero;
         }
-        OnMovement?.Invoke(MovementValue);
     }
 }

@@ -7,7 +7,9 @@ public class AgentMovement : MonoBehaviour
 {
     protected Rigidbody rigidBody;
 
-    [SerializeField] protected float currentVelocity = 3f;
+    [field: SerializeField] public MovementDataSO MovementData { get; set; }
+
+    [SerializeField] protected float currentVelocity;
 
     private void Awake()
     {
