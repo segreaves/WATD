@@ -31,7 +31,6 @@ public class AgentMovement : MonoBehaviour
 
     private float CalculateSpeed(Vector2 movementInput)
     {
-        Debug.Log(movementInput.magnitude > 0);
         if (movementInput.magnitude > 0)
         {
             currentVelocity += MovementData.acceleration * Time.deltaTime;
