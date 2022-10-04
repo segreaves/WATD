@@ -12,6 +12,6 @@ public static class Directions
         new Vector3(0, 0, -1).normalized,
         new Vector3(-1, 0, -1).normalized,
         new Vector3(-1, 0, 0).normalized,
-        new Vector3(-1, 0, 0).normalized,
+        new Vector3(-1, 0, 1).normalized,
     };
 }

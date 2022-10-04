@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class ObstacleAvoidanceBehavior : SteeringBehavior
 {
-    [SerializeField] private float radius = 2f, agentColliderSize = 0.6f;
+    [SerializeField] private float radius = 3f, agentColliderSize = 1.5f;
     [SerializeField] private bool showGizmo = true;
 
     //gizmo parameters
@@ -34,6 +34,14 @@ public class ObstacleAvoidanceBehavior : SteeringBehavior
                 {
                     danger[i] = valueToPutIn;
                 }
+
+                /*float result2 = Vector3.Dot(-directionToObstacleNormalized, Directions.eightDirections[i]);
+
+                float valueToPutIn2 = result2 * weight;
+                if (valueToPutIn > interest[i])
+                {
+                    interest[i] = valueToPutIn2;
+                }*/
             }
         }
         dangersResultTemp = danger;

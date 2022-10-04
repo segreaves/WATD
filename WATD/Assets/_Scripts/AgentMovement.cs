@@ -7,15 +7,18 @@ using UnityEngine;
 public class AgentMovement : MonoBehaviour
 {
     protected Rigidbody rigidBody;
+    [SerializeField] bool canMove = true;
 
     [field: SerializeField] public MovementDataSO MovementData { get; set; }
 
-    [SerializeField] protected float currentVelocity;
+    protected float currentVelocity;
+    protected Quaternion currentRotation;
     protected Vector3 movementDirection;
 
     private void Awake()
     {
         rigidBody = GetComponent<Rigidbody>();
+        currentRotation = rigidBody.rotation;
     }
 
     public void MoveAgent(Vector2 movementInput)
@@ -23,7 +26,6 @@ public class AgentMovement : MonoBehaviour
         if (movementInput.magnitude > 0)
         {
             Vector3 movement = new Vector3(movementInput.x, 0f, movementInput.y);
-            //if (Vector2.Dot(movement, movementDirection) < 0) { currentVelocity = 0; }
             movementDirection = movement.normalized;
         }
         currentVelocity = CalculateSpeed(movementInput);
@@ -39,11 +41,24 @@ public class AgentMovement : MonoBehaviour
         {
             currentVelocity -= MovementData.deceleration * Time.deltaTime;
         }
-        return Mathf.Clamp(currentVelocity, 0f, MovementData.maxSpeed);
+        return Mathf.Clamp(currentVelocity, rigidBody.velocity.y, MovementData.maxSpeed);
+    }
+
+    public void FaceDirection(Vector3 lookInput)
+    {
+        if (lookInput == Vector3.zero) { return; }
+        currentRotation = Quaternion.Lerp(
+            currentRotation,
+            Quaternion.LookRotation(lookInput),
+            Time.deltaTime * MovementData.rotationSpeed);
     }
 
     private void FixedUpdate()
     {
-        rigidBody.velocity = currentVelocity * movementDirection;
+        if (canMove)
+        {
+            rigidBody.velocity = currentVelocity * movementDirection;
+            rigidBody.rotation = currentRotation;
+        }
     }
 }

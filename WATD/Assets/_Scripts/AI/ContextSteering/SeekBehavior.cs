@@ -5,10 +5,10 @@ using UnityEngine;
 
 public class SeekBehavior : SteeringBehavior
 {
-    [SerializeField] private float targetReachedThreshold = 0.5f;
+    [SerializeField] private float targetReachedThreshold = 1f;
     [SerializeField] private bool showGizmo = true;
 
-    bool reachedLastTarget = true;
+    bool reachedTarget = false;
 
     //gizmo parameters
     private Vector3 targetPositionCached;
@@ -16,34 +16,19 @@ public class SeekBehavior : SteeringBehavior
 
     public override (float[] danger, float[] interest) GetSteering(float[] danger, float[] interest, AIData aiData)
     {
-        //if we don't have a target stop seeking
-        //else set a new target
-        if (reachedLastTarget)
+        if (aiData.currentTarget == null)
         {
-            if (aiData.targets == null || aiData.targets.Count <= 0)
-            {
-                aiData.currentTarget = null;
-                return (danger, interest);
-            }
-            else
-            {
-                reachedLastTarget = false;
-                aiData.currentTarget = aiData.targets.OrderBy(target => Vector3.Distance(target.position, transform.position)).FirstOrDefault();
-            }
-
+            return (danger, interest);
         }
 
-        //cache the last position only if we still see the target (if the targets collection is not empty)
-        if (aiData.currentTarget != null && aiData.targets != null && aiData.targets.Contains(aiData.currentTarget))
-        {
-            targetPositionCached = aiData.currentTarget.position;
-        }
-
+        //cache the last position
+        targetPositionCached = aiData.currentTarget.transform.position;
+        
         //First check if we have reached the target
-        if (Vector3.Distance(transform.position, targetPositionCached) < targetReachedThreshold)
+        float targetDistance = Vector3.Distance(transform.position, targetPositionCached);
+        if (targetDistance < targetReachedThreshold)
         {
-            reachedLastTarget = true;
-            aiData.currentTarget = null;
+            reachedTarget = true;
             return (danger, interest);
         }
 
@@ -54,7 +39,7 @@ public class SeekBehavior : SteeringBehavior
         {
             float result = Vector3.Dot(directionToTarget.normalized, Directions.eightDirections[i]);
 
-            //accept only directions at the less than 90 degrees to the target direction
+            //accept only directions at less than 90 degrees to the target direction
             if (result > 0f)
             {
                 float valueToPutIn = result;
@@ -85,7 +70,7 @@ public class SeekBehavior : SteeringBehavior
                 {
                     Gizmos.DrawRay(transform.position, Directions.eightDirections[i] * interestsTemp[i] * 2f);
                 }
-                if (reachedLastTarget == false)
+                if (reachedTarget == false)
                 {
                     Gizmos.color = Color.red;
                     Gizmos.DrawSphere(targetPositionCached, 0.1f);

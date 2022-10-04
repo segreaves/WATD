@@ -6,35 +6,40 @@ public class TargetDetector : Detector
 {
     [SerializeField] private float targetDetectionRange = 5f;
     [SerializeField] private LayerMask obstaclesLayerMask;
-    [SerializeField] private GameObject Player;
+    [SerializeField] private GameObject Target;
     [SerializeField] private bool showGizmos = false;
 
+    Vector3 lookOffset = Vector3.zero;//up * 0.2f;
+
     //gizmo parameters
-    private List<Transform> colliders;
+    private Transform targetGizmo;
 
     public override void Detect(AIData aIData)
     {
-        if (Player != null)
+        if (Target == null)
         {
-            Vector3 direction = (Player.transform.position - transform.position).normalized;
-            float distanceToPlayer = (Player.transform.position - transform.position).magnitude;
-            RaycastHit hit;
-            bool obstacleHit = Physics.Raycast(transform.position, direction, out hit, distanceToPlayer, obstaclesLayerMask);
-            if (!obstacleHit && distanceToPlayer < targetDetectionRange)
-            {
-                Debug.DrawRay(transform.position, direction * distanceToPlayer, Color.magenta);
-                colliders = new List<Transform> { Player.transform };
-            }
-            else
-            {
-                colliders = null;
-            }
+            aIData.currentTarget = null;
+            targetGizmo = null;
         }
         else
         {
-            colliders = null;
+            Vector3 direction = (Target.transform.position - transform.position).normalized;
+            float distanceToPlayer = (Target.transform.position - transform.position).magnitude;
+            RaycastHit hit;
+            Vector3 rayOrigin = transform.position + lookOffset;
+            bool obstacleHit = Physics.Raycast(rayOrigin, direction, out hit, distanceToPlayer, obstaclesLayerMask);
+            if (!obstacleHit && distanceToPlayer < targetDetectionRange)
+            {
+                Debug.DrawRay(rayOrigin, direction * distanceToPlayer, Color.magenta);
+                aIData.currentTarget = Target;
+                targetGizmo = aIData.currentTarget.transform;
+            }
+            else
+            {
+                aIData.currentTarget = null;
+                targetGizmo = null;
+            }
         }
-        aIData.targets = colliders;
     }
 
     private void OnDrawGizmosSelected()
@@ -43,11 +48,8 @@ public class TargetDetector : Detector
 
         Gizmos.DrawWireSphere(transform.position, targetDetectionRange);
 
-        if (colliders == null) { return; }
+        if (targetGizmo == null) { return; }
         Gizmos.color = Color.magenta;
-        foreach (var item in colliders)
-        {
-            Gizmos.DrawSphere(item.position, 0.3f);
-        }
+        Gizmos.DrawSphere(targetGizmo.position, 0.3f);
     }
 }
