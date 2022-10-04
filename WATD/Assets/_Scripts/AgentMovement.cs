@@ -3,35 +3,37 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(CharacterController))]
+[RequireComponent(typeof(ForceReceiver))]
 public class AgentMovement : MonoBehaviour
 {
-    protected Rigidbody rigidBody;
-    [SerializeField] bool canMove = true;
 
     [field: SerializeField] public MovementDataSO MovementData { get; set; }
 
-    protected float currentVelocity;
-    protected Quaternion currentRotation;
-    protected Vector3 movementDirection;
+    CharacterController controller;
+    private float currentVelocity;
+    private Quaternion currentRotation;
+    private Vector3 currentMotion;
+    private Vector3 movementDirection = Vector3.zero;
+    private ForceReceiver forceReceiver;
 
+    
     private void Awake()
     {
-        rigidBody = GetComponent<Rigidbody>();
-        currentRotation = rigidBody.rotation;
+        controller = GetComponent<CharacterController>();
+        forceReceiver = GetComponent<ForceReceiver>();
     }
 
-    public void MoveAgent(Vector2 movementInput)
+    public void Move(Vector3 movement)
     {
-        if (movementInput.magnitude > 0)
+        if (movement != Vector3.zero)
         {
-            Vector3 movement = new Vector3(movementInput.x, 0f, movementInput.y);
-            movementDirection = movement.normalized;
+            movementDirection = movement;
         }
-        currentVelocity = CalculateSpeed(movementInput);
+        controller.Move(movementDirection * CalculateSpeed(movement) + forceReceiver.Movement * Time.deltaTime);
     }
 
-    private float CalculateSpeed(Vector2 movementInput)
+    private float CalculateSpeed(Vector3 movementInput)
     {
         if (movementInput.magnitude > 0)
         {
@@ -41,24 +43,16 @@ public class AgentMovement : MonoBehaviour
         {
             currentVelocity -= MovementData.deceleration * Time.deltaTime;
         }
-        return Mathf.Clamp(currentVelocity, rigidBody.velocity.y, MovementData.maxSpeed);
+        currentVelocity = Mathf.Clamp(currentVelocity, 0f, MovementData.maxSpeed);
+        return currentVelocity;
     }
 
-    public void FaceDirection(Vector3 lookInput)
+    public void Look(Vector3 look)
     {
-        if (lookInput == Vector3.zero) { return; }
-        currentRotation = Quaternion.Lerp(
-            currentRotation,
-            Quaternion.LookRotation(lookInput),
+        if (look == Vector3.zero) { return; }
+        transform.rotation = Quaternion.Lerp(
+            transform.rotation,
+            Quaternion.LookRotation(look),
             Time.deltaTime * MovementData.rotationSpeed);
-    }
-
-    private void FixedUpdate()
-    {
-        if (canMove)
-        {
-            rigidBody.velocity = currentVelocity * movementDirection;
-            rigidBody.rotation = currentRotation;
-        }
     }
 }

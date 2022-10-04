@@ -122,7 +122,7 @@ NavMeshSettings:
     preserveTilesOutsideBounds: 0
     debug:
       m_Flags: 0
-  m_NavMeshData: {fileID: 0}
+  m_NavMeshData: {fileID: 23800000, guid: 42da7b4d5557f684d8f85d11794a8ca9, type: 2}
 --- !u!1 &330585543
 GameObject:
   m_ObjectHideFlags: 0
@@ -446,10 +446,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 663811182}
-  - component: {fileID: 663811183}
   - component: {fileID: 663811185}
+  - component: {fileID: 663811188}
   - component: {fileID: 663811184}
   - component: {fileID: 663811186}
+  - component: {fileID: 663811187}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -474,22 +475,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!54 &663811183
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 663811181}
-  serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 5
-  m_AngularDrag: 0.05
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 1
-  m_Constraints: 112
-  m_CollisionDetection: 0
 --- !u!114 &663811184
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -502,7 +487,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ab5c35706c9d574d90f0bf22506013d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canMove: 1
   <MovementData>k__BackingField: {fileID: 11400000, guid: 1a44e27ee9fa598448c239d639757c3b,
     type: 2}
 --- !u!114 &663811185
@@ -522,7 +506,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 663811184}
         m_TargetAssemblyTypeName: AgentMovement, Assembly-CSharp
-        m_MethodName: MoveAgent
+        m_MethodName: Move
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -537,7 +521,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 663811184}
         m_TargetAssemblyTypeName: AgentMovement, Assembly-CSharp
-        m_MethodName: FaceDirection
+        m_MethodName: Look
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -561,6 +545,37 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!143 &663811187
+CharacterController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 663811181}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Height: 2
+  m_Radius: 0.5
+  m_SlopeLimit: 45
+  m_StepOffset: 0.3
+  m_SkinWidth: 0.025
+  m_MinMoveDistance: 0
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &663811188
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 663811181}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58278855ea880e34b9df824958c6e4c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  drag: 0.3
 --- !u!1 &677012540
 GameObject:
   m_ObjectHideFlags: 0
@@ -570,9 +585,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 677012543}
-  - component: {fileID: 677012542}
   - component: {fileID: 677012541}
   - component: {fileID: 677012546}
+  - component: {fileID: 677012547}
+  - component: {fileID: 677012549}
+  - component: {fileID: 677012548}
+  - component: {fileID: 677012550}
   m_Layer: 7
   m_Name: Enemy
   m_TagString: Enemy
@@ -592,25 +610,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ab5c35706c9d574d90f0bf22506013d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canMove: 1
   <MovementData>k__BackingField: {fileID: 11400000, guid: 3b4b112b6030edc4d9ef371534c59cb7,
     type: 2}
---- !u!54 &677012542
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 677012540}
-  serializedVersion: 2
-  m_Mass: 5
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 112
-  m_CollisionDetection: 0
 --- !u!4 &677012543
 Transform:
   m_ObjectHideFlags: 0
@@ -643,6 +644,77 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!143 &677012547
+CharacterController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 677012540}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Height: 2
+  m_Radius: 0.5
+  m_SlopeLimit: 45
+  m_StepOffset: 0.3
+  m_SkinWidth: 0.025
+  m_MinMoveDistance: 0
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!195 &677012548
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 677012540}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 1
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
+--- !u!114 &677012549
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 677012540}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58278855ea880e34b9df824958c6e4c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  drag: 0.3
+--- !u!114 &677012550
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 677012540}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 205109a93f4282d408e2eb3483488e6b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <EnemyData>k__BackingField: {fileID: 11400000, guid: 59d19dd398f0b11468ece79ea304cdd4,
+    type: 2}
+  <OnGetHit>k__BackingField:
+    m_PersistentCalls:
+      m_Calls: []
+  <Health>k__BackingField: 2
 --- !u!1 &832575517
 GameObject:
   m_ObjectHideFlags: 0
@@ -1079,7 +1151,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &1501283932
 Transform:
@@ -1116,7 +1188,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!65 &1514061584
 BoxCollider:
@@ -1308,7 +1380,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &1835100563
 Transform:

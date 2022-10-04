@@ -9,9 +9,9 @@ public class PlayerInput : MonoBehaviour, Controls.IPlayerActions
 {
     private Controls controls;
 
-    [field: SerializeField] public UnityEvent<Vector2> OnMovement { get; set; }
+    [field: SerializeField] public UnityEvent<Vector3> OnMovement { get; set; }
     [field: SerializeField] public UnityEvent<Vector3> OnFaceDirection { get; set; }
-    public Vector2 MovementValue { get; private set; }
+    public Vector3 MovementValue { get; private set; }
     public Vector3 LookValue { get; private set; }
     public Transform MainCameraTransform { get; private set; }
 
@@ -46,22 +46,23 @@ public class PlayerInput : MonoBehaviour, Controls.IPlayerActions
 
     public void OnMove(InputAction.CallbackContext context)
     {
-        MovementValue = context.ReadValue<Vector2>();
-        if (MovementValue.magnitude < 0.1f) {
-            MovementValue = Vector2.zero;
+        Vector2 MovementValueXY = context.ReadValue<Vector2>();
+        if (MovementValueXY.magnitude < 0.1f) {
+            MovementValueXY = Vector2.zero;
         }
+        MovementValue = CalculateDirection(MovementValueXY);
     }
 
     public void OnLook(InputAction.CallbackContext context)
     {
-        Vector2 lookInput = context.ReadValue<Vector2>();
-        LookValue = CalculateLook(lookInput);
-        if (lookInput.magnitude < 0.1f) {
-            LookValue = Vector3.zero;
+        Vector2 lookValueXY = context.ReadValue<Vector2>();
+        if (lookValueXY.magnitude < 0.1f) {
+            lookValueXY = Vector3.zero;
         }
+        LookValue = CalculateDirection(lookValueXY);
     }
 
-    public Vector3 CalculateLook(Vector2 lookInput)
+    protected Vector3 CalculateDirection(Vector2 xyValue)
     {
         // Camera forward vector
         Vector3 forward =  MainCameraTransform.forward;
@@ -71,7 +72,7 @@ public class PlayerInput : MonoBehaviour, Controls.IPlayerActions
         Vector3 right =  MainCameraTransform.right;
         right.y = 0f;
         right.Normalize();
-        return forward * lookInput.y +
-            right * lookInput.x;
+        return forward * xyValue.y +
+            right * xyValue.x;
     }
 }
