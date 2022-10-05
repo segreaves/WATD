@@ -13,11 +13,27 @@ public class AIState : MonoBehaviour
         enemyBrain = transform.root.GetComponent<EnemyAIBrain>();
     }
 
-    public void UpdateState()
+    public void Enter()
     {
         foreach (var action in actions)
         {
-            action.TakeAction();
+            action.Enter();
+        }
+    }
+
+    public void Exit()
+    {
+        foreach (var action in actions)
+        {
+            action.Exit();
+        }
+    }
+
+    public void Tick()
+    {
+        foreach (var action in actions)
+        {
+            action.Tick();
         }
         foreach (var transition in transitions)
         {
@@ -40,6 +56,7 @@ public class AIState : MonoBehaviour
                 if (transition.NegativeResult != null)
                 {
                     enemyBrain.SwitchState(transition.NegativeResult);
+                    return;
                 }
             }
         }

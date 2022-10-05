@@ -19,14 +19,7 @@ public class EnemyAIBrain : MonoBehaviour, IAgentInput
 
     private void Update()
     {
-        if (Target == null)
-        {
-            OnMovement?.Invoke(Vector3.zero);
-        }
-        else
-        {
-            CurrentState.UpdateState();
-        }
+        CurrentState?.Tick();
     }
 
     public void Attack()
@@ -34,14 +27,21 @@ public class EnemyAIBrain : MonoBehaviour, IAgentInput
         OnAttack?.Invoke();
     }
 
-    public void Move(Vector3 movementDirection, Vector3 targetPosition)
+    public void Move(Vector3 movementDirection)
     {
         OnMovement?.Invoke(movementDirection);
-        OnFaceDirection?.Invoke(targetPosition);
+    }
+
+    public void LookAt(Vector3 targetPosition)
+    {
+        Vector3 lookDirection = targetPosition - transform.position;
+        OnFaceDirection?.Invoke(lookDirection.normalized);
     }
 
     internal void SwitchState(AIState state)
     {
+        CurrentState?.Exit();
         CurrentState = state;
+        CurrentState?.Enter();
     }
 }

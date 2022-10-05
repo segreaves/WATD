@@ -15,5 +15,7 @@ public abstract class AIAction : MonoBehaviour
         enemyBrain = transform.root.GetComponent<EnemyAIBrain>();
     }
 
-    public abstract void TakeAction();
+    public abstract void Enter();
+    public abstract void Tick();
+    public abstract void Exit();
 }

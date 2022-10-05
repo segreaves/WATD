@@ -865,6 +865,7 @@ GameObject:
   m_Component:
   - component: {fileID: 744855351}
   - component: {fileID: 744855350}
+  - component: {fileID: 744855352}
   m_Layer: 7
   m_Name: IdleState
   m_TagString: Untagged
@@ -884,7 +885,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff826c9276abbdb4482caa81c3e03445, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  actions: []
+  actions:
+  - {fileID: 744855352}
   transitions:
   - {fileID: 888944336}
 --- !u!4 &744855351
@@ -903,6 +905,18 @@ Transform:
   m_Father: {fileID: 561458900}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &744855352
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 744855349}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64180ebca87228747b4382d06cbe4963, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &832575517
 GameObject:
   m_ObjectHideFlags: 0
@@ -1538,6 +1552,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1698473399}
   - component: {fileID: 1698473400}
+  - component: {fileID: 1698473401}
   m_Layer: 7
   m_Name: Transition_Chase
   m_TagString: Untagged
@@ -1575,6 +1590,19 @@ MonoBehaviour:
   <Decisions>k__BackingField: []
   <PositiveResult>k__BackingField: {fileID: 0}
   <NegativeResult>k__BackingField: {fileID: 1997531185}
+--- !u!114 &1698473401
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1698473398}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5d160664e57f8b4b8c8337820536372, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Distance>k__BackingField: 2
 --- !u!1 &1744913425
 GameObject:
   m_ObjectHideFlags: 0
@@ -1949,6 +1977,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1997531186}
   - component: {fileID: 1997531185}
+  - component: {fileID: 1997531187}
   m_Layer: 7
   m_Name: ChaseState
   m_TagString: Untagged
@@ -1968,7 +1997,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff826c9276abbdb4482caa81c3e03445, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  actions: []
+  actions:
+  - {fileID: 1997531187}
   transitions:
   - {fileID: 2006905442}
   - {fileID: 2005153659}
@@ -1989,6 +2019,18 @@ Transform:
   m_Father: {fileID: 561458900}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1997531187
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1997531184}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c902b34c3975f549a30c590367bba67, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2005153658
 GameObject:
   m_ObjectHideFlags: 0
@@ -2060,6 +2102,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2006905441}
   - component: {fileID: 2006905442}
+  - component: {fileID: 2006905443}
   m_Layer: 7
   m_Name: Transition_Attack
   m_TagString: Untagged
@@ -2097,6 +2140,19 @@ MonoBehaviour:
   <Decisions>k__BackingField: []
   <PositiveResult>k__BackingField: {fileID: 2075595008}
   <NegativeResult>k__BackingField: {fileID: 0}
+--- !u!114 &2006905443
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2006905440}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5d160664e57f8b4b8c8337820536372, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <Distance>k__BackingField: 1.5
 --- !u!1 &2063839581
 GameObject:
   m_ObjectHideFlags: 0
@@ -2139,6 +2195,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2075595007}
   - component: {fileID: 2075595008}
+  - component: {fileID: 2075595009}
   m_Layer: 7
   m_Name: AttackState
   m_TagString: Untagged
@@ -2174,9 +2231,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff826c9276abbdb4482caa81c3e03445, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  actions: []
+  actions:
+  - {fileID: 2075595009}
   transitions:
   - {fileID: 1698473400}
+--- !u!114 &2075595009
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2075595006}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9232917b6aad1974694ed63107cb775e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2146476969
 GameObject:
   m_ObjectHideFlags: 0

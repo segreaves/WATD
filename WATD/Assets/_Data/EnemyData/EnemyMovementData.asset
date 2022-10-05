@@ -15,3 +15,4 @@ MonoBehaviour:
   maxSpeed: 2
   acceleration: 40
   deceleration: 50
+  rotationSpeed: 25
