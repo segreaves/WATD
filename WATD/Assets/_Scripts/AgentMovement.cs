@@ -30,7 +30,7 @@ public class AgentMovement : MonoBehaviour
         {
             movementDirection = movement;
         }
-        controller.Move(movementDirection * CalculateSpeed(movement) + forceReceiver.Movement * Time.deltaTime);
+        controller.Move((movementDirection * CalculateSpeed(movement) + forceReceiver.Movement) * Time.deltaTime);
     }
 
     private float CalculateSpeed(Vector3 movementInput)
