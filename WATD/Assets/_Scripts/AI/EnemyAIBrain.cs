@@ -8,6 +8,7 @@ public class EnemyAIBrain : MonoBehaviour, IAgentInput
 {
     [field: SerializeField] public GameObject Target { get; set; }
     [field: SerializeField] public AIState CurrentState { get; private set; }
+    [field: SerializeField] public ContextSolver MovementDirectionSolver { get; set; }
     [field: SerializeField] public UnityEvent<Vector3> OnMovement { get; set; }
     [field: SerializeField] public UnityEvent<Vector3> OnFaceDirection { get; set; }
     [field: SerializeField] public UnityEvent OnAttack { get; set; }
@@ -15,6 +16,12 @@ public class EnemyAIBrain : MonoBehaviour, IAgentInput
     private void Awake()
     {
         Target = FindObjectOfType<Player>().gameObject;
+        MovementDirectionSolver = transform.root.GetComponent<ContextSolver>();
+    }
+
+    private void Start()
+    {
+        CurrentState?.Enter();
     }
 
     private void Update()

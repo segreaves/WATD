@@ -8,9 +8,5 @@ public class IdleAction : AIAction
 
     public override void Exit() {}
 
-    public override void Tick()
-    {
-        /*aiMovementData.Direction = Vector3.zero;
-        enemyBrain.Move(aiMovementData.Direction);*/
-    }
+    public override void Tick() {}
 }
