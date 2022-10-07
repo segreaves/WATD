@@ -25,11 +25,11 @@ public class AgentMovement : MonoBehaviour
 
     public void Move(Vector3 movement)
     {
-        if (movement == Vector3.zero)
+        if (movement != Vector3.zero)
         {
-            controller.Move(forceReceiver.Movement * Time.deltaTime);
+            currentMotion = movement;
         }
-        controller.Move((movement * CalculateSpeed(movement) + forceReceiver.Movement) * Time.deltaTime);
+        controller.Move((currentMotion * CalculateSpeed(movement) + forceReceiver.Movement) * Time.deltaTime);
     }
 
     private float CalculateSpeed(Vector3 movementInput)

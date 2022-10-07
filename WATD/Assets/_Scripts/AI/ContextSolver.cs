@@ -66,7 +66,7 @@ public class ContextSolver : MonoBehaviour
             // Final direction
             if (direction != null)
             {
-                Gizmos.color = Color.yellow;
+                Gizmos.color = Color.blue;
                 Gizmos.DrawRay(transform.position, direction * 2.5f);
             }
         }

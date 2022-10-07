@@ -215,6 +215,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5011dd9bf41524b40afad1ee6df25525, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <MovementParameters>k__BackingField: {fileID: 0}
   <Target>k__BackingField: {fileID: 6431591145512999839}
   <CurrentState>k__BackingField: {fileID: 6431591145835909973}
   <MovementDirectionSolver>k__BackingField: {fileID: 6431591145769738283}

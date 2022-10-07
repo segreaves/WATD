@@ -9,8 +9,8 @@ public class MovementDataSO : ScriptableObject
     public float maxSpeed = 5f;
 
     [Range(0.1f, 100f)]
-    public float acceleration = 50f, deceleration = 50f;
+    public float acceleration = 50f, deceleration = 50f, rotationSpeed = 25f;
 
-    [Range(0.1f, 100f)]
-    public float rotationSpeed = 25f;
+    [Range(1f, 100f)]
+    public float momentum = 5f;
 }

@@ -15,5 +15,10 @@ public class AttackAction : AIAction
         aiActionData.Attack = false;
     }
 
-    public override void Tick() {}
+    public override void Tick()
+    {
+        // Look
+        aiMovementData.PointOfInterest = enemyBrain.Target.transform.position;
+        enemyBrain.LookAt(aiMovementData.PointOfInterest);
+    }
 }

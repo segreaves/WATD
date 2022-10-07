@@ -6,6 +6,7 @@ using UnityEngine.Events;
 
 public class EnemyAIBrain : MonoBehaviour, IAgentInput
 {
+    [field: SerializeField] public AgentMovement MovementParameters { get; set; }
     [field: SerializeField] public GameObject Target { get; set; }
     [field: SerializeField] public AIState CurrentState { get; private set; }
     [field: SerializeField] public ContextSolver MovementDirectionSolver { get; set; }
@@ -17,6 +18,7 @@ public class EnemyAIBrain : MonoBehaviour, IAgentInput
     {
         Target = FindObjectOfType<Player>().gameObject;
         MovementDirectionSolver = transform.root.GetComponent<ContextSolver>();
+        MovementParameters = transform.root.GetComponent<AgentMovement>();
     }
 
     private void Start()
