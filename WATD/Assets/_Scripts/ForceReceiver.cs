@@ -62,4 +62,9 @@ public class ForceReceiver : MonoBehaviour
         // This function stops whatever forces were affecting the object
         impact = Vector3.zero;
     }
+
+    public void Jump(float jumpForce)
+    {
+        verticalVelocity += jumpForce;
+    }
 }

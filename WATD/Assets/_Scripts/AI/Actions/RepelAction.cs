@@ -5,13 +5,7 @@ using UnityEngine;
 public class RepelAction : AIAction
 {
     [SerializeField] Targeter detector;
-
-    private float radius;
-
-    private void Start()
-    {
-        radius = detector.TargetCollider.radius;
-    }
+    [SerializeField] private float radius;
 
     public override void Enter() {}
 
@@ -29,8 +23,8 @@ public class RepelAction : AIAction
                 Vector3 directionFromObstacle = transform.position - obstacleCollider.ClosestPoint(transform.position);
                 directionFromObstacle.y = 0f;
                 float distanceToObstacle = directionFromObstacle.magnitude;
-                // Calculate weight based on the distance Enemy<--->Obstacle
-                float weight = Mathf.Clamp01((radius - distanceToObstacle) / radius);
+                // Calculate weight based on the distance from enemy to object
+                float weight = distanceToObstacle > radius ? 0 : Mathf.Clamp01((radius - distanceToObstacle) / radius);
 
                 Vector3 directionToObstacleNormalized = directionFromObstacle.normalized;
 

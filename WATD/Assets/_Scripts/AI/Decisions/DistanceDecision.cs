@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class DistanceDecision : AIDecision
 {
-    [field: SerializeField] [field: Range(0.1f, 10)] public float Distance { get; set; } = 5f;
+    [field: SerializeField] [field: Range(0.1f, 25)] public float Distance { get; set; } = 5f;
     public override bool MakeDecision()
     {
         if (Vector3.Distance(enemyBrain.Target.transform.position, transform.position) < Distance)

@@ -36,7 +36,7 @@ public class AIState : MonoBehaviour
     {
         // Perform movement
         Vector3 desiredDirection = enemyBrain.MovementDirectionSolver.GetDirectionToMove(actions);
-        aiMovementData.Direction = Vector3.Lerp(aiMovementData.Direction, desiredDirection.normalized, Time.deltaTime * enemyBrain.MovementParameters.MovementData.momentum);
+        aiMovementData.Direction = Vector3.Lerp(aiMovementData.Direction, desiredDirection, Time.deltaTime * enemyBrain.MovementParameters.MovementData.momentum);
         enemyBrain.Move(aiMovementData.Direction);
         // Perform actions
         foreach (var action in actions)

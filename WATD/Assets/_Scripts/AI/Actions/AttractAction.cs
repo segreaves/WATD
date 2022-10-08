@@ -1,10 +1,11 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ChaseAction : AIAction
+public class AttractAction : AIAction
 {
+    [SerializeField] private float radius;
+
     public override void Enter()
     {
         Agent.enabled = true;
@@ -31,16 +32,21 @@ public class ChaseAction : AIAction
         else
         {
             var distance = (enemyBrain.Target.transform.position - transform.position).magnitude;
-            Vector3 directionToTarget = GetDirectionToTarget();
+            // Straight line to target
+            Vector3 directionToTarget = enemyBrain.Target.transform.position - transform.position;
+            float distanceToObstacle = directionToTarget.magnitude;
+            directionToTarget.Normalize();
             directionToTarget.y = 0f;
+            // Calculate weight based on the distance from enemy to object
+            float weight = distanceToObstacle <= radius ? 0 : 1 - Mathf.Clamp01((2 * radius - distanceToObstacle) / radius);
             for (int i = 0; i < interest.Length; i++)
             {
-                float result = Vector3.Dot(directionToTarget.normalized, Directions.eightDirections[i]);
+                float result = Vector3.Dot(directionToTarget, Directions.eightDirections[i]);
 
                 // Accept only directions towards target
                 if (result > 0)
                 {
-                    float valueToPutIn = result;
+                    float valueToPutIn = result * weight;
                     if (valueToPutIn > interest[i])
                     {
                         interest[i] = valueToPutIn;
@@ -49,24 +55,6 @@ public class ChaseAction : AIAction
                 }
             }
             return (danger, interest);
-        }
-    }
-
-    private Vector3 GetDirectionToTarget()
-    {
-        Agent.transform.position = transform.position;
-        Agent.velocity = Controller.velocity;
-        if (Agent.isOnNavMesh && Agent.enabled)
-        {
-            // Use NavMesh
-            Agent.destination = enemyBrain.Target.transform.position;
-            return Agent.desiredVelocity.normalized;
-        }
-        else
-        {
-            // Try straight line to target
-            var direction = enemyBrain.Target.transform.position - transform.position;
-            return direction.normalized;
         }
     }
 }
