@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.AI;
 
 public class EnemyAIBrain : MonoBehaviour, IAgentInput
 {
@@ -13,12 +14,22 @@ public class EnemyAIBrain : MonoBehaviour, IAgentInput
     [field: SerializeField] public UnityEvent<Vector3> OnMovement { get; set; }
     [field: SerializeField] public UnityEvent<Vector3> OnFaceDirection { get; set; }
     [field: SerializeField] public UnityEvent OnAttack { get; set; }
+    public NavMeshAgent Agent { get; private set; }
+    public CharacterController Controller { get; private set; }
 
     private void Awake()
     {
         Target = FindObjectOfType<Player>().gameObject;
         MovementDirectionSolver = transform.root.GetComponent<ContextSolver>();
         MovementParameters = transform.root.GetComponent<AgentMovement>();
+        // Controller
+        Controller = transform.root.GetComponent<CharacterController>();
+        // NavMesh Agent
+        Agent = transform.root.GetComponent<UnityEngine.AI.NavMeshAgent>();
+        // We don't want the navmesh agent to move the character for us
+        Agent.updatePosition = false;
+        Agent.updateRotation = false;
+        Agent.enabled = false;
     }
 
     private void Start()
@@ -29,6 +40,8 @@ public class EnemyAIBrain : MonoBehaviour, IAgentInput
     private void Update()
     {
         CurrentState?.Tick();
+        Agent.transform.position = transform.position;
+        Agent.velocity = Controller.velocity;
     }
 
     public void Attack()

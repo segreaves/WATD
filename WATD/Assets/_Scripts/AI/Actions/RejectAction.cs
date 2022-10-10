@@ -6,15 +6,9 @@ public class RejectAction : AIAction
 {
     [SerializeField] private float radius;
 
-    public override void Enter()
-    {
-        Agent.enabled = true;
-    }
+    public override void Enter() {}
 
-    public override void Exit()
-    {
-        Agent.enabled = false;
-    }
+    public override void Exit() {}
 
     public override void Tick()
     {

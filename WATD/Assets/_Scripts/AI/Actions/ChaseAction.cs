@@ -5,15 +5,10 @@ using UnityEngine;
 
 public class ChaseAction : AIAction
 {
-    public override void Enter()
-    {
-        Agent.enabled = true;
-    }
 
-    public override void Exit()
-    {
-        Agent.enabled = false;
-    }
+    public override void Enter() {}
+
+    public override void Exit() {}
 
     public override void Tick()
     {
@@ -54,13 +49,11 @@ public class ChaseAction : AIAction
 
     private Vector3 GetDirectionToTarget()
     {
-        Agent.transform.position = transform.position;
-        Agent.velocity = Controller.velocity;
-        if (Agent.isOnNavMesh && Agent.enabled)
+        if (enemyBrain.Agent.isOnNavMesh && enemyBrain.Agent.enabled)
         {
             // Use NavMesh
-            Agent.destination = enemyBrain.Target.transform.position;
-            return Agent.desiredVelocity.normalized;
+            enemyBrain.Agent.destination = enemyBrain.Target.transform.position;
+            return enemyBrain.Agent.desiredVelocity.normalized;
         }
         else
         {
