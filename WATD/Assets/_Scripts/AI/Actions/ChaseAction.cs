@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class ChaseAction : AIAction
 {
-
     public override void Enter() {}
 
     public override void Exit() {}
@@ -25,7 +24,6 @@ public class ChaseAction : AIAction
         }
         else
         {
-            var distance = (enemyBrain.Target.transform.position - transform.position).magnitude;
             Vector3 directionToTarget = GetDirectionToTarget();
             directionToTarget.y = 0f;
             for (int i = 0; i < interest.Length; i++)
@@ -53,13 +51,13 @@ public class ChaseAction : AIAction
         {
             // Use NavMesh
             enemyBrain.Agent.destination = enemyBrain.Target.transform.position;
-            return enemyBrain.Agent.desiredVelocity.normalized;
+            return enemyBrain.Agent.desiredVelocity;
         }
         else
         {
             // Try straight line to target
             var direction = enemyBrain.Target.transform.position - transform.position;
-            return direction.normalized;
+            return direction;
         }
     }
 }

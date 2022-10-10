@@ -27,9 +27,8 @@ public class EnemyAIBrain : MonoBehaviour, IAgentInput
         // NavMesh Agent
         Agent = transform.root.GetComponent<UnityEngine.AI.NavMeshAgent>();
         // We don't want the navmesh agent to move the character for us
-        Agent.updatePosition = false;
+        Agent.updatePosition = true;
         Agent.updateRotation = false;
-        Agent.enabled = false;
     }
 
     private void Start()
@@ -39,9 +38,9 @@ public class EnemyAIBrain : MonoBehaviour, IAgentInput
 
     private void Update()
     {
-        CurrentState?.Tick();
         Agent.transform.position = transform.position;
         Agent.velocity = Controller.velocity;
+        CurrentState?.Tick();
     }
 
     public void Attack()
