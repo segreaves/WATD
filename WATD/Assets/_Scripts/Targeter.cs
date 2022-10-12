@@ -5,7 +5,6 @@ using UnityEngine.AI;
 
 public class Targeter : MonoBehaviour
 {
-    [SerializeField] private string Tag;
     [field: SerializeField] public SphereCollider TargetCollider { get; private set; }
     public List<Target> targets = new List<Target>();
     
@@ -13,7 +12,7 @@ public class Targeter : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (other.transform.root.gameObject == transform.root.gameObject) { return; }
-        if (!other.transform.root.gameObject.CompareTag(Tag)) { return; }
+        if (!other.gameObject.CompareTag(tag)) { return; }
         if (!other.TryGetComponent<Target>(out Target target)) { return; }
         targets.Add(target);
         target.OnDestroyedEvent += RemoveTarget;

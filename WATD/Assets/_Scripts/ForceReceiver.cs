@@ -7,9 +7,9 @@ using UnityEngine.AI;
 [RequireComponent(typeof(CharacterController))]
 public class ForceReceiver : MonoBehaviour
 {
-    private CharacterController controller;
-    private NavMeshAgent agent;
-    [SerializeField] private float drag = 0.3f;
+    private CharacterController Controller;
+    private NavMeshAgent Agent;
+    [SerializeField] private float drag = 0.25f;
     private Vector3 impact;
     private Vector3 dampingVelocity;
     private float verticalVelocity;
@@ -17,14 +17,14 @@ public class ForceReceiver : MonoBehaviour
 
     private void Awake()
     {
-        controller = GetComponent<CharacterController>();
-        agent = GetComponent<NavMeshAgent>();
+        Controller = GetComponent<CharacterController>();
+        Agent = GetComponent<NavMeshAgent>();
     }
 
     private void Update()
     {
         // Gravity
-        if (verticalVelocity < 0f && controller.isGrounded)
+        if (verticalVelocity < 0f && Controller.isGrounded)
         {
             verticalVelocity = Physics.gravity.y * Time.deltaTime;
         }
@@ -35,19 +35,19 @@ public class ForceReceiver : MonoBehaviour
         // Reduce the value of impact towards zero
         impact = Vector3.SmoothDamp(impact, Vector3.zero, ref dampingVelocity, drag);
         // Turn off navmesh while receiving impact so it won't fight it
-        if (agent != null && impact.sqrMagnitude <= 0.2f * 0.2f)
+        if (Agent != null && impact.sqrMagnitude <= 0.2f * 0.2f)
         {
             impact = Vector3.zero;
-            agent.enabled = true;
+            Agent.enabled = true;
         }
     }
 
     public virtual void AddForce(Vector3 force)
     {
         impact += force;
-        if (agent != null)
+        if (Agent != null)
         {
-            agent.enabled = false;
+            Agent.enabled = false;
         }
     }
 

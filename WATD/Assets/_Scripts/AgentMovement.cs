@@ -10,17 +10,17 @@ public class AgentMovement : MonoBehaviour
 
     [field: SerializeField] public MovementDataSO MovementData { get; set; }
 
-    CharacterController controller;
+    CharacterController Controller;
     private float currentVelocity;
     private Quaternion currentRotation;
     private Vector3 currentMotion;
-    private ForceReceiver forceReceiver;
+    private ForceReceiver ForceReceiver;
 
     
     private void Awake()
     {
-        controller = GetComponent<CharacterController>();
-        forceReceiver = GetComponent<ForceReceiver>();
+        Controller = GetComponentInChildren<CharacterController>();
+        ForceReceiver = GetComponent<ForceReceiver>();
     }
 
     public void Move(Vector3 movement)
@@ -29,7 +29,12 @@ public class AgentMovement : MonoBehaviour
         {
             currentMotion = movement;
         }
-        controller.Move((currentMotion * CalculateSpeed(movement) + forceReceiver.Movement) * Time.deltaTime);
+        Controller.Move((currentMotion * CalculateSpeed(movement) + ForceReceiver.Movement) * Time.deltaTime);
+    }
+
+    public void Move()
+    {
+        Move(Vector3.zero);
     }
 
     private float CalculateSpeed(Vector3 movementInput)

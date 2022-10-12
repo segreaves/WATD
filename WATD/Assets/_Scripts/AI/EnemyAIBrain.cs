@@ -19,7 +19,7 @@ public class EnemyAIBrain : MonoBehaviour, IAgentInput
 
     private void Awake()
     {
-        Target = FindObjectOfType<Player>().gameObject;
+        Target = FindObjectOfType<PlayerStateMachine>().gameObject;
         MovementDirectionSolver = transform.root.GetComponent<ContextSolver>();
         MovementParameters = transform.root.GetComponent<AgentMovement>();
         // Controller

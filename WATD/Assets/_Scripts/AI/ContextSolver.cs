@@ -38,7 +38,7 @@ public class ContextSolver : MonoBehaviour
         direction = outputDirection;
 
         // Return the selected movement direction
-        return outputDirection;
+        return outputDirection.normalized * Mathf.Clamp01(outputDirection.magnitude);
     }
 
     private void OnDrawGizmos()

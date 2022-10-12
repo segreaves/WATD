@@ -11,11 +11,14 @@ public class PlayerInput : MonoBehaviour, Controls.IPlayerActions, IAgentInput
 
     [field: SerializeField] public UnityEvent<Vector3> OnMovement { get; set; }
     [field: SerializeField] public UnityEvent<Vector3> OnFaceDirection { get; set; }
-    [field: SerializeField] public UnityEvent OnAttack { get; set; }
+    public event Action AttackEvent;
+    public event Action DashEvent;
     public Vector3 MovementValue { get; private set; }
     public Vector3 LookValue { get; private set; }
     public Transform MainCameraTransform { get; private set; }
-
+    public bool movementEnabled = true;
+    public bool rotationEnabled = true;
+    public bool dashEnabled = true;
 
     private void Start()
     {
@@ -29,19 +32,40 @@ public class PlayerInput : MonoBehaviour, Controls.IPlayerActions, IAgentInput
 
     private void Update()
     {
-        OnMovement?.Invoke(MovementValue);
-        OnFaceDirection?.Invoke(LookValue);
+        // Update movement
+        if (movementEnabled)
+        {
+            OnMovement?.Invoke(MovementValue);
+        }
+        else
+        {
+            OnMovement?.Invoke(Vector3.zero);
+        }
+        // Update rotation
+        if (rotationEnabled)
+        {
+            OnFaceDirection?.Invoke(LookValue);
+        }
+    }
+
+    public void DisableMovement()
+    {
+        movementEnabled = false;
+    }
+
+    public void DisableRotation()
+    {
+        rotationEnabled = false;
+    }
+
+    public void NormalizeMovement()
+    {
+        MovementValue.Normalize();
     }
 
     private void OnDestroy()
     {
         controls.Player.Disable();
-    }
-
-    public void OnFire(InputAction.CallbackContext context)
-    {
-        if (!context.performed) { return; }
-        OnAttack?.Invoke();
     }
 
     public void OnMove(InputAction.CallbackContext context)
@@ -64,7 +88,7 @@ public class PlayerInput : MonoBehaviour, Controls.IPlayerActions, IAgentInput
         LookValue = CalculateDirection(lookValueXY);
     }
 
-    protected Vector3 CalculateDirection(Vector2 xyValue)
+    public Vector3 CalculateDirection(Vector2 xyValue)
     {
         // Camera forward vector
         Vector3 forward = MainCameraTransform.forward;
@@ -76,5 +100,25 @@ public class PlayerInput : MonoBehaviour, Controls.IPlayerActions, IAgentInput
         right.Normalize();
         return forward * xyValue.y +
             right * xyValue.x;
+    }
+
+    public IEnumerator EDashCooldown(float duration)
+    {
+        dashEnabled = false;
+        yield return new WaitForSeconds(duration);
+        dashEnabled = true;
+    }
+
+    public void OnAttack(InputAction.CallbackContext context)
+    {
+        if (!context.performed) { return; }
+        AttackEvent?.Invoke();
+    }
+
+    public void OnDash(InputAction.CallbackContext context)
+    {
+        if (!context.performed) { return; }
+        if (!dashEnabled) { return; }
+        DashEvent?.Invoke();
     }
 }
