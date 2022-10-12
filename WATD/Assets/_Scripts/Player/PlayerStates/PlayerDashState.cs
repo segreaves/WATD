@@ -28,7 +28,9 @@ public class PlayerDashState : State
         stateMachine.InputReceiver.AttackEvent -= OnAttack;
         stateMachine.InputReceiver.StartCoroutine(stateMachine.InputReceiver.EDashCooldown(stateMachine.PlayerData.DashCooldown));
         if (dashAttack)
-        {}
+        {
+            // switch to dash attack state.
+        }
     }
 
     public override void Tick(float deltaTime)
