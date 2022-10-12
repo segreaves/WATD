@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 3831826507396700389}
   - component: {fileID: 3831826507396700385}
   - component: {fileID: 3831826507396700390}
+  - component: {fileID: 663811188}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -51,7 +52,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <InputReceiver>k__BackingField: {fileID: 3831826507396700388}
-  <PlayerData>k__BackingField: {fileID: 0}
+  <PlayerData>k__BackingField: {fileID: 11400000, guid: 3c7bfffd6d0c43044aaf14ff6d47bb44,
+    type: 2}
   <Health>k__BackingField: 0
   <OnDie>k__BackingField:
     m_PersistentCalls:
@@ -130,7 +132,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58278855ea880e34b9df824958c6e4c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  drag: 0.3
+  drag: 0.25
 --- !u!143 &3831826507396700390
 CharacterController:
   m_ObjectHideFlags: 0
@@ -149,6 +151,26 @@ CharacterController:
   m_SkinWidth: 0.025
   m_MinMoveDistance: 0
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!95 &663811188
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3831826507396700408}
+  m_Enabled: 1
+  m_Avatar: {fileID: 9000000, guid: 3b3cd5b5da1d14e41bb6bdf4ba3ef890, type: 3}
+  m_Controller: {fileID: 9100000, guid: 0d57dc7297bab5b458067f4ad805dbd0, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &3831826508728620225
 GameObject:
   m_ObjectHideFlags: 0
@@ -388,7 +410,8 @@ PrefabInstance:
       propertyPath: m_ApplyRootMotion
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 5866666021909216657, guid: 3b3cd5b5da1d14e41bb6bdf4ba3ef890, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 3b3cd5b5da1d14e41bb6bdf4ba3ef890, type: 3}
 --- !u!4 &633048977029908987 stripped
 Transform:

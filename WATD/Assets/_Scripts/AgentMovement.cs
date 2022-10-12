@@ -15,12 +15,25 @@ public class AgentMovement : MonoBehaviour
     private Quaternion currentRotation;
     private Vector3 currentMotion;
     private ForceReceiver ForceReceiver;
+    private Animator Animator;
+    protected readonly int LocomotionHash = Animator.StringToHash("Locomotion");
+    protected readonly int ForwardSpeedHash = Animator.StringToHash("ForwardSpeed");
+    protected readonly int RightSpeedHash = Animator.StringToHash("RightSpeed");
+    public float CurrentForwardVelocity => Vector3.Dot(Controller.velocity, transform.forward);
+    public float CurrentRightVelocity => Vector3.Dot(Controller.velocity, transform.right);
+    private bool isWalking = false;
 
     
     private void Awake()
     {
         Controller = GetComponentInChildren<CharacterController>();
         ForceReceiver = GetComponent<ForceReceiver>();
+        Animator = GetComponent<Animator>();
+    }
+
+    private void Update()
+    {
+        UpdateAnimationData(Time.deltaTime);
     }
 
     public void Move(Vector3 movement)
@@ -30,6 +43,14 @@ public class AgentMovement : MonoBehaviour
             currentMotion = movement;
         }
         Controller.Move((currentMotion * CalculateSpeed(movement) + ForceReceiver.Movement) * Time.deltaTime);
+    }
+
+    protected void UpdateAnimationData(float deltaTime)
+    {
+        // Forward speed
+        Animator.SetFloat(ForwardSpeedHash, CurrentForwardVelocity, 0.01f, deltaTime);
+        // Right speed
+        Animator.SetFloat(RightSpeedHash, CurrentRightVelocity, 0.01f, deltaTime);
     }
 
     public void Move()
@@ -47,7 +68,8 @@ public class AgentMovement : MonoBehaviour
         {
             currentVelocity -= MovementData.deceleration * Time.deltaTime;
         }
-        currentVelocity = Mathf.Clamp(currentVelocity, 0f, MovementData.maxSpeed);
+        float movementSpeed = isWalking ? MovementData.walkSpeed : MovementData.maxSpeed;
+        currentVelocity = Mathf.Clamp(currentVelocity, 0f, movementSpeed);
         return currentVelocity;
     }
 
@@ -58,5 +80,10 @@ public class AgentMovement : MonoBehaviour
             transform.rotation,
             Quaternion.LookRotation(look),
             Time.deltaTime * MovementData.rotationSpeed);
+    }
+
+    public void Walk(bool walk)
+    {
+        isWalking = walk;
     }
 }

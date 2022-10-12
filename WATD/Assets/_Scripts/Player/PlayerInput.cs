@@ -9,8 +9,10 @@ public class PlayerInput : MonoBehaviour, Controls.IPlayerActions, IAgentInput
 {
     private Controls controls;
 
+    CharacterController Controller;
     [field: SerializeField] public UnityEvent<Vector3> OnMovement { get; set; }
     [field: SerializeField] public UnityEvent<Vector3> OnFaceDirection { get; set; }
+    [field: SerializeField] public UnityEvent<bool> OnWalk { get; set; }
     public event Action AttackEvent;
     public event Action DashEvent;
     public Vector3 MovementValue { get; private set; }
@@ -19,6 +21,12 @@ public class PlayerInput : MonoBehaviour, Controls.IPlayerActions, IAgentInput
     public bool movementEnabled = true;
     public bool rotationEnabled = true;
     public bool dashEnabled = true;
+    public bool lookInput = false;
+
+    private void Awake()
+    {
+        Controller = GetComponentInChildren<CharacterController>();
+    }
 
     private void Start()
     {
@@ -41,10 +49,21 @@ public class PlayerInput : MonoBehaviour, Controls.IPlayerActions, IAgentInput
         {
             OnMovement?.Invoke(Vector3.zero);
         }
+        // Update walking
+        OnWalk?.Invoke(lookInput);
         // Update rotation
         if (rotationEnabled)
         {
-            OnFaceDirection?.Invoke(LookValue);
+            if (lookInput)
+            {
+                OnFaceDirection?.Invoke(LookValue);
+            }
+            else
+            {
+                Vector3 lookDirection = Controller.velocity;
+                lookDirection.y = 0f;
+                OnFaceDirection?.Invoke(lookDirection.normalized);
+            }
         }
     }
 
@@ -83,7 +102,12 @@ public class PlayerInput : MonoBehaviour, Controls.IPlayerActions, IAgentInput
         Vector2 lookValueXY = context.ReadValue<Vector2>();
         if (lookValueXY.magnitude < 0.1f)
         {
+            lookInput = false;
             lookValueXY = Vector3.zero;
+        }
+        else
+        {
+            lookInput = true;
         }
         LookValue = CalculateDirection(lookValueXY);
     }
