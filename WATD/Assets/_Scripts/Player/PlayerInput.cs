@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Events;
 
-public class PlayerInput : MonoBehaviour, Controls.IPlayerActions, IAgentInput
+public partial class PlayerInput : MonoBehaviour, Controls.IPlayerActions, IAgentInput
 {
     private Controls controls;
 
@@ -67,21 +67,6 @@ public class PlayerInput : MonoBehaviour, Controls.IPlayerActions, IAgentInput
         }
     }
 
-    public void DisableMovement()
-    {
-        movementEnabled = false;
-    }
-
-    public void DisableRotation()
-    {
-        rotationEnabled = false;
-    }
-
-    public void NormalizeMovement()
-    {
-        MovementValue.Normalize();
-    }
-
     private void OnDestroy()
     {
         controls.Player.Disable();
@@ -124,6 +109,20 @@ public class PlayerInput : MonoBehaviour, Controls.IPlayerActions, IAgentInput
         right.Normalize();
         return forward * xyValue.y +
             right * xyValue.x;
+    }
+
+    public IEnumerator EDisableMovement(float duration)
+    {
+        movementEnabled = false;
+        yield return new WaitForSeconds(duration);
+        movementEnabled = true;
+    }
+
+    public IEnumerator EDisableRotation(float duration)
+    {
+        rotationEnabled = false;
+        yield return new WaitForSeconds(duration);
+        rotationEnabled = true;
     }
 
     public IEnumerator EDashCooldown(float duration)

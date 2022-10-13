@@ -10,14 +10,18 @@ public class PlayerStateMachine : StateMachine, IAgent
     [field: SerializeField] public int Health { get; set; }
     [field: SerializeField] public UnityEvent OnDie { get; set; }
     [field: SerializeField] public UnityEvent OnGetHit { get; set; }
+    [field: SerializeField] public AttackDataSO AttackChain { get; set; }
+    private AttackDataSO currentAttackChain;
     
     public ForceReceiver ForceReceiver { get; private set; }
     public AgentMovement AgentMovement { get; private set; }
+    public Animator Animator { get; private set; }
 
     private void Awake()
     {
         ForceReceiver = GetComponent<ForceReceiver>();
         AgentMovement = GetComponent<AgentMovement>();
+        Animator = GetComponent<Animator>();
     }
 
     private void Start()

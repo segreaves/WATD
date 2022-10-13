@@ -9,14 +9,14 @@ public class PlayerFreeMovementState : State
 
     public override void Enter()
     {
-        stateMachine.InputReceiver.movementEnabled = true;
-        stateMachine.InputReceiver.rotationEnabled = true;
         stateMachine.InputReceiver.DashEvent += OnDash;
+        stateMachine.InputReceiver.AttackEvent += OnAttack;
     }
 
     public override void Exit()
     {
         stateMachine.InputReceiver.DashEvent -= OnDash;
+        stateMachine.InputReceiver.AttackEvent -= OnAttack;
     }
 
     public override void Tick(float deltaTime) {}
@@ -24,5 +24,10 @@ public class PlayerFreeMovementState : State
     private void OnDash()
     {
         stateMachine.SwitchState(new PlayerDashState(stateMachine));
+    }
+
+    private void OnAttack()
+    {
+        stateMachine.SwitchState(new PlayerAttackState(stateMachine));
     }
 }

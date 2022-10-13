@@ -9,12 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fab8e732c441a5b449219a4dc4dc0164, type: 3}
-  m_Name: PlayerData
+  m_Script: {fileID: 11500000, guid: d25ddd5a061ae96428e497f5de857da0, type: 3}
+  m_Name: BasicAttackL
   m_EditorClassIdentifier: 
-  MaxHealth: 3
-  Damage: 1
-  DashDuration: 0.2
-  DashInvulnerability: 0.1
-  DashImpulse: 20
-  DashCooldown: 0.25
+  AnimationName: BasicAttackL
+  TransitionDuration: 0.1
+  NextIndex: -1
+  ComboAttackTime: 0.1
+  RotationSpeed: 25

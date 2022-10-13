@@ -14,8 +14,8 @@ public class PlayerDashState : State
     public override void Enter()
     {
         stateMachine.InputReceiver.AttackEvent += OnAttack;
-        stateMachine.InputReceiver.DisableMovement();
-        stateMachine.InputReceiver.DisableRotation();
+        stateMachine.InputReceiver.StartCoroutine(stateMachine.InputReceiver.EDisableMovement(stateMachine.PlayerData.DashDuration));
+        stateMachine.InputReceiver.StartCoroutine(stateMachine.InputReceiver.EDisableRotation(stateMachine.PlayerData.DashDuration));
         dashDirection = stateMachine.InputReceiver.MovementValue.normalized;
         if (stateMachine.ForceReceiver)
         {

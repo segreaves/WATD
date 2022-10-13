@@ -9,7 +9,7 @@ public class ForceReceiver : MonoBehaviour
 {
     private CharacterController Controller;
     private NavMeshAgent Agent;
-    [SerializeField] private float drag = 0.25f;
+    [SerializeField] private float speedChange = 0.3f;
     private Vector3 impact;
     private Vector3 dampingVelocity;
     private float verticalVelocity;
@@ -33,7 +33,7 @@ public class ForceReceiver : MonoBehaviour
             verticalVelocity += Physics.gravity.y * Time.deltaTime;
         }
         // Reduce the value of impact towards zero
-        impact = Vector3.SmoothDamp(impact, Vector3.zero, ref dampingVelocity, drag);
+        impact = Vector3.SmoothDamp(impact, Vector3.zero, ref dampingVelocity, speedChange);
         // Turn off navmesh while receiving impact so it won't fight it
         if (Agent != null && impact.sqrMagnitude <= 0.2f * 0.2f)
         {
