@@ -82,6 +82,15 @@ public class AgentMovement : MonoBehaviour
             Time.deltaTime * MovementData.rotationSpeed);
     }
 
+    public void Look(Vector3 look, float rotationSpeed)
+    {
+        if (look == Vector3.zero) { return; }
+        transform.rotation = Quaternion.Lerp(
+            transform.rotation,
+            Quaternion.LookRotation(look),
+            Time.deltaTime * rotationSpeed);
+    }
+
     public void Walk(bool walk)
     {
         isWalking = walk;

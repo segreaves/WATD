@@ -9,17 +9,16 @@ public partial class PlayerInput : MonoBehaviour, Controls.IPlayerActions, IAgen
 {
     private Controls controls;
 
-    CharacterController Controller;
+    public CharacterController Controller;
     [field: SerializeField] public UnityEvent<Vector3> OnMovement { get; set; }
     [field: SerializeField] public UnityEvent<Vector3> OnFaceDirection { get; set; }
+    [field: SerializeField] public UnityEvent<Vector3, float> OnRotateTowards { get; set; }
     [field: SerializeField] public UnityEvent<bool> OnWalk { get; set; }
     public event Action AttackEvent;
     public event Action DashEvent;
     public Vector3 MovementValue { get; private set; }
     public Vector3 LookValue { get; private set; }
     public Transform MainCameraTransform { get; private set; }
-    public bool movementEnabled = true;
-    public bool rotationEnabled = true;
     public bool dashEnabled = true;
     public bool lookInput = false;
 
@@ -36,35 +35,6 @@ public partial class PlayerInput : MonoBehaviour, Controls.IPlayerActions, IAgen
         controls = new Controls();
         controls.Player.SetCallbacks(this);
         controls.Player.Enable();
-    }
-
-    private void Update()
-    {
-        // Update movement
-        if (movementEnabled)
-        {
-            OnMovement?.Invoke(MovementValue);
-        }
-        else
-        {
-            OnMovement?.Invoke(Vector3.zero);
-        }
-        // Update walking
-        OnWalk?.Invoke(lookInput);
-        // Update rotation
-        if (rotationEnabled)
-        {
-            if (lookInput)
-            {
-                OnFaceDirection?.Invoke(LookValue);
-            }
-            else
-            {
-                Vector3 lookDirection = Controller.velocity;
-                lookDirection.y = 0f;
-                OnFaceDirection?.Invoke(lookDirection.normalized);
-            }
-        }
     }
 
     private void OnDestroy()
@@ -109,20 +79,6 @@ public partial class PlayerInput : MonoBehaviour, Controls.IPlayerActions, IAgen
         right.Normalize();
         return forward * xyValue.y +
             right * xyValue.x;
-    }
-
-    public IEnumerator EDisableMovement(float duration)
-    {
-        movementEnabled = false;
-        yield return new WaitForSeconds(duration);
-        movementEnabled = true;
-    }
-
-    public IEnumerator EDisableRotation(float duration)
-    {
-        rotationEnabled = false;
-        yield return new WaitForSeconds(duration);
-        rotationEnabled = true;
     }
 
     public IEnumerator EDashCooldown(float duration)

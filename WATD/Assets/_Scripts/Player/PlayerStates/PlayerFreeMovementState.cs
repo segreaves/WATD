@@ -7,8 +7,11 @@ public class PlayerFreeMovementState : State
 {
     public PlayerFreeMovementState(PlayerStateMachine stateMachine) : base(stateMachine) {}
 
+    protected readonly int LocomotionHash = Animator.StringToHash("Locomotion");
+
     public override void Enter()
     {
+        stateMachine.Animator.CrossFadeInFixedTime(LocomotionHash, 0.2f);
         stateMachine.InputReceiver.DashEvent += OnDash;
         stateMachine.InputReceiver.AttackEvent += OnAttack;
     }
@@ -19,11 +22,31 @@ public class PlayerFreeMovementState : State
         stateMachine.InputReceiver.AttackEvent -= OnAttack;
     }
 
-    public override void Tick(float deltaTime) {}
+    public override void Tick(float deltaTime)
+    {
+        // Update movement speed
+        stateMachine.InputReceiver.OnWalk?.Invoke(stateMachine.InputReceiver.lookInput);
+        // Update movement
+        stateMachine.InputReceiver.OnMovement?.Invoke(stateMachine.InputReceiver.MovementValue);
+        // Update direction
+        if (stateMachine.InputReceiver.lookInput)
+        {
+            stateMachine.InputReceiver.OnFaceDirection?.Invoke(stateMachine.InputReceiver.LookValue);
+        }
+        else
+        {
+            Vector3 lookDirection = stateMachine.InputReceiver.Controller.velocity;
+            lookDirection.y = 0f;
+            stateMachine.InputReceiver.OnFaceDirection?.Invoke(lookDirection.normalized);
+        }
+    }
 
     private void OnDash()
     {
-        stateMachine.SwitchState(new PlayerDashState(stateMachine));
+        if (stateMachine.InputReceiver.MovementValue.sqrMagnitude > 0)
+        {
+            stateMachine.SwitchState(new PlayerDashState(stateMachine));
+        }
     }
 
     private void OnAttack()

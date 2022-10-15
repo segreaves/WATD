@@ -9,7 +9,7 @@ public class ForceReceiver : MonoBehaviour
 {
     private CharacterController Controller;
     private NavMeshAgent Agent;
-    [SerializeField] private float speedChange = 0.3f;
+    [SerializeField] private float speedChange = 0.25f;
     private Vector3 impact;
     private Vector3 dampingVelocity;
     private float verticalVelocity;

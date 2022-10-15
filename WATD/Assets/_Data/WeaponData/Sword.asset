@@ -9,11 +9,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d25ddd5a061ae96428e497f5de857da0, type: 3}
-  m_Name: BasicAttackR
+  m_Script: {fileID: 11500000, guid: 82a3af7c7d1e3d141b8af81c2e27cbd9, type: 3}
+  m_Name: Sword
   m_EditorClassIdentifier: 
-  AnimationName: BasicAttackR
+  AttackAnimations:
+  - BasicAttackL
+  - BasicAttackR
   TransitionDuration: 0.1
-  NextIndex: -1
-  ComboAttackTime: 0.1
+  ComboStartTime: 0.1
   RotationSpeed: 25
+  RotationDuration: 0.25

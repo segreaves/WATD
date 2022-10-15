@@ -13,9 +13,8 @@ public class PlayerDashState : State
 
     public override void Enter()
     {
+        stateMachine.Animator.CrossFadeInFixedTime(dashHash, 0.1f);
         stateMachine.InputReceiver.AttackEvent += OnAttack;
-        stateMachine.InputReceiver.StartCoroutine(stateMachine.InputReceiver.EDisableMovement(stateMachine.PlayerData.DashDuration));
-        stateMachine.InputReceiver.StartCoroutine(stateMachine.InputReceiver.EDisableRotation(stateMachine.PlayerData.DashDuration));
         dashDirection = stateMachine.InputReceiver.MovementValue.normalized;
         if (stateMachine.ForceReceiver)
         {
@@ -35,6 +34,7 @@ public class PlayerDashState : State
 
     public override void Tick(float deltaTime)
     {
+        stateMachine.InputReceiver.OnMovement?.Invoke(Vector3.zero);
         stateMachine.AgentMovement.Look(dashDirection);
         rawTime += deltaTime;
         if (rawTime >= stateMachine.PlayerData.DashDuration)
