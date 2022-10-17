@@ -2,13 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerAttackState : State
+public class PlayerMeleeBaseState : State
 {
-    public PlayerAttackState(PlayerStateMachine stateMachine) : base(stateMachine) {}
+    public PlayerMeleeBaseState(PlayerStateMachine stateMachine) : base(stateMachine) {}
 
-    private int attackIndex;
-    private WeaponSO currentWeaponData;
-    private float attackTimer;
+    protected bool isListeningForEvents = false;
+    protected bool shouldCombo = false;
+    protected bool shouldDash = false;
+    protected int attackIndex;
+    protected WeaponSO currentWeaponData;
+    protected float attackTimer;
 
     public override void Enter()
     {
@@ -16,16 +19,19 @@ public class PlayerAttackState : State
         stateMachine.WeaponHandler.IncrementAttackIndex();
         currentWeaponData = stateMachine.WeaponHandler.currentWeapon.weaponData;
         stateMachine.Animator.CrossFadeInFixedTime(currentWeaponData.AttackAnimations[attackIndex], currentWeaponData.TransitionDuration);
-        stateMachine.InputReceiver.AttackEvent += OnAttack;
+        stateMachine.ForceReceiver.AttackImpulseEvent += OnAttackImpulse;
     }
 
     public override void Exit()
     {
         stateMachine.InputReceiver.AttackEvent -= OnAttack;
+        stateMachine.InputReceiver.DashEvent -= OnDash;
+        stateMachine.ForceReceiver.AttackImpulseEvent -= OnAttackImpulse;
     }
 
     public override void Tick(float deltaTime)
     {
+        stateMachine.AgentMovement.Move();
         attackTimer += deltaTime;
         // Update direction
         if (attackTimer < currentWeaponData.RotationDuration)
@@ -41,16 +47,39 @@ public class PlayerAttackState : State
                 stateMachine.InputReceiver.OnRotateTowards?.Invoke(lookDirection.normalized, currentWeaponData.RotationSpeed);
             }
         }
-        // Start listening for attack event
-        if (attackTimer > currentWeaponData.ComboStartTime)
+        // Start listening for events
+        if (attackTimer > currentWeaponData.ComboStartTime && !isListeningForEvents)
         {
-            //
+            stateMachine.InputReceiver.AttackEvent += OnAttack;
+            stateMachine.InputReceiver.DashEvent += OnDash;
+            isListeningForEvents = true;
         }
-        // Check state exit
-        if (attackTimer > currentWeaponData.AttackDuration)
+    }
+
+    protected void ExitConditions()
+    {
+        // Exit if is moving after MaxDuration
+        if (attackTimer > currentWeaponData.MaxDuration && stateMachine.InputReceiver.MovementValue.magnitude > 0.1f)
         {
             stateMachine.SwitchState(new PlayerFreeMovementState(stateMachine));
         }
+        // Exit if animation has finished
+        if (GetAttackNormalizedTime() >= 1f)
+        {
+            stateMachine.SwitchState(new PlayerFreeMovementState(stateMachine));
+        }
+    }
+
+    private void OnAttack()
+    {
+        shouldDash = false;
+        shouldCombo = true;
+    }
+
+    private void OnDash()
+    {
+        shouldCombo = false;
+        shouldDash = true;
     }
 
     protected float GetAttackNormalizedTime()
@@ -71,8 +100,8 @@ public class PlayerAttackState : State
         }
     }
 
-    private void OnAttack()
+    private void OnAttackImpulse()
     {
-        stateMachine.SwitchState(new PlayerAttackState(stateMachine));
+        stateMachine.ForceReceiver.AddFwdForce(5f);
     }
 }

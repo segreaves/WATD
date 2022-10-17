@@ -1,7 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
 using UnityEngine.AI;
 
 [RequireComponent(typeof(CharacterController))]
@@ -14,6 +14,7 @@ public class ForceReceiver : MonoBehaviour
     private Vector3 dampingVelocity;
     private float verticalVelocity;
     public Vector3 Movement => impact + Vector3.up * verticalVelocity;
+    public event Action AttackImpulseEvent;
 
     private void Awake()
     {
@@ -42,7 +43,7 @@ public class ForceReceiver : MonoBehaviour
         }
     }
 
-    public virtual void AddForce(Vector3 force)
+    public void AddForce(Vector3 force)
     {
         impact += force;
         if (Agent != null)
@@ -57,6 +58,11 @@ public class ForceReceiver : MonoBehaviour
         AddForce(force);
     }
 
+    public void SetAttackImpulse()
+    {
+        AttackImpulseEvent?.Invoke();
+    }
+
     public void ResetImpact()
     {
         // This function stops whatever forces were affecting the object
@@ -66,5 +72,18 @@ public class ForceReceiver : MonoBehaviour
     public void Jump(float jumpForce)
     {
         verticalVelocity += jumpForce;
+    }
+
+    private void OnDrawGizmos()
+    {
+        if (Application.isPlaying)
+        {
+            // Force direction
+            if (impact != null)
+            {
+                Gizmos.color = Color.red;
+                Gizmos.DrawRay(transform.position, impact);
+            }
+        }
     }
 }

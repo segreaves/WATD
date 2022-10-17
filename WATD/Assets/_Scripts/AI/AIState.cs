@@ -36,6 +36,11 @@ public class AIState : MonoBehaviour
     {
         // Perform movement
         Vector3 desiredDirection = enemyBrain.MovementDirectionSolver.GetDirectionToMove(actions);
+        // Prevent extremely small desiredDirection magnitudes
+        if (desiredDirection.sqrMagnitude < 0.005f)
+        {
+            desiredDirection = Vector3.zero;
+        }
         aiMovementData.Direction = Vector3.Lerp(aiMovementData.Direction, desiredDirection, Time.deltaTime * enemyBrain.MovementParameters.MovementData.momentum);
         enemyBrain.Move(aiMovementData.Direction);
         // Perform actions

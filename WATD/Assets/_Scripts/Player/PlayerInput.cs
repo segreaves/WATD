@@ -98,6 +98,7 @@ public partial class PlayerInput : MonoBehaviour, Controls.IPlayerActions, IAgen
     {
         if (!context.performed) { return; }
         if (!dashEnabled) { return; }
+        if (MovementValue.magnitude < 0.1f) { return; }
         DashEvent?.Invoke();
     }
 }

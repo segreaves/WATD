@@ -17,5 +17,7 @@ MonoBehaviour:
   - BasicAttackR
   TransitionDuration: 0.1
   ComboStartTime: 0.1
+  AttackDuration: 0.3
+  MaxDuration: 0.5
   RotationSpeed: 25
   RotationDuration: 0.25

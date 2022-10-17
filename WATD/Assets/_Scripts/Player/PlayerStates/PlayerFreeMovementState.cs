@@ -51,6 +51,6 @@ public class PlayerFreeMovementState : State
 
     private void OnAttack()
     {
-        stateMachine.SwitchState(new PlayerAttackState(stateMachine));
+        stateMachine.SwitchState(new PlayerMeleeEntryState(stateMachine));
     }
 }

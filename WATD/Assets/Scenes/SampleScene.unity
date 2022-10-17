@@ -1315,6 +1315,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 663811188, guid: 6ceab631c3e854245a1e8eebdf2b2aea, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 663811188, guid: 6ceab631c3e854245a1e8eebdf2b2aea, type: 3}
+      propertyPath: m_ApplyRootMotion
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3831826507396700385, guid: 6ceab631c3e854245a1e8eebdf2b2aea,
         type: 3}
       propertyPath: speedChange
