@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fab8e732c441a5b449219a4dc4dc0164, type: 3}
   m_Name: PlayerData
   m_EditorClassIdentifier: 
-  MaxHealth: 3
+  MaxHealth: 5
   Damage: 1
   DashDuration: 0.25
   DashInvulnerability: 0.1

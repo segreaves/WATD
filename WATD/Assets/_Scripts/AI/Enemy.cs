@@ -3,25 +3,32 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class Enemy : MonoBehaviour, IHittable, IAgent
+[RequireComponent(typeof(Health))]
+public class Enemy : MonoBehaviour, IHittable
 {
     [field: SerializeField] public EnemyDataSO EnemyData { get; set; }
     [field: SerializeField] public UnityEvent OnGetHit { get; set; }
     [field: SerializeField] public UnityEvent OnDie { get; set; }
-    [field: SerializeField] public int Health { get; private set; } = 1;
+    [field: SerializeField] public Health Health { get; private set; }
     
-    private void Start()
+    private void Awake()
     {
-        Health = EnemyData.MaxHealth;
+        Health.maxHealth = EnemyData.MaxHealth;
+        Health = GetComponent<Health>();
     }
 
     public void GetHit(int damage, GameObject damageDealer)
     {
-        Health--;
-        OnGetHit?.Invoke();
-        if (Health <= 0)
+        // Process hit
+        if (!Health.IsAlive()) { return; }
+        Health.DealDamage(damage);
+        if (Health.IsAlive())
         {
-            Destroy(gameObject);
+            OnGetHit?.Invoke();
+        }
+        else
+        {
+            OnDie?.Invoke();
         }
     }
 }

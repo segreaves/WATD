@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class PlayerStateMachine : StateMachine, IAgent
+[RequireComponent(typeof(Health))]
+public class PlayerStateMachine : StateMachine, IHittable
 {
     [field: SerializeField] public PlayerInput InputReceiver { get; set; }
     [field: SerializeField] public PlayerDataSO PlayerData { get; set; }
-    [field: SerializeField] public int Health { get; set; }
-    [field: SerializeField] public UnityEvent OnDie { get; set; }
+    [field: SerializeField] public Health Health { get; set; }
     [field: SerializeField] public UnityEvent OnGetHit { get; set; }
+    [field: SerializeField] public UnityEvent OnDie { get; set; }
     [field: SerializeField] public WeaponHandler WeaponHandler;
     
     public ForceReceiver ForceReceiver { get; private set; }
@@ -22,11 +23,27 @@ public class PlayerStateMachine : StateMachine, IAgent
         AgentMovement = GetComponent<AgentMovement>();
         Animator = GetComponent<Animator>();
         WeaponHandler = GetComponent<WeaponHandler>();
+        Health = GetComponent<Health>();
+        Health.maxHealth = PlayerData.MaxHealth;
     }
 
     private void Start()
     {
-        Health = PlayerData.MaxHealth;
         SwitchState(new PlayerFreeMovementState(this));
+    }
+
+    public void GetHit(int damage, GameObject damageDealer)
+    {
+        // Process hit
+        if (!Health.IsAlive()) { return; }
+        Health.DealDamage(damage);
+        if (Health.IsAlive())
+        {
+            OnGetHit?.Invoke();
+        }
+        else
+        {
+            OnDie?.Invoke();
+        }
     }
 }

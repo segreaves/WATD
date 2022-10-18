@@ -232,6 +232,8 @@ GameObject:
   - component: {fileID: 6431591145769738283}
   - component: {fileID: 677012553}
   - component: {fileID: 739408554}
+  - component: {fileID: 3246119572290553436}
+  - component: {fileID: 3381281645525891864}
   m_Layer: 7
   m_Name: Enemy
   m_TagString: Enemy
@@ -274,11 +276,35 @@ MonoBehaviour:
     type: 2}
   <OnGetHit>k__BackingField:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 3492351560739947786}
+        m_TargetAssemblyTypeName: FlashComponent, Assembly-CSharp
+        m_MethodName: HitFlash
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 3381281645525891864}
+        m_TargetAssemblyTypeName: SlowMotionComponent, Assembly-CSharp
+        m_MethodName: HitSlowMotion
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   <OnDie>k__BackingField:
     m_PersistentCalls:
       m_Calls: []
-  <Health>k__BackingField: 2
+  <Health>k__BackingField: {fileID: 3246119572290553436}
 --- !u!114 &6431591145769738276
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -354,7 +380,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58278855ea880e34b9df824958c6e4c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  drag: 0.25
+  speedChange: 0.25
 --- !u!143 &6431591145769738272
 CharacterController:
   m_ObjectHideFlags: 0
@@ -439,6 +465,32 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &3246119572290553436
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6431591145769738335}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 403b4d1082526de4991bc797b3ac5994, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 3
+  health: 0
+--- !u!114 &3381281645525891864
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6431591145769738335}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb17e5f3d74e8a4448a2ff1fb9a81ffe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6431591145835909974
 GameObject:
   m_ObjectHideFlags: 0
@@ -796,7 +848,8 @@ GameObject:
   m_Component:
   - component: {fileID: 6431591146713914595}
   - component: {fileID: 6431591146713914593}
-  - component: {fileID: 6431591146713914594}
+  - component: {fileID: 676532590}
+  - component: {fileID: 3492351560739947786}
   m_Layer: 0
   m_Name: Cylinder
   m_TagString: Untagged
@@ -828,8 +881,8 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6431591146713914396}
   m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
---- !u!23 &6431591146713914594
-MeshRenderer:
+--- !u!137 &676532590
+SkinnedMeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -843,7 +896,7 @@ MeshRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
+  m_RayTracingMode: 3
   m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
@@ -869,7 +922,30 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
+  serializedVersion: 2
+  m_Quality: 0
+  m_UpdateWhenOffscreen: 0
+  m_SkinnedMotionVectors: 1
+  m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+  m_Bones: []
+  m_BlendShapeWeights: []
+  m_RootBone: {fileID: 0}
+  m_AABB:
+    m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
+    m_Extent: {x: 0.50000006, y: 1, z: 0.5000001}
+  m_DirtyAABB: 0
+--- !u!114 &3492351560739947786
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6431591146713914396}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d568d3c7a14c0c49bbb616e7c33fcea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6431591146831653971
 GameObject:
   m_ObjectHideFlags: 0
