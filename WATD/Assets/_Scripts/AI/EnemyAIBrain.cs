@@ -53,7 +53,7 @@ public class EnemyAIBrain : MonoBehaviour, IAgentInput
         OnMovement?.Invoke(movementDirection);
     }
 
-    public void LookAt(Vector3 targetPosition)
+    public void FaceDirection(Vector3 targetPosition)
     {
         Vector3 lookDirection = targetPosition - transform.position;
         OnFaceDirection?.Invoke(lookDirection.normalized);

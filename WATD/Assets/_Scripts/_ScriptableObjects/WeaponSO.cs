@@ -16,4 +16,7 @@ public class WeaponSO : ScriptableObject
     [field: SerializeField] [Range(0f, 0.25f)] public float HitCapsuleForwardOffset = 1f;
     [field: SerializeField] [Range(0f, 0.25f)] public float HitCapsuleRadius = 1f;
     [field: SerializeField] [Range(0f, 0.25f)] public float HitCapsuleHeight = 1f;
+    [field: SerializeField] [Range(0f, 10f)] public float xDim = 1f;
+    [field: SerializeField] [Range(0f, 10f)] public float yDim = 1f;
+    [field: SerializeField] [Range(0f, 10f)] public float zDim = 1f;
 }

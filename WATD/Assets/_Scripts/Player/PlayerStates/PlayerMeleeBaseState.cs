@@ -15,6 +15,10 @@ public class PlayerMeleeBaseState : State
 
     public override void Enter()
     {
+        if (stateMachine.WeaponHandler.weaponEnabled == false)
+        {
+            stateMachine.WeaponHandler.WeaponOn();
+        }
         attackIndex = stateMachine.WeaponHandler.attackIndex;
         stateMachine.WeaponHandler.IncrementAttackIndex();
         currentWeaponData = stateMachine.WeaponHandler.currentWeapon.weaponData;
@@ -24,6 +28,10 @@ public class PlayerMeleeBaseState : State
 
     public override void Exit()
     {
+        if (stateMachine.WeaponHandler.weaponEnabled == true)
+        {
+            stateMachine.WeaponHandler.WeaponOff();
+        }
         stateMachine.InputReceiver.AttackEvent -= OnAttack;
         stateMachine.InputReceiver.DashEvent -= OnDash;
         stateMachine.ForceReceiver.AttackImpulseEvent -= OnAttackImpulse;

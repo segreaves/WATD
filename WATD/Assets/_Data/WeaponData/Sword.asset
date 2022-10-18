@@ -15,9 +15,16 @@ MonoBehaviour:
   AttackAnimations:
   - BasicAttackL
   - BasicAttackR
+  Damage: 1
   TransitionDuration: 0.1
   ComboStartTime: 0.1
   AttackDuration: 0.3
   MaxDuration: 0.5
   RotationSpeed: 25
   RotationDuration: 0.25
+  HitCapsuleForwardOffset: 1
+  HitCapsuleRadius: 1
+  HitCapsuleHeight: 1
+  xDim: 1
+  yDim: 1
+  zDim: 1

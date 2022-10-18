@@ -11,7 +11,7 @@ public class FlashComponent : MonoBehaviour
 
     private void Start()
     {
-        meshRenderer = GetComponent<SkinnedMeshRenderer>();
+        meshRenderer = GetComponentInChildren<SkinnedMeshRenderer>();
         if (meshRenderer == null) { return; }
         originalColor = meshRenderer.material.color;
         if (gameObject.tag == "Player")

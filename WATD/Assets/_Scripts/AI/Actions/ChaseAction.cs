@@ -13,7 +13,7 @@ public class ChaseAction : AIAction
     {
         // Look
         aiMovementData.PointOfInterest = enemyBrain.Target.transform.position;
-        enemyBrain.LookAt(aiMovementData.PointOfInterest);
+        enemyBrain.FaceDirection(aiMovementData.PointOfInterest);
     }
 
     public override (float[] danger, float[] interest) GetSteering(float[] danger, float[] interest)

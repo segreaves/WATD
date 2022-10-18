@@ -19,6 +19,6 @@ public class AttackAction : AIAction
     {
         // Look
         aiMovementData.PointOfInterest = enemyBrain.Target.transform.position;
-        enemyBrain.LookAt(aiMovementData.PointOfInterest);
+        enemyBrain.FaceDirection(aiMovementData.PointOfInterest);
     }
 }

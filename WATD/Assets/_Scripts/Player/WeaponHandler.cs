@@ -7,8 +7,14 @@ public class WeaponHandler : MonoBehaviour
     [field: SerializeField] private LayerMask damageLayer;
     [field: SerializeField] private List<Weapon> Weapons;
     [field: SerializeField] public Weapon currentWeapon { get; private set; }
+    [field: SerializeField] public AnimationCurve WeaponExtendCurve { get; private set; }
     public int attackIndex { get; private set; }
     private float resetTimer;
+    public bool weaponEnabled { get; private set; }
+    private float weaponExtendTimer;
+    [field: SerializeField] private float transitionDuration = 0.2f;
+    private Vector3 targetDimensions;
+    private Vector3 dampingVelocity;
     [SerializeField] private bool showGizmos = true;
 
     void Start()
@@ -20,6 +26,22 @@ public class WeaponHandler : MonoBehaviour
     {
         // Uncomment this line to make attack index reset after a specified duration
         //AttackIndexReset()
+        if (weaponExtendTimer > 0)
+        {
+            if (weaponEnabled)
+            {
+                float curveValue = WeaponExtendCurve.Evaluate((1 - weaponExtendTimer) / transitionDuration);
+                if (curveValue > 0.95f) curveValue = 1f;
+                currentWeapon.model.transform.localScale = targetDimensions * curveValue;
+            }
+            else
+            {
+                float curveValue = WeaponExtendCurve.Evaluate(weaponExtendTimer / transitionDuration);
+                if (curveValue < 0.05f) curveValue = 1f;
+                currentWeapon.model.transform.localScale = targetDimensions * curveValue;
+            }
+            weaponExtendTimer -= Time.deltaTime;
+        }
     }
 
     public void SetActiveWeapon(int index)
@@ -27,16 +49,60 @@ public class WeaponHandler : MonoBehaviour
         // Set all blade data from array index into current blade
         if (Weapons[index] == null) { return; }
         currentWeapon = Weapons[index];
+        // Set weapon dimensions
+        targetDimensions.x = currentWeapon.weaponData.xDim;
+        targetDimensions.y = currentWeapon.weaponData.yDim;
+        targetDimensions.z = currentWeapon.weaponData.zDim;
     }
 
-    public void BladeEnable()
+    public void WeaponOn()
     {
+        if (weaponEnabled == true) { return; }
+        StartCoroutine(EWeaponOn());
+    }
+
+    public void WeaponOff()
+    {
+        if (weaponEnabled == false) { return; }
+        StartCoroutine(EWeaponOff());
+    }
+
+    IEnumerator EWeaponOn()
+    {
+        weaponEnabled = true;
+        currentWeapon.model.transform.localScale = Vector3.zero;
         currentWeapon?.model.SetActive(true);
+        weaponExtendTimer = transitionDuration;
+        yield return new WaitForSeconds(transitionDuration);
+        if (weaponEnabled == true)
+        {
+            currentWeapon.model.transform.localScale = targetDimensions;
+        }
     }
 
-    public void BladeDisable()
+    IEnumerator EWeaponOff()
     {
+        weaponEnabled = false;
+        weaponExtendTimer = transitionDuration;
+        yield return new WaitForSeconds(transitionDuration);
+        if (weaponEnabled == false)
+        {
+            currentWeapon?.model.SetActive(false);
+            currentWeapon.model.transform.localScale = Vector3.zero;
+        }
+    }
+
+    private void FinishTurningWeaponOn()
+    {
+        if (weaponEnabled == false) { return; }
+        currentWeapon.model.transform.localScale = targetDimensions;
+    }
+
+    private void FinishTurningWeaponOff()
+    {
+        if (weaponEnabled == true) { return; }
         currentWeapon?.model.SetActive(false);
+        currentWeapon.model.transform.localScale = Vector3.zero;
     }
 
     public void SetAttackIndex(int index, float resetTime)
