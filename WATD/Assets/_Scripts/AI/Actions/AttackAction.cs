@@ -4,10 +4,12 @@ using UnityEngine;
 
 public class AttackAction : AIAction
 {
+    [SerializeField] List<EnemyAttackSO> AttackData;
+
     public override void Enter()
     {
         aiActionData.Attack = true;
-        enemyBrain.Attack();
+        RandomAttack();
     }
 
     public override void Exit()
@@ -17,8 +19,40 @@ public class AttackAction : AIAction
 
     public override void Tick()
     {
-        // Look
-        aiMovementData.PointOfInterest = enemyBrain.Target.transform.position;
-        enemyBrain.FaceDirection(aiMovementData.PointOfInterest);
+        aiActionData.TimeElapsed = GetAttackNormalizedTime();
+        if (enemyBrain.TrackTarget)
+        {
+            // Track target
+            aiMovementData.PointOfInterest = enemyBrain.Target.transform.position;
+            enemyBrain.FaceDirection(aiMovementData.PointOfInterest);
+        }
+    }
+
+    public void RandomAttack()
+    {
+        MeleeAttack(Random.Range(0, AttackData.Count));
+    }
+
+    public void MeleeAttack(int attackIndex)
+    {
+        enemyBrain.Animator.CrossFadeInFixedTime(AttackData[attackIndex].AttackAnimation, 0.1f);
+    }
+
+    protected float GetAttackNormalizedTime()
+    {
+        AnimatorStateInfo currentInfo = enemyBrain.Animator.GetCurrentAnimatorStateInfo(0);
+        AnimatorStateInfo nextInfo = enemyBrain.Animator.GetNextAnimatorStateInfo(0);
+        if (enemyBrain.Animator.IsInTransition(0) && nextInfo.IsTag("Attack"))
+        {
+            return nextInfo.normalizedTime;
+        }
+        else if (!enemyBrain.Animator.IsInTransition(0) && currentInfo.IsTag("Attack"))
+        {
+            return currentInfo.normalizedTime;
+        }
+        else
+        {
+            return 0f;
+        }
     }
 }

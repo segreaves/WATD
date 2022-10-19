@@ -7,6 +7,7 @@ public class AIState : MonoBehaviour
     private EnemyAIBrain enemyBrain = null;
     [SerializeField] private List<AIAction> actions = null;
     [SerializeField] private List<AITransition> transitions = null;
+    protected readonly int LocomotionHash = Animator.StringToHash("Locomotion");
     protected AIMovementData aiMovementData;
     private float rayLength = 3f;
 
@@ -18,6 +19,7 @@ public class AIState : MonoBehaviour
 
     public void Enter()
     {
+        enemyBrain.Animator.CrossFadeInFixedTime(LocomotionHash, 0.1f);
         foreach (var action in actions)
         {
             action.Enter();

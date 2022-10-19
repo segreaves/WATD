@@ -16,7 +16,6 @@ public class AgentMovement : MonoBehaviour
     private Vector3 currentMotion;
     private ForceReceiver ForceReceiver;
     private Animator Animator;
-    protected readonly int LocomotionHash = Animator.StringToHash("Locomotion");
     protected readonly int ForwardSpeedHash = Animator.StringToHash("ForwardSpeed");
     protected readonly int RightSpeedHash = Animator.StringToHash("RightSpeed");
     public float CurrentForwardVelocity => Vector3.Dot(Controller.velocity, transform.forward);

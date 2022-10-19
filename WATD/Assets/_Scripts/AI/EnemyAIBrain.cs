@@ -13,15 +13,18 @@ public class EnemyAIBrain : MonoBehaviour, IAgentInput
     [field: SerializeField] public ContextSolver MovementDirectionSolver { get; set; }
     [field: SerializeField] public UnityEvent<Vector3> OnMovement { get; set; }
     [field: SerializeField] public UnityEvent<Vector3> OnFaceDirection { get; set; }
-    [field: SerializeField] public UnityEvent OnAttack { get; set; }
     public NavMeshAgent Agent { get; private set; }
     public CharacterController Controller { get; private set; }
+    public Animator Animator { get; private set; }
+    public bool TrackTarget { get; private set; }
 
     private void Awake()
     {
         Target = FindObjectOfType<PlayerStateMachine>().gameObject;
         MovementDirectionSolver = transform.root.GetComponent<ContextSolver>();
         MovementParameters = transform.root.GetComponent<AgentMovement>();
+        // Animator
+        Animator = GetComponent<Animator>();
         // Controller
         Controller = transform.root.GetComponent<CharacterController>();
         // NavMesh Agent
@@ -43,9 +46,14 @@ public class EnemyAIBrain : MonoBehaviour, IAgentInput
         CurrentState?.Tick();
     }
 
-    public void Attack()
+    public void TargetTrackingEnabled()
     {
-        OnAttack?.Invoke();
+        TrackTarget = true;
+    }
+
+    public void TargetTrackingDisabled()
+    {
+        TrackTarget = false;
     }
 
     public void Move(Vector3 movementDirection)
