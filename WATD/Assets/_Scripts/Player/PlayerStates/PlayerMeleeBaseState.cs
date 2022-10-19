@@ -23,7 +23,6 @@ public class PlayerMeleeBaseState : State
         stateMachine.WeaponHandler.IncrementAttackIndex();
         currentWeaponData = stateMachine.WeaponHandler.currentWeapon.weaponData;
         stateMachine.Animator.CrossFadeInFixedTime(currentWeaponData.AttackAnimations[attackIndex], currentWeaponData.TransitionDuration);
-        stateMachine.ForceReceiver.AttackImpulseEvent += OnAttackImpulse;
     }
 
     public override void Exit()
@@ -34,7 +33,6 @@ public class PlayerMeleeBaseState : State
         }
         stateMachine.InputReceiver.AttackEvent -= OnAttack;
         stateMachine.InputReceiver.DashEvent -= OnDash;
-        stateMachine.ForceReceiver.AttackImpulseEvent -= OnAttackImpulse;
     }
 
     public override void Tick(float deltaTime)
@@ -110,10 +108,5 @@ public class PlayerMeleeBaseState : State
         {
             return 0f;
         }
-    }
-
-    private void OnAttackImpulse()
-    {
-        stateMachine.ForceReceiver.AddFwdForce(5f);
     }
 }

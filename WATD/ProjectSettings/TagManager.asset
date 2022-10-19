@@ -18,7 +18,7 @@ TagManager:
   - Obstacle
   - EnemyMovement
   - EnemyDetector
-  - 
+  - PlayerDamage
   - 
   - 
   - 

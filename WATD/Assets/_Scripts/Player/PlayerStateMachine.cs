@@ -45,5 +45,9 @@ public class PlayerStateMachine : StateMachine, IHittable
         {
             OnDie?.Invoke();
         }
+        // Add damage impulse
+        Vector3 damageDirection = transform.position - damageDealer.transform.position;
+        damageDirection.y = 0f;
+        ForceReceiver?.AddForce(damageDirection.normalized * 5f);
     }
 }

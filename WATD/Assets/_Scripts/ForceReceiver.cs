@@ -14,7 +14,6 @@ public class ForceReceiver : MonoBehaviour
     private Vector3 dampingVelocity;
     private float verticalVelocity;
     public Vector3 Movement => impact + Vector3.up * verticalVelocity;
-    public event Action AttackImpulseEvent;
 
     private void Awake()
     {
@@ -56,11 +55,6 @@ public class ForceReceiver : MonoBehaviour
     {
         Vector3 force = gameObject.transform.forward * forceValue;
         AddForce(force);
-    }
-
-    public void SetAttackImpulse()
-    {
-        AttackImpulseEvent?.Invoke();
     }
 
     public void ResetImpact()
