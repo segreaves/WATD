@@ -48,6 +48,10 @@ public class PlayerMeleeBaseState : State
             {
                 stateMachine.InputReceiver.OnRotateTowards?.Invoke(stateMachine.InputReceiver.LookValue, currentWeaponData.RotationSpeed);
             }
+            else if (stateMachine.InputReceiver.MovementValue.sqrMagnitude >= 0.01f)
+            {
+                stateMachine.InputReceiver.OnRotateTowards?.Invoke(stateMachine.InputReceiver.MovementValue, currentWeaponData.RotationSpeed);
+            }
             else
             {
                 Vector3 lookDirection = stateMachine.InputReceiver.Controller.velocity;

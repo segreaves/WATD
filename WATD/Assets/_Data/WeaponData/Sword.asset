@@ -20,8 +20,8 @@ MonoBehaviour:
   ComboStartTime: 0.1
   AttackDuration: 0.3
   MaxDuration: 0.5
-  RotationSpeed: 25
-  RotationDuration: 0.25
+  RotationSpeed: 50
+  RotationDuration: 0.1
   HitCapsuleForwardOffset: 1
   HitCapsuleRadius: 1
   HitCapsuleHeight: 1

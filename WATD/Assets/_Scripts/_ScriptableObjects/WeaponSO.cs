@@ -11,7 +11,7 @@ public class WeaponSO : ScriptableObject
     [field: SerializeField] [Range(0.1f, 0.5f)] public float ComboStartTime = 0.1f;
     [field: SerializeField] [Range(0.1f, 2f)] public float AttackDuration = 0.5f;
     [field: SerializeField] [Range(0.1f, 2f)] public float MaxDuration = 0.5f;
-    [field: SerializeField] [Range(0f, 25f)] public float RotationSpeed = 25f;
+    [field: SerializeField] [Range(0f, 50f)] public float RotationSpeed = 25f;
     [field: SerializeField] [Range(0f, 0.25f)] public float RotationDuration = 0.25f;
     [field: SerializeField] [Range(0f, 10f)] public float HitCapsuleForwardOffset = 1f;
     [field: SerializeField] [Range(0f, 10f)] public float HitCapsuleRadius = 1f;

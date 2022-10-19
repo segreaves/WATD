@@ -55,7 +55,7 @@ MonoBehaviour:
   <InputReceiver>k__BackingField: {fileID: 3831826507396700388}
   <PlayerData>k__BackingField: {fileID: 11400000, guid: 3c7bfffd6d0c43044aaf14ff6d47bb44,
     type: 2}
-  <Health>k__BackingField: {fileID: 0}
+  <Health>k__BackingField: {fileID: 4260993064750142790}
   <OnGetHit>k__BackingField:
     m_PersistentCalls:
       m_Calls: []
@@ -96,7 +96,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 3831826507396700389}
         m_TargetAssemblyTypeName: AgentMovement, Assembly-CSharp
-        m_MethodName: Look
+        m_MethodName: FaceDirection
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -111,7 +111,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 3831826507396700389}
         m_TargetAssemblyTypeName: AgentMovement, Assembly-CSharp
-        m_MethodName: Look
+        m_MethodName: FaceDirection
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -226,6 +226,31 @@ MonoBehaviour:
     weaponName: 
     model: {fileID: 0}
     weaponData: {fileID: 0}
+  <WeaponExtendCurve>k__BackingField:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  transitionDuration: 0.2
   showGizmos: 1
 --- !u!114 &4260993064750142790
 MonoBehaviour:
@@ -426,6 +451,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Sword
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: a37eece67647d5340b00dfd9550f1c89,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a37eece67647d5340b00dfd9550f1c89, type: 3}

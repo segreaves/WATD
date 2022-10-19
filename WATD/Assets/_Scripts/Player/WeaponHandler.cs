@@ -92,19 +92,6 @@ public class WeaponHandler : MonoBehaviour
         }
     }
 
-    private void FinishTurningWeaponOn()
-    {
-        if (weaponEnabled == false) { return; }
-        currentWeapon.model.transform.localScale = targetDimensions;
-    }
-
-    private void FinishTurningWeaponOff()
-    {
-        if (weaponEnabled == true) { return; }
-        currentWeapon?.model.SetActive(false);
-        currentWeapon.model.transform.localScale = Vector3.zero;
-    }
-
     public void SetAttackIndex(int index, float resetTime)
     {
         attackIndex = index;
