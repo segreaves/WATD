@@ -13,6 +13,7 @@ public class EnemyAIBrain : MonoBehaviour, IAgentInput
     [field: SerializeField] public ContextSolver MovementDirectionSolver { get; set; }
     [field: SerializeField] public UnityEvent<Vector3> OnMovement { get; set; }
     [field: SerializeField] public UnityEvent<Vector3> OnFaceDirection { get; set; }
+    [field: SerializeField] public UnityEvent<Vector3, float> OnRotateTowards { get; set; }
     public NavMeshAgent Agent { get; private set; }
     public CharacterController Controller { get; private set; }
     public Animator Animator { get; private set; }
@@ -65,6 +66,12 @@ public class EnemyAIBrain : MonoBehaviour, IAgentInput
     {
         Vector3 lookDirection = targetPosition - transform.position;
         OnFaceDirection?.Invoke(lookDirection.normalized);
+    }
+
+    public void RotateTowards(Vector3 targetPosition, float rotationSpeed)
+    {
+        Vector3 lookDirection = targetPosition - transform.position;
+        OnRotateTowards?.Invoke(lookDirection.normalized, rotationSpeed);
     }
 
     internal void SwitchState(AIState state)

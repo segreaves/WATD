@@ -10,7 +10,7 @@ public class AgentMovement : MonoBehaviour
 
     [field: SerializeField] public MovementDataSO MovementData { get; set; }
 
-    CharacterController Controller;
+    private CharacterController Controller;
     private float currentVelocity;
     private Quaternion currentRotation;
     private Vector3 currentMotion;
@@ -72,7 +72,7 @@ public class AgentMovement : MonoBehaviour
         return currentVelocity;
     }
 
-    public void Look(Vector3 look)
+    public void FaceDirection(Vector3 look)
     {
         if (look == Vector3.zero) { return; }
         transform.rotation = Quaternion.Lerp(
@@ -81,7 +81,7 @@ public class AgentMovement : MonoBehaviour
             Time.deltaTime * MovementData.rotationSpeed);
     }
 
-    public void Look(Vector3 look, float rotationSpeed)
+    public void FaceDirection(Vector3 look, float rotationSpeed)
     {
         if (look == Vector3.zero) { return; }
         transform.rotation = Quaternion.Lerp(

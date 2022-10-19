@@ -33,7 +33,7 @@ public class PlayerDashState : State
     public override void Tick(float deltaTime)
     {
         stateMachine.AgentMovement.Move();
-        stateMachine.AgentMovement.Look(dashDirection);
+        stateMachine.AgentMovement.FaceDirection(dashDirection);
         rawTime += deltaTime;
         if (rawTime >= stateMachine.PlayerData.DashDuration)
         {

@@ -5,6 +5,8 @@ using UnityEngine;
 public class AttackAction : AIAction
 {
     [SerializeField] List<EnemyAttackSO> AttackData;
+    private string animationName;
+    private float rotationSpeed;
 
     public override void Enter()
     {
@@ -24,7 +26,7 @@ public class AttackAction : AIAction
         {
             // Track target
             aiMovementData.PointOfInterest = enemyBrain.Target.transform.position;
-            enemyBrain.FaceDirection(aiMovementData.PointOfInterest);
+            enemyBrain.RotateTowards(aiMovementData.PointOfInterest, rotationSpeed);
         }
     }
 
@@ -35,7 +37,9 @@ public class AttackAction : AIAction
 
     public void MeleeAttack(int attackIndex)
     {
-        enemyBrain.Animator.CrossFadeInFixedTime(AttackData[attackIndex].AttackAnimation, 0.1f);
+        animationName = AttackData[attackIndex].AttackAnimation;
+        rotationSpeed = AttackData[attackIndex].RotationSpeed;
+        enemyBrain.Animator.CrossFadeInFixedTime(animationName, 0.1f);
     }
 
     protected float GetAttackNormalizedTime()
