@@ -8,8 +8,7 @@ public class WeaponHandler : MonoBehaviour
     [field: SerializeField] private List<Weapon> Weapons;
     [field: SerializeField] public Weapon currentWeapon { get; private set; }
     [field: SerializeField] public AnimationCurve WeaponExtendCurve { get; private set; }
-    public int attackIndex { get; private set; }
-    private float resetTimer;
+    [SerializeField] public int attackIndex;
     public bool weaponEnabled { get; private set; }
     private float weaponExtendTimer;
     [field: SerializeField] private float transitionDuration = 0.2f;
@@ -57,12 +56,14 @@ public class WeaponHandler : MonoBehaviour
 
     public void WeaponOn()
     {
+        if (currentWeapon == null) { return; }
         if (weaponEnabled == true) { return; }
         StartCoroutine(EWeaponOn());
     }
 
     public void WeaponOff()
     {
+        if (currentWeapon == null) { return; }
         if (weaponEnabled == false) { return; }
         StartCoroutine(EWeaponOff());
     }
@@ -71,7 +72,7 @@ public class WeaponHandler : MonoBehaviour
     {
         weaponEnabled = true;
         currentWeapon.model.transform.localScale = Vector3.zero;
-        currentWeapon?.model.SetActive(true);
+        currentWeapon.model.SetActive(true);
         weaponExtendTimer = transitionDuration;
         yield return new WaitForSeconds(transitionDuration);
         if (weaponEnabled == true)
@@ -87,38 +88,20 @@ public class WeaponHandler : MonoBehaviour
         yield return new WaitForSeconds(transitionDuration);
         if (weaponEnabled == false)
         {
-            currentWeapon?.model.SetActive(false);
+            currentWeapon.model.SetActive(false);
             currentWeapon.model.transform.localScale = Vector3.zero;
         }
     }
 
-    public void SetAttackIndex(int index, float resetTime)
-    {
-        attackIndex = index;
-        resetTimer = resetTime;
-    }
-
     public void IncrementAttackIndex()
     {
-        if (attackIndex >= currentWeapon.weaponData.AttackAnimations.Count - 1)
+        if (attackIndex < currentWeapon.weaponData.AttackAnimations.Count - 1)
+        {
+            attackIndex++;
+        }
+        else
         {
             attackIndex = 0;
-            return;
-        }
-        attackIndex++;
-        // Uncomment this line to make attack index reset after 0.25f
-        //SetAttackIndex(attackIndex, 0.25f);
-    }
-
-    private void AttackIndexReset()
-    {
-        if (attackIndex > 0)
-        {
-            resetTimer -= Time.deltaTime;
-            if (resetTimer <= 0)
-            {
-                attackIndex = 0;
-            }
         }
     }
 

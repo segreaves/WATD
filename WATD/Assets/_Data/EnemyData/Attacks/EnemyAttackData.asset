@@ -13,7 +13,6 @@ MonoBehaviour:
   m_Name: EnemyAttackData
   m_EditorClassIdentifier: 
   AttackAnimation: Attack1
-  Duration: 1
   RotationSpeed: 25
   HitCapsuleForwardOffset: 1
   HitCapsuleRadius: 1

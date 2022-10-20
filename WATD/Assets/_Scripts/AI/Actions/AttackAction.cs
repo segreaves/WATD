@@ -11,17 +11,19 @@ public class AttackAction : AIAction
     public override void Enter()
     {
         aiActionData.Attack = true;
+        aiActionData.ActionCompletion = 0f;
         RandomAttack();
     }
 
     public override void Exit()
     {
         aiActionData.Attack = false;
+        aiActionData.ActionCompletion = 0f;
     }
 
     public override void Tick()
     {
-        aiActionData.TimeElapsed = GetAttackNormalizedTime();
+        aiActionData.ActionCompletion = GetAttackNormalizedTime();
         if (enemyBrain.TrackTarget)
         {
             // Track target

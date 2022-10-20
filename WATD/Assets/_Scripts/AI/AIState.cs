@@ -7,6 +7,7 @@ public class AIState : MonoBehaviour
     private EnemyAIBrain enemyBrain = null;
     [SerializeField] private List<AIAction> actions = null;
     [SerializeField] private List<AITransition> transitions = null;
+    public AIActionData aiActionData { get; private set; }
     protected readonly int LocomotionHash = Animator.StringToHash("Locomotion");
     protected AIMovementData aiMovementData;
     private float rayLength = 3f;
@@ -15,10 +16,12 @@ public class AIState : MonoBehaviour
     {
         enemyBrain = transform.root.GetComponent<EnemyAIBrain>();
         aiMovementData = transform.root.GetComponentInChildren<AIMovementData>();
+        aiActionData = transform.root.GetComponentInChildren<AIActionData>();
     }
 
     public void Enter()
     {
+        ResetStateTimer();
         enemyBrain.Animator.CrossFadeInFixedTime(LocomotionHash, 0.1f);
         foreach (var action in actions)
         {
@@ -36,6 +39,7 @@ public class AIState : MonoBehaviour
 
     public void Tick()
     {
+        aiActionData.TimeElapsed += Time.deltaTime;
         // Perform movement
         Vector3 desiredDirection = enemyBrain.MovementDirectionSolver.GetDirectionToMove(actions);
         // Prevent extremely small desiredDirection magnitudes
@@ -50,13 +54,23 @@ public class AIState : MonoBehaviour
         {
             action.Tick();
         }
+        // Check decisions for transitions.
+        // unanimous == true: If any decision is false then break and transition
+        // unanimous == false: If any decision is true then break and transition
         foreach (var transition in transitions)
         {
             bool result = false;
             foreach (var decision in transition.Decisions)
             {
                 result = decision.MakeDecision();
-                if (result == false) { break; }
+                if (transition.unanimous)
+                {
+                    if (result == false) { break; }
+                }
+                else
+                {
+                    if (result == true) { break; }
+                }
             }
             if (result)
             {
@@ -85,6 +99,11 @@ public class AIState : MonoBehaviour
     public List<AITransition> GetTransitiona()
     {
         return transitions;
+    }
+
+    public void ResetStateTimer()
+    {
+        aiActionData.TimeElapsed = 0f;
     }
 
     private void OnDrawGizmos()

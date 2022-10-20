@@ -5,6 +5,7 @@ using UnityEngine;
 public class AITransition : MonoBehaviour
 {
     [field: SerializeField] public List<AIDecision> Decisions { get; set; }
+    [field: SerializeField] public bool unanimous = true;
     [field: SerializeField] public AIState PositiveResult { get; set; }
     [field: SerializeField] public AIState NegativeResult { get; set; }
 

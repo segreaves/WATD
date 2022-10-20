@@ -22,7 +22,5 @@ public class PlayerMeleeEntryState : PlayerMeleeBaseState
                 stateMachine.SwitchState(new PlayerDashState(stateMachine));
             }
         }
-        // Check if should exit attacking entirely
-        ExitConditions();
     }
 }

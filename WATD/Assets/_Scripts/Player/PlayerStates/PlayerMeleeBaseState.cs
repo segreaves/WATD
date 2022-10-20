@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerMeleeBaseState : State
+public abstract class PlayerMeleeBaseState : State
 {
     public PlayerMeleeBaseState(PlayerStateMachine stateMachine) : base(stateMachine) {}
 
@@ -64,6 +64,7 @@ public class PlayerMeleeBaseState : State
             stateMachine.InputReceiver.DashEvent += OnDash;
             isListeningForEvents = true;
         }
+        ExitConditions();
     }
 
     protected void ExitConditions()

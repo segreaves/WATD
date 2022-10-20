@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: EnemyMovementData
   m_EditorClassIdentifier: 
   maxSpeed: 4
+  walkSpeed: 2
   acceleration: 50
   deceleration: 50
-  rotationSpeed: 25
+  rotationSpeed: 5
   momentum: 10

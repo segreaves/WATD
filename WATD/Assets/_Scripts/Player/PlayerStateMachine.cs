@@ -40,10 +40,12 @@ public class PlayerStateMachine : StateMachine, IHittable
         if (Health.IsAlive())
         {
             OnGetHit?.Invoke();
+            CameraShake.Instance.ShakeCamera(5f, 0.1f);
         }
         else
         {
             OnDie?.Invoke();
+            CameraShake.Instance.ShakeCamera(5f, 0.1f);
         }
         // Add damage impulse
         Vector3 damageDirection = transform.position - damageDealer.transform.position;

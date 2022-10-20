@@ -28,14 +28,17 @@ public class Enemy : MonoBehaviour, IHittable
         if (Health.IsAlive())
         {
             OnGetHit?.Invoke();
+            CameraShake.Instance.ShakeCamera(1f, 0.1f);
         }
         else
         {
             // Add damage impulse
             Vector3 damageDirection = transform.position - damageDealer.transform.position;
             damageDirection.y = 0f;
+            ForceReceiver?.ResetImpact();
             ForceReceiver?.AddForce(damageDirection.normalized * 5f);
             OnDie?.Invoke();
+            CameraShake.Instance.ShakeCamera(5f, 0.1f);
         }
     }
 
