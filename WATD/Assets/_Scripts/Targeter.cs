@@ -15,7 +15,7 @@ public class Targeter : MonoBehaviour
         if (!other.gameObject.CompareTag(tag)) { return; }
         if (!other.TryGetComponent<Target>(out Target target)) { return; }
         targets.Add(target);
-        target.OnDestroyedEvent += RemoveTarget;
+        target.OnRemoveTarget += RemoveTarget;
     }
 
     private void OnTriggerExit(Collider other)
@@ -26,7 +26,7 @@ public class Targeter : MonoBehaviour
 
     public void RemoveTarget(Target target)
     {
-        target.OnDestroyedEvent -= RemoveTarget;
+        target.OnRemoveTarget -= RemoveTarget;
         targets.Remove(target);
     }
 }

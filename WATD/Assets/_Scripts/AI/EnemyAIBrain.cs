@@ -10,6 +10,7 @@ public class EnemyAIBrain : MonoBehaviour, IAgentInput
     [field: SerializeField] public AgentMovement MovementParameters { get; set; }
     [field: SerializeField] public GameObject Target { get; set; }
     [field: SerializeField] public AIState CurrentState { get; private set; }
+    [field: SerializeField] public AIState DeadState { get; private set; }
     [field: SerializeField] public ContextSolver MovementDirectionSolver { get; set; }
     [field: SerializeField] public UnityEvent<Vector3> OnMovement { get; set; }
     [field: SerializeField] public UnityEvent<Vector3> OnFaceDirection { get; set; }
@@ -45,6 +46,11 @@ public class EnemyAIBrain : MonoBehaviour, IAgentInput
         Agent.transform.position = transform.position;
         Agent.velocity = Controller.velocity;
         CurrentState?.Tick();
+    }
+
+    public void Die()
+    {
+        SwitchState(DeadState);
     }
 
     public void TargetTrackingEnabled()

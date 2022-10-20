@@ -31,11 +31,11 @@ public class Enemy : MonoBehaviour, IHittable
         }
         else
         {
-            OnDie?.Invoke();
             // Add damage impulse
             Vector3 damageDirection = transform.position - damageDealer.transform.position;
             damageDirection.y = 0f;
-            ForceReceiver?.AddForce(damageDirection.normalized * 10f);
+            ForceReceiver?.AddForce(damageDirection.normalized * 5f);
+            OnDie?.Invoke();
         }
     }
 

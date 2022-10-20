@@ -5,10 +5,10 @@ using UnityEngine;
 
 public class Target : MonoBehaviour
 {
-    public event Action<Target> OnDestroyedEvent;
+    public event Action<Target> OnRemoveTarget;
     
-    private void OnDestroy()
+    public void RemoveTarget()
     {
-        OnDestroyedEvent?.Invoke(this);
+        OnRemoveTarget?.Invoke(this);
     }
 }
