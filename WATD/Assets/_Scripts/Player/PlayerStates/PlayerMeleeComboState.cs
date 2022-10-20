@@ -22,5 +22,10 @@ public class PlayerMeleeComboState : PlayerMeleeBaseState
                 stateMachine.SwitchState(new PlayerDashState(stateMachine));
             }
         }
+        // Start listening for events
+        if (attackTimer > currentWeaponData.ComboStartTime && !isListeningForEvents)
+        {
+            StartListeningForEvents();
+        }
     }
 }

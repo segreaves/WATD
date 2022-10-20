@@ -10,7 +10,7 @@ public class PlayerMeleeFinisherState : PlayerMeleeBaseState
     {
         base.Tick(deltaTime);
         // Check state exit
-        if (attackTimer > currentWeaponData.MaxDuration)
+        if (attackTimer > currentWeaponData.AttackDuration + currentWeaponData.AttackCooldown)
         {
             // Check for actions to transition into
             if (shouldCombo)
@@ -21,6 +21,11 @@ public class PlayerMeleeFinisherState : PlayerMeleeBaseState
             {
                 stateMachine.SwitchState(new PlayerDashState(stateMachine));
             }
+        }
+        // Start listening for events
+        if (attackTimer > currentWeaponData.ComboStartTime + currentWeaponData.AttackCooldown && !isListeningForEvents)
+        {
+            StartListeningForEvents();
         }
     }
 }

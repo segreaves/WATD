@@ -57,20 +57,20 @@ public abstract class PlayerMeleeBaseState : State
                 stateMachine.InputReceiver.OnRotateTowards?.Invoke(lookDirection.normalized, currentWeaponData.RotationSpeed);
             }
         }
-        // Start listening for events
-        if (attackTimer > currentWeaponData.ComboStartTime && !isListeningForEvents)
-        {
-            stateMachine.InputReceiver.AttackEvent += OnAttack;
-            stateMachine.InputReceiver.DashEvent += OnDash;
-            isListeningForEvents = true;
-        }
         ExitConditions();
+    }
+
+    protected virtual void StartListeningForEvents()
+    {
+        stateMachine.InputReceiver.AttackEvent += OnAttack;
+        stateMachine.InputReceiver.DashEvent += OnDash;
+        isListeningForEvents = true;
     }
 
     protected void ExitConditions()
     {
         // Exit if is moving after MaxDuration
-        if (attackTimer > currentWeaponData.MaxDuration && stateMachine.InputReceiver.MovementValue.magnitude > 0.1f)
+        if (attackTimer > currentWeaponData.AttackDuration + currentWeaponData.AttackCooldown && stateMachine.InputReceiver.MovementValue.magnitude > 0.1f)
         {
             stateMachine.SwitchState(new PlayerFreeMovementState(stateMachine));
         }

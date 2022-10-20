@@ -19,7 +19,7 @@ MonoBehaviour:
   TransitionDuration: 0.1
   ComboStartTime: 0.2
   AttackDuration: 0.3
-  MaxDuration: 0.5
+  AttackCooldown: 0.2
   RotationSpeed: 50
   RotationDuration: 0.1
   HitCapsuleForwardOffset: 1
