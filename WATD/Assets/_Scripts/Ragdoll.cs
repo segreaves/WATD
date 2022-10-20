@@ -5,6 +5,7 @@ using UnityEngine;
 public class Ragdoll : MonoBehaviour
 {
     private Animator Animator;
+    private CharacterController Controller;
     private Collider[] allColliders;
     private Rigidbody[] allRigidbodies;
 
@@ -13,6 +14,7 @@ public class Ragdoll : MonoBehaviour
         allColliders = GetComponentsInChildren<Collider>(true);
         allRigidbodies = GetComponentsInChildren<Rigidbody>(true);
         Animator = GetComponent<Animator>();
+        Controller = GetComponent<CharacterController>();
     }
 
     public void Start()
@@ -38,6 +40,10 @@ public class Ragdoll : MonoBehaviour
                 rigidBody.isKinematic = !isRagdoll;
                 rigidBody.useGravity = isRagdoll;
             }
+        }
+        if (isRagdoll)
+        {
+            Controller.gameObject.layer = LayerMask.NameToLayer("IgnoreAll");
         }
         Animator.enabled = !isRagdoll;
     }
