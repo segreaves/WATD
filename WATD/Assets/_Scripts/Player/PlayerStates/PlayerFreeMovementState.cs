@@ -35,9 +35,12 @@ public class PlayerFreeMovementState : State
         }
         else
         {
-            Vector3 lookDirection = stateMachine.InputReceiver.Controller.velocity;
-            lookDirection.y = 0f;
-            stateMachine.InputReceiver.OnFaceDirection?.Invoke(lookDirection.normalized);
+            Vector3 velocity = stateMachine.InputReceiver.Controller.velocity;
+            velocity.y = 0f;
+            if (velocity.sqrMagnitude > 0.01f)
+            {
+                stateMachine.InputReceiver.OnFaceDirection?.Invoke(velocity.normalized);
+            }
         }
     }
 

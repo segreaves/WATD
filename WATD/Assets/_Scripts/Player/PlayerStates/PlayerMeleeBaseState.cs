@@ -52,7 +52,7 @@ public abstract class PlayerMeleeBaseState : State
             }
             else
             {
-                Vector3 lookDirection = stateMachine.InputReceiver.Controller.velocity;
+                Vector3 lookDirection = stateMachine.gameObject.transform.forward;
                 lookDirection.y = 0f;
                 stateMachine.InputReceiver.OnRotateTowards?.Invoke(lookDirection.normalized, currentWeaponData.RotationSpeed);
             }

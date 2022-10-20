@@ -101,4 +101,17 @@ public partial class PlayerInput : MonoBehaviour, Controls.IPlayerActions, IAgen
         if (MovementValue.magnitude < 0.1f) { return; }
         DashEvent?.Invoke();
     }
+
+    private void OnDrawGizmos()
+    {
+        if (Application.isPlaying)
+        {
+            // Force direction
+            if (MovementValue != null)
+            {
+                Gizmos.color = Color.yellow;
+                Gizmos.DrawRay(transform.position, MovementValue * 2f);
+            }
+        }
+    }
 }
