@@ -8,5 +8,5 @@ public class Weapon
 {
     [SerializeField] public string weaponName;
     [SerializeField] public GameObject model;
-    [SerializeField] public WeaponSO weaponData;
+    [SerializeField] public MeleeWeaponSO weaponData;
 }

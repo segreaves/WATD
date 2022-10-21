@@ -10,26 +10,26 @@ public abstract class PlayerMeleeBaseState : State
     protected bool shouldCombo = false;
     protected bool shouldDash = false;
     protected int attackIndex;
-    protected WeaponSO currentWeaponData;
+    protected MeleeWeaponSO currentWeaponData;
     protected float attackTimer;
 
     public override void Enter()
     {
-        if (stateMachine.WeaponHandler.weaponEnabled == false)
+        if (stateMachine.meleeWeapon.weaponEnabled == false)
         {
-            stateMachine.WeaponHandler.WeaponOn();
+            stateMachine.meleeWeapon.WeaponOn();
         }
-        attackIndex = stateMachine.WeaponHandler.attackIndex;
-        stateMachine.WeaponHandler.IncrementAttackIndex();
-        currentWeaponData = stateMachine.WeaponHandler.currentWeapon.weaponData;
+        attackIndex = stateMachine.meleeWeapon.attackIndex;
+        stateMachine.meleeWeapon.IncrementAttackIndex();
+        currentWeaponData = stateMachine.meleeWeapon.currentWeapon.weaponData;
         stateMachine.Animator.CrossFadeInFixedTime(currentWeaponData.AttackAnimations[attackIndex], currentWeaponData.TransitionDuration);
     }
 
     public override void Exit()
     {
-        if (stateMachine.WeaponHandler.weaponEnabled == true)
+        if (stateMachine.meleeWeapon.weaponEnabled == true)
         {
-            stateMachine.WeaponHandler.WeaponOff();
+            stateMachine.meleeWeapon.WeaponOff();
         }
         stateMachine.InputReceiver.AttackEvent -= OnAttack;
         stateMachine.InputReceiver.DashEvent -= OnDash;

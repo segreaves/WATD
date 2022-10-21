@@ -20,8 +20,9 @@ public partial class PlayerInput : MonoBehaviour, Controls.IPlayerActions, IAgen
     public Vector3 LookValue { get; private set; }
     public Transform MainCameraTransform { get; private set; }
     public bool dashEnabled = true;
-    public bool aimEnabled = true;
-    public bool lookInput = false;
+    public bool aimEnabled = false;
+    public bool movementInput;
+    public bool lookInput;
 
     private void Awake()
     {
@@ -48,7 +49,12 @@ public partial class PlayerInput : MonoBehaviour, Controls.IPlayerActions, IAgen
         Vector2 MovementValueXY = context.ReadValue<Vector2>();
         if (MovementValueXY.magnitude < 0.1f)
         {
+            movementInput = false;
             MovementValueXY = Vector2.zero;
+        }
+        else
+        {
+            movementInput = true;
         }
         MovementValue = CalculateDirection(MovementValueXY);
     }
@@ -119,11 +125,17 @@ public partial class PlayerInput : MonoBehaviour, Controls.IPlayerActions, IAgen
     {
         if (Application.isPlaying)
         {
-            // Force direction
+            // Movement direction
             if (MovementValue != null)
             {
                 Gizmos.color = Color.yellow;
                 Gizmos.DrawRay(transform.position, MovementValue * 2f);
+            }
+            // Look direction
+            if (LookValue != null)
+            {
+                Gizmos.color = Color.blue;
+                Gizmos.DrawRay(transform.position, LookValue * 2f);
             }
         }
     }

@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 3831826507396700390}
   - component: {fileID: 663811188}
   - component: {fileID: 1958510825}
+  - component: {fileID: 2335965907817671157}
   - component: {fileID: 4260993064750142790}
   m_Layer: 6
   m_Name: Player
@@ -137,6 +138,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   dashEnabled: 1
+  aimEnabled: 1
   lookInput: 0
 --- !u!114 &3831826507396700389
 MonoBehaviour:
@@ -252,6 +254,18 @@ MonoBehaviour:
     m_RotationOrder: 4
   transitionDuration: 0.2
   showGizmos: 1
+--- !u!114 &2335965907817671157
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3831826507396700408}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0958d5fd3c50b74478b6cc9555188da1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &4260993064750142790
 MonoBehaviour:
   m_ObjectHideFlags: 0

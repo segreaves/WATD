@@ -2,13 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WeaponHandler : MonoBehaviour
+public class MeleeWeapon : MonoBehaviour
 {
     [field: SerializeField] private LayerMask damageLayer;
     [field: SerializeField] private List<Weapon> Weapons;
     [field: SerializeField] public Weapon currentWeapon { get; private set; }
     [field: SerializeField] public AnimationCurve WeaponExtendCurve { get; private set; }
-    [SerializeField] public int attackIndex;
+    public int attackIndex { get; private set; }
     public bool weaponEnabled { get; private set; }
     private float weaponExtendTimer;
     [field: SerializeField] private float transitionDuration = 0.2f;

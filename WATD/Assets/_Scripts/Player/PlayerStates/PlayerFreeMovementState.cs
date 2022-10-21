@@ -9,6 +9,7 @@ public class PlayerFreeMovementState : State
 
     protected readonly int LocomotionHash = Animator.StringToHash("Locomotion");
     protected readonly int AimHash = Animator.StringToHash("Aiming");
+    Vector3 inputLookDirection;
 
     public override void Enter()
     {
@@ -21,6 +22,7 @@ public class PlayerFreeMovementState : State
     {
         stateMachine.InputReceiver.DashEvent -= OnDash;
         stateMachine.InputReceiver.AttackEvent -= OnAttack;
+        stateMachine.Animator.SetBool(AimHash, false);
     }
 
     public override void Tick(float deltaTime)
@@ -30,20 +32,43 @@ public class PlayerFreeMovementState : State
         // Update movement
         stateMachine.InputReceiver.OnMovement?.Invoke(stateMachine.InputReceiver.MovementValue);
         // Update direction
-        if (stateMachine.InputReceiver.lookInput)
+        UpdateFaceDirection();
+        // Update animation
+        UpdateAnimationData(deltaTime);
+    }
+
+    private void UpdateFaceDirection()
+    {
+        if (stateMachine.InputReceiver.lookInput == false && stateMachine.InputReceiver.movementInput == false)
         {
-            stateMachine.InputReceiver.OnFaceDirection?.Invoke(stateMachine.InputReceiver.LookValue);
+            // No movement or look input
+            inputLookDirection = stateMachine.transform.forward;
         }
-        else
+        else if (stateMachine.InputReceiver.lookInput == false && stateMachine.InputReceiver.movementInput == true)
         {
+            // Face movement direction
             Vector3 velocity = stateMachine.InputReceiver.Controller.velocity;
             velocity.y = 0f;
             if (velocity.sqrMagnitude > 0.01f)
             {
-                stateMachine.InputReceiver.OnFaceDirection?.Invoke(velocity.normalized);
+                inputLookDirection = velocity.normalized;
             }
         }
-        UpdateAnimationData(deltaTime);
+        else if (stateMachine.InputReceiver.lookInput == true && stateMachine.InputReceiver.movementInput == true)
+        {
+            // Face look direction
+            inputLookDirection = stateMachine.InputReceiver.LookValue;
+        }
+        else
+        {
+            // Face look direction if > 90 degrees from forward
+            float angle = Quaternion.Angle(stateMachine.transform.rotation, Quaternion.LookRotation(stateMachine.InputReceiver.LookValue));
+            if (angle >= 90)
+            {
+                inputLookDirection = stateMachine.InputReceiver.LookValue;
+            }
+        }
+        stateMachine.InputReceiver.OnFaceDirection?.Invoke(inputLookDirection);
     }
 
     protected void UpdateAnimationData(float deltaTime)
@@ -68,7 +93,7 @@ public class PlayerFreeMovementState : State
         }
         else
         {
-            // Fire ranged weapon
+            stateMachine.rangedWeapon.Shoot();
         }
     }
 }
