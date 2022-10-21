@@ -8,6 +8,7 @@ public class PlayerFreeMovementState : State
     public PlayerFreeMovementState(PlayerStateMachine stateMachine) : base(stateMachine) {}
 
     protected readonly int LocomotionHash = Animator.StringToHash("Locomotion");
+    protected readonly int AimHash = Animator.StringToHash("Aiming");
 
     public override void Enter()
     {
@@ -42,6 +43,13 @@ public class PlayerFreeMovementState : State
                 stateMachine.InputReceiver.OnFaceDirection?.Invoke(velocity.normalized);
             }
         }
+        UpdateAnimationData(deltaTime);
+    }
+
+    protected void UpdateAnimationData(float deltaTime)
+    {
+        // Aiming
+        stateMachine.Animator.SetBool(AimHash, stateMachine.InputReceiver.aimEnabled);
     }
 
     private void OnDash()
@@ -54,6 +62,13 @@ public class PlayerFreeMovementState : State
 
     private void OnAttack()
     {
-        stateMachine.SwitchState(new PlayerMeleeEntryState(stateMachine));
+        if (stateMachine.InputReceiver.aimEnabled == false)
+        {
+            stateMachine.SwitchState(new PlayerMeleeEntryState(stateMachine));
+        }
+        else
+        {
+            // Fire ranged weapon
+        }
     }
 }

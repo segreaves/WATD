@@ -20,6 +20,7 @@ public partial class PlayerInput : MonoBehaviour, Controls.IPlayerActions, IAgen
     public Vector3 LookValue { get; private set; }
     public Transform MainCameraTransform { get; private set; }
     public bool dashEnabled = true;
+    public bool aimEnabled = true;
     public bool lookInput = false;
 
     private void Awake()
@@ -79,6 +80,18 @@ public partial class PlayerInput : MonoBehaviour, Controls.IPlayerActions, IAgen
         right.Normalize();
         return forward * xyValue.y +
             right * xyValue.x;
+    }
+
+    public void OnAim(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            aimEnabled = true;
+        }
+        else
+        {
+            aimEnabled = false;
+        }
     }
 
     public IEnumerator EDashCooldown(float duration)
