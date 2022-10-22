@@ -1,36 +1,30 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerFreeMovementState : State
+public class PlayerAimingState : State
 {
-    public PlayerFreeMovementState(PlayerStateMachine stateMachine) : base(stateMachine) {}
+    public PlayerAimingState(PlayerStateMachine stateMachine) : base(stateMachine) {}
 
-    protected readonly int LocomotionHash = Animator.StringToHash("Locomotion");
+    protected readonly int AimHash = Animator.StringToHash("Aiming");
+
 
     public override void Enter()
     {
-        if (stateMachine.isMovementState == false)
-        {
-            stateMachine.Animator.CrossFadeInFixedTime(LocomotionHash, 0.2f);
-        }
         stateMachine.isMovementState = IsMovementState();
-        stateMachine.InputReceiver.AttackEvent += OnAttack;
+        stateMachine.Animator.SetBool(AimHash, true);
         stateMachine.InputReceiver.DashEvent += OnDash;
         stateMachine.InputReceiver.AimEvent += OnAim;
-        // If aim is pressed then switch immediately to aiming state
-        if (stateMachine.InputReceiver.aimEnabled)
-        {
-            stateMachine.SwitchState(new PlayerAimingState(stateMachine));
-        }
+        stateMachine.rangedWeapon.WeaponOn();
     }
 
     public override void Exit()
     {
-        stateMachine.InputReceiver.AttackEvent -= OnAttack;
+        stateMachine.Animator.SetBool(AimHash, false);
         stateMachine.InputReceiver.DashEvent -= OnDash;
+        stateMachine.InputReceiver.AttackEvent -= OnAttack;
         stateMachine.InputReceiver.AimEvent -= OnAim;
+        stateMachine.rangedWeapon.WeaponOff();
     }
 
     public override void Tick(float deltaTime)
@@ -50,14 +44,14 @@ public class PlayerFreeMovementState : State
 
     private void OnAttack()
     {
-        stateMachine.SwitchState(new PlayerMeleeEntryState(stateMachine));
+        stateMachine.rangedWeapon.Shoot();
     }
 
     private void OnAim(bool enabled)
     {
-        if (enabled == true)
+        if (enabled == false)
         {
-            stateMachine.SwitchState(new PlayerAimingState(stateMachine));
+            stateMachine.SwitchState(new PlayerFreeMovementState(stateMachine));
         }
     }
 

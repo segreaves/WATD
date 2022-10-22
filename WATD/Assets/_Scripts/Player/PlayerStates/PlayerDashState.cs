@@ -13,6 +13,7 @@ public class PlayerDashState : State
 
     public override void Enter()
     {
+        stateMachine.isMovementState = IsMovementState();
         stateMachine.Animator.CrossFadeInFixedTime(dashHash, 0.1f);
         stateMachine.InputReceiver.AttackEvent += OnAttack;
         dashDirection = stateMachine.InputReceiver.MovementValue.normalized;

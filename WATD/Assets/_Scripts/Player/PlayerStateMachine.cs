@@ -11,20 +11,21 @@ public class PlayerStateMachine : StateMachine, IHittable
     [field: SerializeField] public Health Health { get; set; }
     [field: SerializeField] public UnityEvent OnGetHit { get; set; }
     [field: SerializeField] public UnityEvent OnDie { get; set; }
-    [field: SerializeField] public MeleeWeapon meleeWeapon;
-    [field: SerializeField] public RangedWeapon rangedWeapon;
+    [field: SerializeField] public MeleeWeaponHandler meleeWeapon;
+    [field: SerializeField] public RangedWeaponHandler rangedWeapon;
     
     public ForceReceiver ForceReceiver { get; private set; }
     public AgentMovement AgentMovement { get; private set; }
     public Animator Animator { get; private set; }
+    public bool isMovementState;
 
     private void Awake()
     {
         ForceReceiver = GetComponent<ForceReceiver>();
         AgentMovement = GetComponent<AgentMovement>();
         Animator = GetComponent<Animator>();
-        meleeWeapon = GetComponent<MeleeWeapon>();
-        rangedWeapon = GetComponent<RangedWeapon>();
+        meleeWeapon = GetComponent<MeleeWeaponHandler>();
+        rangedWeapon = GetComponent<RangedWeaponHandler>();
         Health = GetComponent<Health>();
         Health.maxHealth = PlayerData.MaxHealth;
     }

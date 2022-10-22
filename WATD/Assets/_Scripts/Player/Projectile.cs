@@ -4,9 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [Serializable]
-public class Weapon
+public class Projectile
 {
-    [SerializeField] public string weaponName;
     [SerializeField] public GameObject model;
-    [SerializeField] public MeleeWeaponSO weaponData;
+    [SerializeField] public ProjectileSO projectileData;
 }

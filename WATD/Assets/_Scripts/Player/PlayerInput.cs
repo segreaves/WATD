@@ -15,12 +15,13 @@ public partial class PlayerInput : MonoBehaviour, Controls.IPlayerActions, IAgen
     [field: SerializeField] public UnityEvent<Vector3, float> OnRotateTowards { get; set; }
     [field: SerializeField] public UnityEvent<bool> OnWalk { get; set; }
     public event Action AttackEvent;
+    public event Action<bool> AimEvent;
     public event Action DashEvent;
     public Vector3 MovementValue { get; private set; }
     public Vector3 LookValue { get; private set; }
     public Transform MainCameraTransform { get; private set; }
     public bool dashEnabled = true;
-    public bool aimEnabled = false;
+    public bool aimEnabled = true;
     public bool movementInput;
     public bool lookInput;
 
@@ -90,14 +91,8 @@ public partial class PlayerInput : MonoBehaviour, Controls.IPlayerActions, IAgen
 
     public void OnAim(InputAction.CallbackContext context)
     {
-        if (context.performed)
-        {
-            aimEnabled = true;
-        }
-        else
-        {
-            aimEnabled = false;
-        }
+        aimEnabled = context.performed;
+        AimEvent?.Invoke(context.performed);
     }
 
     public IEnumerator EDashCooldown(float duration)

@@ -10,19 +10,20 @@ public abstract class PlayerMeleeBaseState : State
     protected bool shouldCombo = false;
     protected bool shouldDash = false;
     protected int attackIndex;
-    protected MeleeWeaponSO currentWeaponData;
+    protected BladeSO currentWeaponData;
     protected float attackTimer;
 
     public override void Enter()
     {
+        stateMachine.isMovementState = IsMovementState();
         if (stateMachine.meleeWeapon.weaponEnabled == false)
         {
             stateMachine.meleeWeapon.WeaponOn();
         }
         attackIndex = stateMachine.meleeWeapon.attackIndex;
         stateMachine.meleeWeapon.IncrementAttackIndex();
-        currentWeaponData = stateMachine.meleeWeapon.currentWeapon.weaponData;
-        stateMachine.Animator.CrossFadeInFixedTime(currentWeaponData.AttackAnimations[attackIndex], currentWeaponData.TransitionDuration);
+        currentWeaponData = stateMachine.meleeWeapon.currentBlade.bladeData;
+        stateMachine.Animator.CrossFadeInFixedTime(currentWeaponData.AttackAnimations[attackIndex], 0.1f);
     }
 
     public override void Exit()
@@ -70,7 +71,7 @@ public abstract class PlayerMeleeBaseState : State
     protected void ExitConditions()
     {
         // Exit if is moving after MaxDuration
-        if (attackTimer > currentWeaponData.AttackDuration + currentWeaponData.AttackCooldown && stateMachine.InputReceiver.MovementValue.magnitude > 0.1f)
+        if (attackTimer > currentWeaponData.AttackDuration + currentWeaponData.Cooldown && stateMachine.InputReceiver.MovementValue.magnitude > 0.1f)
         {
             stateMachine.SwitchState(new PlayerFreeMovementState(stateMachine));
         }
