@@ -15,7 +15,7 @@ public class PlayerAimingState : State
         stateMachine.Animator.SetBool(AimHash, true);
         stateMachine.InputReceiver.DashEvent += OnDash;
         stateMachine.InputReceiver.AimEvent += OnAim;
-        stateMachine.rangedWeapon.WeaponOn();
+        stateMachine.WeaponHandler.ExtendCannon();
     }
 
     public override void Exit()
@@ -24,7 +24,7 @@ public class PlayerAimingState : State
         stateMachine.InputReceiver.DashEvent -= OnDash;
         stateMachine.InputReceiver.AttackEvent -= OnAttack;
         stateMachine.InputReceiver.AimEvent -= OnAim;
-        stateMachine.rangedWeapon.WeaponOff();
+        stateMachine.WeaponHandler.RetractCannon();
     }
 
     public override void Tick(float deltaTime)
@@ -44,7 +44,7 @@ public class PlayerAimingState : State
 
     private void OnAttack()
     {
-        stateMachine.rangedWeapon.Shoot();
+        //
     }
 
     private void OnAim(bool enabled)

@@ -16,21 +16,21 @@ public abstract class PlayerMeleeBaseState : State
     public override void Enter()
     {
         stateMachine.isMovementState = IsMovementState();
-        if (stateMachine.meleeWeapon.weaponEnabled == false)
+        if (stateMachine.WeaponHandler.weaponEnabled == false)
         {
-            stateMachine.meleeWeapon.WeaponOn();
+            stateMachine.WeaponHandler.ActivateBlade();
         }
-        attackIndex = stateMachine.meleeWeapon.attackIndex;
-        stateMachine.meleeWeapon.IncrementAttackIndex();
-        currentWeaponData = stateMachine.meleeWeapon.currentBlade.bladeData;
+        attackIndex = stateMachine.WeaponHandler.attackIndex;
+        stateMachine.WeaponHandler.IncrementAttackIndex();
+        currentWeaponData = stateMachine.WeaponHandler.currentBlade.bladeData;
         stateMachine.Animator.CrossFadeInFixedTime(currentWeaponData.AttackAnimations[attackIndex], 0.1f);
     }
 
     public override void Exit()
     {
-        if (stateMachine.meleeWeapon.weaponEnabled == true)
+        if (stateMachine.WeaponHandler.weaponEnabled == true)
         {
-            stateMachine.meleeWeapon.WeaponOff();
+            stateMachine.WeaponHandler.DeactivateBlade();
         }
         stateMachine.InputReceiver.AttackEvent -= OnAttack;
         stateMachine.InputReceiver.DashEvent -= OnDash;

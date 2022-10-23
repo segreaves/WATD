@@ -2,15 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MeleeWeaponHandler : MonoBehaviour
+public class WeaponHandler : MonoBehaviour
 {
     [field: SerializeField] private LayerMask damageLayer;
     [field: SerializeField] private List<Blade> Blades;
+    [field: SerializeField] private List<Projectile> Projectiles;
     [field: SerializeField] public Blade currentBlade { get; private set; }
     [field: SerializeField] public AnimationCurve WeaponExtendCurve { get; private set; }
     [SerializeField] private GameObject Weapon;
     [SerializeField] private GameObject handObject;
     [SerializeField] private GameObject holsterObject;
+    [SerializeField] private Animator Animator;
     public int attackIndex { get; private set; }
     public bool weaponEnabled { get; private set; }
     private float weaponExtendTimer;
@@ -19,6 +21,14 @@ public class MeleeWeaponHandler : MonoBehaviour
     private Vector3 dampingVelocity;
     [SerializeField] private bool showGizmos = true;
 
+    private readonly int drawHash = Animator.StringToHash("ExtendCannon");
+    private readonly int holsterHash = Animator.StringToHash("RetractCannon");
+
+    private void Awake()
+    {
+        Animator = Weapon.GetComponent<Animator>();
+    }
+
     void Start()
     {
         SetActiveBlade(0);
@@ -26,8 +36,6 @@ public class MeleeWeaponHandler : MonoBehaviour
 
     private void Update()
     {
-        // Uncomment this line to make attack index reset after a specified duration
-        //AttackIndexReset()
         if (weaponExtendTimer > 0)
         {
             if (weaponEnabled)
@@ -56,30 +64,30 @@ public class MeleeWeaponHandler : MonoBehaviour
         targetDimensions.x = currentBlade.bladeData.xDim;
         targetDimensions.y = currentBlade.bladeData.yDim;
         targetDimensions.z = currentBlade.bladeData.zDim;
-        Weapon.gameObject.transform.SetParent(holsterObject.transform, false);
+        Holster();
     }
 
-    public void WeaponOn()
+    public void ActivateBlade()
     {
         if (currentBlade == null) { return; }
         if (weaponEnabled == true) { return; }
-        StartCoroutine(EWeaponOn());
+        StartCoroutine(EActivateBlade());
     }
 
-    public void WeaponOff()
+    public void DeactivateBlade()
     {
         if (currentBlade == null) { return; }
         if (weaponEnabled == false) { return; }
-        StartCoroutine(EWeaponOff());
+        StartCoroutine(EDeactivateBlade());
     }
 
-    IEnumerator EWeaponOn()
+    IEnumerator EActivateBlade()
     {
         weaponEnabled = true;
         currentBlade.model.transform.localScale = Vector3.zero;
         currentBlade.model.SetActive(true);
         weaponExtendTimer = transitionDuration;
-        Weapon.gameObject.transform.SetParent(handObject.transform, false);
+        Draw();
         yield return new WaitForSeconds(transitionDuration);
         if (weaponEnabled == true)
         {
@@ -87,17 +95,61 @@ public class MeleeWeaponHandler : MonoBehaviour
         }
     }
 
-    IEnumerator EWeaponOff()
+    IEnumerator EDeactivateBlade()
     {
         weaponEnabled = false;
         weaponExtendTimer = transitionDuration;
-        Weapon.gameObject.transform.SetParent(holsterObject.transform, false);
         yield return new WaitForSeconds(transitionDuration);
+        Holster();
         if (weaponEnabled == false)
         {
             currentBlade.model.SetActive(false);
             currentBlade.model.transform.localScale = Vector3.zero;
         }
+    }
+
+    public void ExtendCannon()
+    {
+        if (weaponEnabled == true) { return; }
+        StartCoroutine(EExtendCannon());
+    }
+
+    public void RetractCannon()
+    {
+        if (weaponEnabled == false) { return; }
+        StartCoroutine(ERetractCannon());
+    }
+
+    IEnumerator EExtendCannon()
+    {
+        weaponEnabled = true;
+        Draw();
+        if (Animator != null)
+        {
+            Animator.CrossFadeInFixedTime(drawHash, 0.01f);
+        }
+        yield return new WaitForSeconds(0.1f);
+    }
+
+    IEnumerator ERetractCannon()
+    {
+        weaponEnabled = false;
+        if (Animator != null)
+        {
+            Animator.CrossFadeInFixedTime(holsterHash, 0.01f);
+        }
+        yield return new WaitForSeconds(0.1f);
+        Holster();
+    }
+
+    public void Draw()
+    {
+        Weapon.gameObject.transform.SetParent(handObject.transform, false);
+    }
+
+    public void Holster()
+    {
+        Weapon.gameObject.transform.SetParent(holsterObject.transform, false);
     }
 
     public void IncrementAttackIndex()

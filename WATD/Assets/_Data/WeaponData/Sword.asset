@@ -24,6 +24,6 @@ MonoBehaviour:
   HitCapsuleForwardOffset: 1
   HitCapsuleRadius: 1
   HitCapsuleHeight: 1
-  xDim: 45
-  yDim: 10
-  zDim: 3
+  xDim: 1
+  yDim: 2.5
+  zDim: 1
