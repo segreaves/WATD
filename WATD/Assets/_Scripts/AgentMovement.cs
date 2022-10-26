@@ -47,9 +47,9 @@ public class AgentMovement : MonoBehaviour
     protected void UpdateAnimationData(float deltaTime)
     {
         // Forward speed
-        Animator.SetFloat(ForwardSpeedHash, CurrentForwardVelocity, 0.01f, deltaTime);
+        Animator.SetFloat(ForwardSpeedHash, CurrentForwardVelocity, 0.05f, deltaTime);
         // Right speed
-        Animator.SetFloat(RightSpeedHash, CurrentRightVelocity, 0.01f, deltaTime);
+        Animator.SetFloat(RightSpeedHash, CurrentRightVelocity, 0.05f, deltaTime);
     }
 
     public void Move()

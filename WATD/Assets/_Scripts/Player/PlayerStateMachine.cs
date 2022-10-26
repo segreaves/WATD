@@ -16,6 +16,7 @@ public class PlayerStateMachine : StateMachine, IHittable
     public ForceReceiver ForceReceiver { get; private set; }
     public AgentMovement AgentMovement { get; private set; }
     public Animator Animator { get; private set; }
+    public RigControl_Aim RigControl_Aim { get; private set; }
     public bool isMovementState;
 
     private void Awake()
@@ -24,6 +25,7 @@ public class PlayerStateMachine : StateMachine, IHittable
         AgentMovement = GetComponent<AgentMovement>();
         Animator = GetComponent<Animator>();
         WeaponHandler = GetComponent<WeaponHandler>();
+        RigControl_Aim = GetComponent<RigControl_Aim>();
         Health = GetComponent<Health>();
         Health.maxHealth = PlayerData.MaxHealth;
     }

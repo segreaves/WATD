@@ -66,7 +66,6 @@ public partial class PlayerInput : MonoBehaviour, Controls.IPlayerActions, IAgen
         if (lookValueXY.magnitude < 0.1f)
         {
             lookInput = false;
-            lookValueXY = Vector3.zero;
         }
         else
         {

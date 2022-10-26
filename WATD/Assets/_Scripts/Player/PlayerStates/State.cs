@@ -48,11 +48,30 @@ public abstract class State
         {
             // Face look direction if > 90 degrees from forward
             float angle = Quaternion.Angle(stateMachine.transform.rotation, Quaternion.LookRotation(stateMachine.InputReceiver.LookValue));
-            if (angle >= 90)
+            bool right = Vector3.Dot(stateMachine.transform.right, stateMachine.InputReceiver.LookValue) > 0 ? true : false;
+            if (angle >= 90f)
             {
                 inputLookDirection = stateMachine.InputReceiver.LookValue;
+                if (right)
+                {
+                    TurnR();
+                }
+                else
+                {
+                    TurnL();
+                }
             }
         }
         stateMachine.InputReceiver.OnFaceDirection?.Invoke(inputLookDirection);
+    }
+
+    protected virtual void TurnL()
+    {
+        return;
+    }
+
+    protected virtual void TurnR()
+    {
+        return;
     }
 }
