@@ -9,7 +9,7 @@ public class RigControl_Aim : MonoBehaviour
     [SerializeField] private GameObject lookRay;
     [SerializeField] private GameObject lookTarget;
     [SerializeField] private GameObject target;
-    [SerializeField] float speedChange = 0.1f;
+    [SerializeField] float speedChange = 0.0f;
     private PlayerStateMachine stateMachine;
     private Vector3 dampingVelocity;
 

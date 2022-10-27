@@ -12,8 +12,6 @@ public class PlayerFreeMovementState : State
     protected readonly int TurnLHash = Animator.StringToHash("TurnL");
     protected readonly int TurnRHash = Animator.StringToHash("TurnR");
     protected readonly int LookInputHash = Animator.StringToHash("LookInput");
-    protected readonly int IsMovingHash = Animator.StringToHash("IsMoving");
-    public bool IsMoving => stateMachine.InputReceiver.MovementValue.sqrMagnitude > 0f;
 
     public override void Enter()
     {
@@ -84,8 +82,6 @@ public class PlayerFreeMovementState : State
         float lookAngleNorm = Math.Clamp(angleSign * lookAngle, -90f, 90f) / 90f;
         lookAngleNorm = (1 + lookAngleNorm) / 2f;
         stateMachine.Animator.SetFloat(LookAngleHash, lookAngleNorm, 0.01f, Time.deltaTime);
-        // Is moving
-        stateMachine.Animator.SetBool(IsMovingHash, IsMoving);
     }
 
     protected override void TurnL()
