@@ -74,7 +74,7 @@ public class PlayerAimingState : State
         // Look angle
         float lookAngle = stateMachine.InputReceiver.lookInput ? Quaternion.Angle(stateMachine.transform.rotation, Quaternion.LookRotation(stateMachine.InputReceiver.LookValue)) : 0f;
         float angleSign = Vector3.Dot(stateMachine.transform.right, stateMachine.InputReceiver.LookValue) > 0 ? 1 : -1;
-        float lookAngleNorm = Math.Clamp(angleSign * lookAngle, -90f, 90f) / 90f;
+        float lookAngleNorm = Math.Clamp(angleSign * lookAngle, -180f, 180f) / 180f;
         lookAngleNorm = (1 + lookAngleNorm) / 2f;
         stateMachine.Animator.SetFloat(LookAngleHash, lookAngleNorm, 0.01f, Time.deltaTime);
         // Is moving

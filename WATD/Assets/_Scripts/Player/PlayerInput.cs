@@ -63,7 +63,7 @@ public partial class PlayerInput : MonoBehaviour, Controls.IPlayerActions, IAgen
     public void OnLook(InputAction.CallbackContext context)
     {
         Vector2 lookValueXY = context.ReadValue<Vector2>();
-        if (lookValueXY.magnitude < 0.1f)
+        if (lookValueXY.magnitude < 0.75f)
         {
             lookInput = false;
         }
