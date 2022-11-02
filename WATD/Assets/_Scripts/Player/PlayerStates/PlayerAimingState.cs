@@ -25,7 +25,7 @@ public class PlayerAimingState : State
         stateMachine.InputReceiver.DashEvent += OnDash;
         stateMachine.InputReceiver.AttackEvent += OnAttack;
         stateMachine.InputReceiver.AimEvent += OnAim;
-        stateMachine.WeaponHandler.ExtendCannon();
+        //stateMachine.WeaponHandler.ExtendCannon();
         stateMachine.OnAim.Invoke(true);
     }
 
@@ -36,7 +36,7 @@ public class PlayerAimingState : State
         stateMachine.InputReceiver.DashEvent -= OnDash;
         stateMachine.InputReceiver.AttackEvent -= OnAttack;
         stateMachine.InputReceiver.AimEvent -= OnAim;
-        stateMachine.WeaponHandler.RetractCannon();
+        //stateMachine.WeaponHandler.RetractCannon();
         stateMachine.OnAim.Invoke(false);
     }
 

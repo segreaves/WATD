@@ -12,7 +12,7 @@ public class WeaponHandler : MonoBehaviour
     [SerializeField] private GameObject Weapon;
     [SerializeField] private GameObject handObject;
     [SerializeField] private GameObject holsterObject;
-    [SerializeField] private Animator Animator;
+    //[SerializeField] private Animator Animator;
     public int attackIndex { get; private set; }
     public bool bladeEnabled { get; private set; }
     public bool aimEnabled { get; private set; }
@@ -27,7 +27,7 @@ public class WeaponHandler : MonoBehaviour
 
     private void Awake()
     {
-        Animator = Weapon.GetComponent<Animator>();
+        //Animator = Weapon.GetComponent<Animator>();
     }
 
     void Start()
@@ -128,20 +128,20 @@ public class WeaponHandler : MonoBehaviour
     {
         aimEnabled = true;
         Draw();
-        if (Animator != null)
+        /*if (Animator != null)
         {
             Animator.CrossFadeInFixedTime(drawHash, 0.01f);
-        }
+        }*/
         yield return new WaitForSeconds(0.1f);
     }
 
     IEnumerator ERetractCannon()
     {
         aimEnabled = false;
-        if (Animator != null)
+        /*if (Animator != null)
         {
             Animator.CrossFadeInFixedTime(holsterHash, 0.01f);
-        }
+        }*/
         yield return new WaitForSeconds(0.1f);
         Holster();
     }

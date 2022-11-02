@@ -10,6 +10,7 @@ public class PlayerFreeMovementState : State
     protected readonly int MovementHash = Animator.StringToHash("Locomotion");
     protected readonly int LookAngleHash = Animator.StringToHash("LookAngle");
     protected readonly int IsMovingHash = Animator.StringToHash("IsMoving");
+    protected readonly int ArmsTuckedHash = Animator.StringToHash("ArmsTuckedIn");
     protected readonly int TurnLHash = Animator.StringToHash("TurnL");
     protected readonly int TurnRHash = Animator.StringToHash("TurnR");
     private float lookingAngle;
@@ -17,6 +18,7 @@ public class PlayerFreeMovementState : State
     public override void Enter()
     {
         stateMachine.Animator.CrossFadeInFixedTime(MovementHash, 0.1f);
+        stateMachine.Animator.SetBool(ArmsTuckedHash, true);
         stateMachine.isMovementState = IsMovementState();
         stateMachine.InputReceiver.AttackEvent += OnAttack;
         stateMachine.InputReceiver.DashEvent += OnDash;
@@ -30,6 +32,7 @@ public class PlayerFreeMovementState : State
 
     public override void Exit()
     {
+        stateMachine.Animator.SetBool(ArmsTuckedHash, false);
         stateMachine.InputReceiver.AttackEvent -= OnAttack;
         stateMachine.InputReceiver.DashEvent -= OnDash;
         stateMachine.InputReceiver.AimEvent -= OnAim;
