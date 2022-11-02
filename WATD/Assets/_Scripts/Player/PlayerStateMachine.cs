@@ -9,6 +9,7 @@ public class PlayerStateMachine : StateMachine, IHittable
     [field: SerializeField] public PlayerInput InputReceiver { get; set; }
     [field: SerializeField] public PlayerDataSO PlayerData { get; set; }
     [field: SerializeField] public Health Health { get; set; }
+    [field: SerializeField] public UnityEvent<bool> OnAim { get; set; }
     [field: SerializeField] public UnityEvent OnGetHit { get; set; }
     [field: SerializeField] public UnityEvent OnDie { get; set; }
     [field: SerializeField] public WeaponHandler WeaponHandler;

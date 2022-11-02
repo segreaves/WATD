@@ -14,7 +14,8 @@ public class WeaponHandler : MonoBehaviour
     [SerializeField] private GameObject holsterObject;
     [SerializeField] private Animator Animator;
     public int attackIndex { get; private set; }
-    public bool weaponEnabled { get; private set; }
+    public bool bladeEnabled { get; private set; }
+    public bool aimEnabled { get; private set; }
     private float weaponExtendTimer;
     [field: SerializeField] private float transitionDuration = 0.2f;
     private Vector3 targetDimensions;
@@ -38,7 +39,7 @@ public class WeaponHandler : MonoBehaviour
     {
         if (weaponExtendTimer > 0)
         {
-            if (weaponEnabled)
+            if (bladeEnabled)
             {
                 float curveValue = WeaponExtendCurve.Evaluate((1 - weaponExtendTimer) / transitionDuration);
                 if (curveValue > 0.95f) curveValue = 1f;
@@ -70,26 +71,26 @@ public class WeaponHandler : MonoBehaviour
     public void ActivateBlade()
     {
         if (currentBlade == null) { return; }
-        if (weaponEnabled == true) { return; }
+        if (bladeEnabled == true) { return; }
         StartCoroutine(EActivateBlade());
     }
 
     public void DeactivateBlade()
     {
         if (currentBlade == null) { return; }
-        if (weaponEnabled == false) { return; }
+        if (bladeEnabled == false) { return; }
         StartCoroutine(EDeactivateBlade());
     }
 
     IEnumerator EActivateBlade()
     {
-        weaponEnabled = true;
+        bladeEnabled = true;
         currentBlade.model.transform.localScale = Vector3.zero;
         currentBlade.model.SetActive(true);
         weaponExtendTimer = transitionDuration;
         Draw();
         yield return new WaitForSeconds(transitionDuration);
-        if (weaponEnabled == true)
+        if (bladeEnabled == true)
         {
             currentBlade.model.transform.localScale = targetDimensions;
         }
@@ -97,11 +98,14 @@ public class WeaponHandler : MonoBehaviour
 
     IEnumerator EDeactivateBlade()
     {
-        weaponEnabled = false;
+        bladeEnabled = false;
         weaponExtendTimer = transitionDuration;
         yield return new WaitForSeconds(transitionDuration);
-        Holster();
-        if (weaponEnabled == false)
+        if (aimEnabled == false)
+            {
+                Holster();
+            }
+        if (bladeEnabled == false)
         {
             currentBlade.model.SetActive(false);
             currentBlade.model.transform.localScale = Vector3.zero;
@@ -110,19 +114,19 @@ public class WeaponHandler : MonoBehaviour
 
     public void ExtendCannon()
     {
-        if (weaponEnabled == true) { return; }
+        if (aimEnabled == true) { return; }
         StartCoroutine(EExtendCannon());
     }
 
     public void RetractCannon()
     {
-        if (weaponEnabled == false) { return; }
+        if (aimEnabled == false) { return; }
         StartCoroutine(ERetractCannon());
     }
 
     IEnumerator EExtendCannon()
     {
-        weaponEnabled = true;
+        aimEnabled = true;
         Draw();
         if (Animator != null)
         {
@@ -133,7 +137,7 @@ public class WeaponHandler : MonoBehaviour
 
     IEnumerator ERetractCannon()
     {
-        weaponEnabled = false;
+        aimEnabled = false;
         if (Animator != null)
         {
             Animator.CrossFadeInFixedTime(holsterHash, 0.01f);

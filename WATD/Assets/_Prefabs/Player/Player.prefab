@@ -1,68 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &113121782
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 113121783}
-  m_Layer: 6
-  m_Name: LookRay
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &113121783
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 113121782}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 327419909}
-  m_Father: {fileID: 3831826507396700411}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &327419908
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 327419909}
-  m_Layer: 6
-  m_Name: LookTarget
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &327419909
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 327419908}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.5, z: 10}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 113121783}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1228460274
 GameObject:
   m_ObjectHideFlags: 0
@@ -141,12 +78,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Weight: 1
   m_Data:
-    m_ConstrainedObject: {fileID: 3831826508838836955}
+    m_ConstrainedObject: {fileID: 3831826508838837061}
     m_SourceObjects:
       m_Length: 1
       m_Item0:
         transform: {fileID: 1228460275}
-        weight: 0
+        weight: 1
       m_Item1:
         transform: {fileID: 0}
         weight: 0
@@ -168,9 +105,9 @@ MonoBehaviour:
       m_Item7:
         transform: {fileID: 0}
         weight: 0
-    m_Offset: {x: 0, y: 0, z: 0}
-    m_MinLimit: -180
-    m_MaxLimit: 180
+    m_Offset: {x: 0, y: 0, z: 5}
+    m_MinLimit: -20
+    m_MaxLimit: 20
     m_AimAxis: 2
     m_UpAxis: 4
     m_WorldUpType: 0
@@ -232,7 +169,7 @@ MonoBehaviour:
     m_Style:
       shape: {fileID: 4300000, guid: e050c2b16fe384bd994474655a4b4968, type: 2}
       color: {r: 1, g: 0, b: 0, a: 0.5}
-      size: 0.1
+      size: 0.25
       position: {x: 0, y: 0, z: 0}
       rotation: {x: 0, y: 0, z: 0}
     m_Visible: 1
@@ -275,7 +212,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3831826508838837049}
-  - {fileID: 113121783}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -295,6 +231,21 @@ MonoBehaviour:
   <PlayerData>k__BackingField: {fileID: 11400000, guid: 3c7bfffd6d0c43044aaf14ff6d47bb44,
     type: 2}
   <Health>k__BackingField: {fileID: 4260993064750142790}
+  <OnAim>k__BackingField:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 9090560169044889012}
+        m_TargetAssemblyTypeName: RigControl_Aim, Assembly-CSharp
+        m_MethodName: SetEnabled
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   <OnGetHit>k__BackingField:
     m_PersistentCalls:
       m_Calls: []
@@ -539,10 +490,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1cd2949d953b94479d492cc22567903, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lookRay: {fileID: 113121782}
-  lookTarget: {fileID: 327419908}
+  rig: {fileID: 1445115448}
   target: {fileID: 1228460274}
-  speedChange: 0.1
 --- !u!1 &4379784951295016637
 GameObject:
   m_ObjectHideFlags: 0
@@ -597,7 +546,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9219351042521467487}
-  m_LocalRotation: {x: -0.11116901, y: 0.12075983, z: -0.057438403, w: 0.9847636}
+  m_LocalRotation: {x: -0.034484066, y: 0.06988772, z: -0.04441826, w: 0.99596864}
   m_LocalPosition: {x: 0.0209, y: 0.1773, z: -0.0599}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -888,12 +837,6 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 9500000, guid: db0e58d0841b90c478cc919c554c298c, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: db0e58d0841b90c478cc919c554c298c, type: 3}
---- !u!4 &3831826508838836955 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 400136, guid: db0e58d0841b90c478cc919c554c298c,
-    type: 3}
-  m_PrefabInstance: {fileID: 3831826508838961619}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &3831826508838837049 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400106, guid: db0e58d0841b90c478cc919c554c298c,

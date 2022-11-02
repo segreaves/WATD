@@ -7,38 +7,46 @@ public class PlayerAimingState : State
 {
     public PlayerAimingState(PlayerStateMachine stateMachine) : base(stateMachine) {}
 
+    protected readonly int MovementHash = Animator.StringToHash("AimLocomotion");
     protected readonly int AimHash = Animator.StringToHash("Aiming");
     protected readonly int LookAngleHash = Animator.StringToHash("LookAngle");
+    protected readonly int IsMovingHash = Animator.StringToHash("IsMoving");
     protected readonly int TurnLHash = Animator.StringToHash("TurnL");
     protected readonly int TurnRHash = Animator.StringToHash("TurnR");
-    protected readonly int LookInputHash = Animator.StringToHash("LookInput");
-    protected readonly int IsMovingHash = Animator.StringToHash("IsMoving");
+    private float lookingAngle;
     public bool IsMoving => stateMachine.InputReceiver.MovementValue.sqrMagnitude > 0f;
 
     public override void Enter()
     {
+        stateMachine.Animator.CrossFadeInFixedTime(MovementHash, 0.1f);
+        stateMachine.InputReceiver.OnWalk?.Invoke(true);
         stateMachine.isMovementState = IsMovementState();
         stateMachine.Animator.SetBool(AimHash, true);
         stateMachine.InputReceiver.DashEvent += OnDash;
+        stateMachine.InputReceiver.AttackEvent += OnAttack;
         stateMachine.InputReceiver.AimEvent += OnAim;
         stateMachine.WeaponHandler.ExtendCannon();
+        stateMachine.OnAim.Invoke(true);
     }
 
     public override void Exit()
     {
+        stateMachine.InputReceiver.OnWalk?.Invoke(false);
         stateMachine.Animator.SetBool(AimHash, false);
         stateMachine.InputReceiver.DashEvent -= OnDash;
         stateMachine.InputReceiver.AttackEvent -= OnAttack;
         stateMachine.InputReceiver.AimEvent -= OnAim;
         stateMachine.WeaponHandler.RetractCannon();
+        stateMachine.OnAim.Invoke(false);
     }
 
     public override void Tick(float deltaTime)
     {
-        stateMachine.InputReceiver.OnWalk?.Invoke(stateMachine.InputReceiver.lookInput);
         stateMachine.InputReceiver.OnMovement?.Invoke(stateMachine.InputReceiver.MovementValue);
-        UpdateFaceDirection();
+        UpdateLookDirection();
         UpdateAnimationData();
+        // Is moving
+        stateMachine.Animator.SetBool(IsMovingHash, stateMachine.InputReceiver.movementInput);
     }
 
     private void OnDash()
@@ -51,7 +59,7 @@ public class PlayerAimingState : State
 
     private void OnAttack()
     {
-        //
+        Debug.Log("Aiming state SHOOT");
     }
 
     private void OnAim(bool enabled)
@@ -69,25 +77,49 @@ public class PlayerAimingState : State
 
     private void UpdateAnimationData()
     {
-        // Look input
-        stateMachine.Animator.SetBool(LookInputHash, stateMachine.InputReceiver.lookInput);
         // Look angle
         float lookAngle = stateMachine.InputReceiver.lookInput ? Quaternion.Angle(stateMachine.transform.rotation, Quaternion.LookRotation(stateMachine.InputReceiver.LookValue)) : 0f;
-        float angleSign = Vector3.Dot(stateMachine.transform.right, stateMachine.InputReceiver.LookValue) > 0 ? 1 : -1;
-        float lookAngleNorm = Math.Clamp(angleSign * lookAngle, -180f, 180f) / 180f;
-        lookAngleNorm = (1 + lookAngleNorm) / 2f;
-        stateMachine.Animator.SetFloat(LookAngleHash, lookAngleNorm, 0.01f, Time.deltaTime);
+        float angleSign = Vector3.Dot(stateMachine.transform.right, stateMachine.InputReceiver.LookValue) > 0f ? 1f : -1f;
+        lookingAngle = angleSign * lookAngle;
+        float lookAngleNorm = Math.Clamp(lookingAngle, -180f, 180f) / 180f;
+        lookAngleNorm = (1f + lookAngleNorm) / 2f;
+        stateMachine.Animator.SetFloat(LookAngleHash, lookAngleNorm, 0.02f, Time.deltaTime);
         // Is moving
-        stateMachine.Animator.SetBool(IsMovingHash, IsMoving);
+        stateMachine.Animator.SetBool(IsMovingHash, stateMachine.InputReceiver.movementInput);
     }
 
-    protected override void TurnL()
+    protected void UpdateLookDirection()
     {
-        stateMachine.Animator.CrossFadeInFixedTime(TurnLHash, 0.05f);
-    }
-
-    protected override void TurnR()
-    {
-        stateMachine.Animator.CrossFadeInFixedTime(TurnRHash, 0.05f);
+        if (stateMachine.InputReceiver.lookInput == false && stateMachine.InputReceiver.movementInput == true)
+        {
+            // Face movement direction
+            Vector3 velocity = stateMachine.InputReceiver.Controller.velocity;
+            velocity.y = 0f;
+            if (velocity.sqrMagnitude > 0.01f)
+            {
+                stateMachine.InputReceiver.OnFaceDirection?.Invoke(velocity.normalized);
+            }
+        }
+        else if (stateMachine.InputReceiver.lookInput == true && stateMachine.InputReceiver.movementInput == true)
+        {
+            // Face look direction
+            stateMachine.InputReceiver.OnFaceDirection?.Invoke(stateMachine.InputReceiver.LookValue);
+        }
+        else if (stateMachine.InputReceiver.lookInput == true && stateMachine.InputReceiver.movementInput == false)
+        {
+            // Face look direction if > 135 degrees from forward
+            if (MathF.Abs(lookingAngle) >= 135f)
+            {
+                stateMachine.gameObject.transform.rotation = Quaternion.LookRotation(stateMachine.InputReceiver.LookValue);
+                if (lookingAngle >= 0f)
+                {
+                    stateMachine.Animator.CrossFadeInFixedTime(TurnRHash, 0.0f);
+                }
+                else
+                {
+                    stateMachine.Animator.CrossFadeInFixedTime(TurnLHash, 0.0f);
+                }
+            }
+        }
     }
 }

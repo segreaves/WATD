@@ -5,40 +5,32 @@ using UnityEngine.Animations.Rigging;
 
 public class RigControl_Aim : MonoBehaviour
 {
-    private RigBuilder rigBuilder;
-    [SerializeField] private GameObject lookRay;
-    [SerializeField] private GameObject lookTarget;
+    [SerializeField] private Rig rig;
     [SerializeField] private GameObject target;
-    [SerializeField] float speedChange = 0.0f;
     private PlayerStateMachine stateMachine;
-    private Vector3 dampingVelocity;
 
     private void Awake()
     {
-        rigBuilder = GetComponent<RigBuilder>();
         stateMachine = GetComponent<PlayerStateMachine>();
+        rig.weight = 0f;
     }
 
     private void Update()
     {
+        Vector3 targetDirection;
         if (stateMachine.InputReceiver.lookInput)
         {
-            lookRay.transform.rotation = Quaternion.LookRotation(stateMachine.InputReceiver.LookValue);
+            targetDirection = stateMachine.InputReceiver.LookValue;
         }
         else
         {
-            lookRay.transform.rotation = Quaternion.LookRotation(gameObject.transform.forward);
+            targetDirection = gameObject.transform.forward;
         }
-        target.transform.position = Vector3.SmoothDamp(target.transform.position, lookTarget.transform.position, ref dampingVelocity, speedChange);
+        target.transform.position = stateMachine.gameObject.transform.position + targetDirection * 5f;
     }
 
-    public void EnableRig()
+    public void SetEnabled(bool value)
     {
-        rigBuilder.enabled = true;
-    }
-
-    public void DisableRig()
-    {
-        rigBuilder.enabled = false;
+        rig.weight = value ? 1f : 0f;
     }
 }

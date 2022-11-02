@@ -16,7 +16,7 @@ public abstract class PlayerMeleeBaseState : State
     public override void Enter()
     {
         stateMachine.isMovementState = IsMovementState();
-        if (stateMachine.WeaponHandler.weaponEnabled == false)
+        if (stateMachine.WeaponHandler.bladeEnabled == false)
         {
             stateMachine.WeaponHandler.ActivateBlade();
         }
@@ -28,7 +28,7 @@ public abstract class PlayerMeleeBaseState : State
 
     public override void Exit()
     {
-        if (stateMachine.WeaponHandler.weaponEnabled == true)
+        if (stateMachine.WeaponHandler.bladeEnabled == true)
         {
             stateMachine.WeaponHandler.DeactivateBlade();
         }

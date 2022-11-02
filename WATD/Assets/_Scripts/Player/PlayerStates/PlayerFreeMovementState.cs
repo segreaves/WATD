@@ -9,16 +9,14 @@ public class PlayerFreeMovementState : State
 
     protected readonly int MovementHash = Animator.StringToHash("Locomotion");
     protected readonly int LookAngleHash = Animator.StringToHash("LookAngle");
+    protected readonly int IsMovingHash = Animator.StringToHash("IsMoving");
     protected readonly int TurnLHash = Animator.StringToHash("TurnL");
     protected readonly int TurnRHash = Animator.StringToHash("TurnR");
-    protected readonly int LookInputHash = Animator.StringToHash("LookInput");
+    private float lookingAngle;
 
     public override void Enter()
     {
-        if (stateMachine.isMovementState == false)
-        {
-            stateMachine.Animator.CrossFadeInFixedTime(MovementHash, 0.2f);
-        }
+        stateMachine.Animator.CrossFadeInFixedTime(MovementHash, 0.1f);
         stateMachine.isMovementState = IsMovementState();
         stateMachine.InputReceiver.AttackEvent += OnAttack;
         stateMachine.InputReceiver.DashEvent += OnDash;
@@ -73,14 +71,15 @@ public class PlayerFreeMovementState : State
 
     private void UpdateAnimationData()
     {
-        // Look input
-        stateMachine.Animator.SetBool(LookInputHash, stateMachine.InputReceiver.lookInput);
         // Look angle
         float lookAngle = stateMachine.InputReceiver.lookInput ? Quaternion.Angle(stateMachine.transform.rotation, Quaternion.LookRotation(stateMachine.InputReceiver.LookValue)) : 0f;
-        float angleSign = Vector3.Dot(stateMachine.transform.right, stateMachine.InputReceiver.LookValue) > 0 ? 1 : -1;
-        float lookAngleNorm = Math.Clamp(angleSign * lookAngle, -180f, 180f) / 180f;
-        lookAngleNorm = (1 + lookAngleNorm) / 2f;
-        stateMachine.Animator.SetFloat(LookAngleHash, lookAngleNorm, 0.025f, Time.deltaTime);
+        float angleSign = Vector3.Dot(stateMachine.transform.right, stateMachine.InputReceiver.LookValue) > 0f ? 1f : -1f;
+        lookingAngle = angleSign * lookAngle;
+        float lookAngleNorm = Math.Clamp(lookingAngle, -180f, 180f) / 180f;
+        lookAngleNorm = (1f + lookAngleNorm) / 2f;
+        stateMachine.Animator.SetFloat(LookAngleHash, lookAngleNorm, 0.02f, Time.deltaTime);
+        // Is moving
+        stateMachine.Animator.SetBool(IsMovingHash, stateMachine.InputReceiver.movementInput);
     }
 
     protected void UpdateLookDirection()
@@ -102,13 +101,11 @@ public class PlayerFreeMovementState : State
         }
         else if (stateMachine.InputReceiver.lookInput == true && stateMachine.InputReceiver.movementInput == false)
         {
-            // Face look direction if > 90 degrees from forward
-            float angle = Quaternion.Angle(stateMachine.transform.rotation, Quaternion.LookRotation(stateMachine.InputReceiver.LookValue));
-            bool right = Vector3.Dot(stateMachine.transform.right, stateMachine.InputReceiver.LookValue) > 0 ? true : false;
-            if (angle >= 135f)
+            // Face look direction if > 135 degrees from forward
+            if (MathF.Abs(lookingAngle) >= 135f)
             {
                 stateMachine.gameObject.transform.rotation = Quaternion.LookRotation(stateMachine.InputReceiver.LookValue);
-                if (right)
+                if (lookingAngle >= 0f)
                 {
                     stateMachine.Animator.CrossFadeInFixedTime(TurnRHash, 0.0f);
                 }
@@ -118,15 +115,5 @@ public class PlayerFreeMovementState : State
                 }
             }
         }
-    }
-
-    protected override void TurnL()
-    {
-        stateMachine.Animator.CrossFadeInFixedTime(TurnLHash, 0.05f);
-    }
-
-    protected override void TurnR()
-    {
-        stateMachine.Animator.CrossFadeInFixedTime(TurnRHash, 0.05f);
     }
 }
