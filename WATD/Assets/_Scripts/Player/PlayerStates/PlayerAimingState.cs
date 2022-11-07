@@ -7,18 +7,21 @@ public class PlayerAimingState : State
 {
     public PlayerAimingState(PlayerStateMachine stateMachine) : base(stateMachine) {}
 
-    protected readonly int MovementHash = Animator.StringToHash("AimLocomotion");
+    protected readonly int MovementHash = Animator.StringToHash("Locomotion");
     protected readonly int AimHash = Animator.StringToHash("Aiming");
-    protected readonly int LookAngleHash = Animator.StringToHash("LookAngle");
-    protected readonly int IsMovingHash = Animator.StringToHash("IsMoving");
     protected readonly int TurnLHash = Animator.StringToHash("TurnL");
     protected readonly int TurnRHash = Animator.StringToHash("TurnR");
-    private float lookingAngle;
     public bool IsMoving => stateMachine.InputReceiver.MovementValue.sqrMagnitude > 0f;
+    protected readonly int IsMovingHash = Animator.StringToHash("IsMoving");
+    protected readonly int LookAngleHash = Animator.StringToHash("LookAngle");
+    public float lookingAngle;
 
     public override void Enter()
     {
-        stateMachine.Animator.CrossFadeInFixedTime(MovementHash, 0.1f);
+        if (stateMachine.isMovementState == false)
+        {
+            stateMachine.Animator.CrossFadeInFixedTime(MovementHash, 0.1f);
+        }
         stateMachine.InputReceiver.OnWalk?.Invoke(true);
         stateMachine.isMovementState = IsMovementState();
         stateMachine.Animator.SetBool(AimHash, true);
@@ -26,7 +29,7 @@ public class PlayerAimingState : State
         stateMachine.InputReceiver.AttackEvent += OnAttack;
         stateMachine.InputReceiver.AimEvent += OnAim;
         //stateMachine.WeaponHandler.ExtendCannon();
-        stateMachine.OnAim.Invoke(true);
+        //stateMachine.OnAim.Invoke(true);
     }
 
     public override void Exit()
@@ -43,10 +46,7 @@ public class PlayerAimingState : State
     public override void Tick(float deltaTime)
     {
         stateMachine.InputReceiver.OnMovement?.Invoke(stateMachine.InputReceiver.MovementValue);
-        UpdateLookDirection();
-        UpdateAnimationData();
-        // Is moving
-        stateMachine.Animator.SetBool(IsMovingHash, stateMachine.InputReceiver.movementInput);
+        UpdateDirection();
     }
 
     private void OnDash()
@@ -75,20 +75,7 @@ public class PlayerAimingState : State
         return true;
     }
 
-    private void UpdateAnimationData()
-    {
-        // Look angle
-        float lookAngle = stateMachine.InputReceiver.lookInput ? Quaternion.Angle(stateMachine.transform.rotation, Quaternion.LookRotation(stateMachine.InputReceiver.LookValue)) : 0f;
-        float angleSign = Vector3.Dot(stateMachine.transform.right, stateMachine.InputReceiver.LookValue) > 0f ? 1f : -1f;
-        lookingAngle = angleSign * lookAngle;
-        float lookAngleNorm = Math.Clamp(lookingAngle, -180f, 180f) / 180f;
-        lookAngleNorm = (1f + lookAngleNorm) / 2f;
-        stateMachine.Animator.SetFloat(LookAngleHash, lookAngleNorm, 0.02f, Time.deltaTime);
-        // Is moving
-        stateMachine.Animator.SetBool(IsMovingHash, stateMachine.InputReceiver.movementInput);
-    }
-
-    protected void UpdateLookDirection()
+    protected void UpdateDirection()
     {
         if (stateMachine.InputReceiver.lookInput == false && stateMachine.InputReceiver.movementInput == true)
         {
@@ -121,5 +108,17 @@ public class PlayerAimingState : State
                 }
             }
         }
+    }
+
+    private void UpdateAnimationData()
+    {
+        float lookAngle = stateMachine.InputReceiver.lookInput ? Quaternion.Angle(stateMachine.transform.rotation, Quaternion.LookRotation(stateMachine.AgentMovement.lastDirection)) : 0f;
+        float angleSign = Vector3.Dot(stateMachine.transform.right, stateMachine.AgentMovement.lastDirection) >= 0f ? 1f : -1f;
+        lookingAngle = angleSign * lookAngle;
+        float lookAngleNorm = Math.Clamp(lookingAngle, -180f, 180f) / 180f;
+        lookAngleNorm = (1f + lookAngleNorm) / 2f;
+        stateMachine.Animator.SetFloat(LookAngleHash, lookAngleNorm, 0.0f, Time.deltaTime);
+        // Is moving
+        stateMachine.Animator.SetBool(IsMovingHash, stateMachine.InputReceiver.movementInput);
     }
 }

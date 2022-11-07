@@ -16,5 +16,5 @@ MonoBehaviour:
   walkSpeed: 2
   acceleration: 50
   deceleration: 50
-  rotationSpeed: 35
+  rotationSpeed: 25
   momentum: 5

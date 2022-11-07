@@ -12,6 +12,7 @@ public class AgentMovement : MonoBehaviour
 
     public CharacterController Controller { get; private set; }
     private float currentVelocity;
+    public Vector3 lastDirection { get; private set; }
     private Quaternion currentRotation;
     private Vector3 currentMotion;
     private ForceReceiver ForceReceiver;
@@ -31,6 +32,11 @@ public class AgentMovement : MonoBehaviour
         Animator = GetComponent<Animator>();
     }
 
+    private void Start()
+    {
+        lastDirection = transform.forward;
+    }
+
     private void Update()
     {
         UpdateAnimationData(Time.deltaTime);
@@ -41,6 +47,7 @@ public class AgentMovement : MonoBehaviour
         if (movement != Vector3.zero)
         {
             currentMotion = movement;
+            lastDirection = transform.forward;
         }
         Controller.Move((currentMotion * CalculateSpeed(movement) + ForceReceiver.Movement) * Time.deltaTime);
     }

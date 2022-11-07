@@ -20,6 +20,7 @@ public partial class PlayerInput : MonoBehaviour, Controls.IPlayerActions, IAgen
     public Vector3 MovementValue { get; private set; }
     public Vector3 LookValue { get; private set; }
     public Transform MainCameraTransform { get; private set; }
+    private Animator Animator;
     public bool dashEnabled = true;
     public bool aimEnabled = true;
     public bool movementInput;
@@ -28,6 +29,7 @@ public partial class PlayerInput : MonoBehaviour, Controls.IPlayerActions, IAgen
     private void Awake()
     {
         Controller = GetComponentInChildren<CharacterController>();
+        Animator = GetComponent<Animator>();
     }
 
     private void Start()
@@ -66,12 +68,13 @@ public partial class PlayerInput : MonoBehaviour, Controls.IPlayerActions, IAgen
         if (lookValueXY.magnitude < 0.75f)
         {
             lookInput = false;
+            LookValue = Vector3.zero;
         }
         else
         {
             lookInput = true;
+            LookValue = CalculateDirection(lookValueXY);
         }
-        LookValue = CalculateDirection(lookValueXY);
     }
 
     public Vector3 CalculateDirection(Vector2 xyValue)
