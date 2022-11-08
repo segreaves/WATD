@@ -9,9 +9,10 @@ public class PlayerFreeMovementState : State
 
     protected readonly int MovementHash = Animator.StringToHash("Locomotion");
     protected readonly int ArmsTuckedHash = Animator.StringToHash("ArmsTuckedIn");
-    protected readonly int IsMovingHash = Animator.StringToHash("IsMoving");
     protected readonly int LookAngleHash = Animator.StringToHash("LookAngle");
     protected readonly int LookOffsetHash = Animator.StringToHash("LookOffset");
+    protected readonly int AimHash = Animator.StringToHash("Aiming");
+    protected readonly int ShootHash = Animator.StringToHash("Shoot");
     private Vector3 desiredDirection;
     private Vector3 lookDelay;
     private Vector3 dampVelocity;
@@ -21,14 +22,12 @@ public class PlayerFreeMovementState : State
         // If aim is pressed then switch immediately to aiming state
         if (stateMachine.InputReceiver.aimEnabled)
         {
-            stateMachine.SwitchState(new PlayerAimingState(stateMachine));
+            OnAim(true);
         }
-        if (stateMachine.isMovementState == false)
-        {
-            stateMachine.Animator.CrossFadeInFixedTime(MovementHash, 0.1f);
-        }
+        stateMachine.Animator.CrossFadeInFixedTime(MovementHash, 0.1f);
         stateMachine.Animator.SetBool(ArmsTuckedHash, true);
-        stateMachine.isMovementState = IsMovementState();
+        stateMachine.AgentMovement.ResetLastDirection(stateMachine.transform.forward);
+        //stateMachine.isMovementState = IsMovementState();
         stateMachine.InputReceiver.AttackEvent += OnAttack;
         stateMachine.InputReceiver.DashEvent += OnDash;
         stateMachine.InputReceiver.AimEvent += OnAim;
@@ -37,6 +36,7 @@ public class PlayerFreeMovementState : State
     public override void Exit()
     {
         stateMachine.Animator.SetBool(ArmsTuckedHash, false);
+        OnAim(false);
         stateMachine.InputReceiver.AttackEvent -= OnAttack;
         stateMachine.InputReceiver.DashEvent -= OnDash;
         stateMachine.InputReceiver.AimEvent -= OnAim;
@@ -44,7 +44,14 @@ public class PlayerFreeMovementState : State
 
     public override void Tick(float deltaTime)
     {
-        stateMachine.InputReceiver.OnWalk?.Invoke(stateMachine.InputReceiver.lookInput);
+        if (stateMachine.InputReceiver.lookInput == true || stateMachine.InputReceiver.aimEnabled == true)
+        {
+            stateMachine.InputReceiver.OnWalk?.Invoke(true);
+        }
+        else
+        {
+            stateMachine.InputReceiver.OnWalk?.Invoke(false);
+        }
         stateMachine.InputReceiver.OnMovement?.Invoke(stateMachine.InputReceiver.MovementValue);
         UpdateDirection();
         UpdateAnimationData();
@@ -60,15 +67,23 @@ public class PlayerFreeMovementState : State
 
     private void OnAttack()
     {
-        stateMachine.SwitchState(new PlayerMeleeEntryState(stateMachine));
+        if (stateMachine.InputReceiver.aimEnabled == true)
+        {
+            stateMachine.Animator.CrossFadeInFixedTime(ShootHash, 0.01f);
+        }
+        else
+        {
+            stateMachine.SwitchState(new PlayerMeleeEntryState(stateMachine));
+        }
     }
 
     private void OnAim(bool enabled)
     {
-        if (enabled == true)
+        stateMachine.Animator.SetBool(AimHash, enabled);
+        /*if (enabled == true)
         {
             stateMachine.SwitchState(new PlayerAimingState(stateMachine));
-        }
+        }*/
     }
 
     protected override bool IsMovementState()
@@ -136,7 +151,5 @@ public class PlayerFreeMovementState : State
             stateMachine.Animator.SetFloat(LookOffsetHash, lookOffset, 0.0f, Time.deltaTime);
             stateMachine.Animator.SetLayerWeight(stateMachine.Animator.GetLayerIndex("Crouch"), lookOffset);
         }
-        // Is moving
-        stateMachine.Animator.SetBool(IsMovingHash, stateMachine.InputReceiver.movementInput);
     }
 }

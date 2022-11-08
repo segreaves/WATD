@@ -17,11 +17,12 @@ public class AgentMovement : MonoBehaviour
     private Vector3 currentMotion;
     private ForceReceiver ForceReceiver;
     private Animator Animator;
+    protected readonly int IsMovingHash = Animator.StringToHash("IsMoving");
     protected readonly int ForwardSpeedHash = Animator.StringToHash("ForwardSpeed");
     protected readonly int RightSpeedHash = Animator.StringToHash("RightSpeed");
     public float CurrentForwardVelocity => Vector3.Dot(Controller.velocity, transform.forward);
     public float CurrentRightVelocity => Vector3.Dot(Controller.velocity, transform.right);
-    public bool IsMoving => Controller.velocity.sqrMagnitude > 0f;
+    public bool IsMoving => Controller.velocity.sqrMagnitude > 0.01f;
     private bool isWalking = false;
 
     
@@ -55,9 +56,11 @@ public class AgentMovement : MonoBehaviour
     protected void UpdateAnimationData(float deltaTime)
     {
         // Forward speed
-        Animator.SetFloat(ForwardSpeedHash, CurrentForwardVelocity, 0.05f, deltaTime);
+        Animator.SetFloat(ForwardSpeedHash, CurrentForwardVelocity, 0.01f, deltaTime);
         // Right speed
-        Animator.SetFloat(RightSpeedHash, CurrentRightVelocity, 0.05f, deltaTime);
+        Animator.SetFloat(RightSpeedHash, CurrentRightVelocity, 0.01f, deltaTime);
+        // Is moving
+        Animator.SetBool(IsMovingHash, IsMoving);
     }
 
     public void Move()
@@ -101,5 +104,10 @@ public class AgentMovement : MonoBehaviour
     public void Walk(bool walk)
     {
         isWalking = walk;
+    }
+
+    public void ResetLastDirection(Vector3 newDirection)
+    {
+        lastDirection = newDirection;
     }
 }

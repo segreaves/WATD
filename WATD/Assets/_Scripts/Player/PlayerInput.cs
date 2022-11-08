@@ -53,13 +53,13 @@ public partial class PlayerInput : MonoBehaviour, Controls.IPlayerActions, IAgen
         if (MovementValueXY.magnitude < 0.1f)
         {
             movementInput = false;
-            MovementValueXY = Vector2.zero;
+            MovementValue = Vector3.zero;
         }
         else
         {
             movementInput = true;
+            MovementValue = CalculateDirection(MovementValueXY);
         }
-        MovementValue = CalculateDirection(MovementValueXY);
     }
 
     public void OnLook(InputAction.CallbackContext context)
