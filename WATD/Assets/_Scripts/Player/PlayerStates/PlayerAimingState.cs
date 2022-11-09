@@ -18,12 +18,7 @@ public class PlayerAimingState : State
 
     public override void Enter()
     {
-        if (stateMachine.isMovementState == false)
-        {
-            stateMachine.Animator.CrossFadeInFixedTime(MovementHash, 0.1f);
-        }
         stateMachine.InputReceiver.OnWalk?.Invoke(true);
-        stateMachine.isMovementState = IsMovementState();
         stateMachine.Animator.SetBool(AimHash, true);
         stateMachine.InputReceiver.DashEvent += OnDash;
         stateMachine.InputReceiver.AttackEvent += OnAttack;
@@ -68,11 +63,6 @@ public class PlayerAimingState : State
         {
             stateMachine.SwitchState(new PlayerFreeMovementState(stateMachine));
         }
-    }
-
-    protected override bool IsMovementState()
-    {
-        return true;
     }
 
     protected void UpdateDirection()

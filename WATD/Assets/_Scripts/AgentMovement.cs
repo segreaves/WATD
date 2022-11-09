@@ -17,7 +17,6 @@ public class AgentMovement : MonoBehaviour
     private Vector3 currentMotion;
     private ForceReceiver ForceReceiver;
     private Animator Animator;
-    protected readonly int IsMovingHash = Animator.StringToHash("IsMoving");
     protected readonly int ForwardSpeedHash = Animator.StringToHash("ForwardSpeed");
     protected readonly int RightSpeedHash = Animator.StringToHash("RightSpeed");
     public float CurrentForwardVelocity => Vector3.Dot(Controller.velocity, transform.forward);
@@ -59,8 +58,6 @@ public class AgentMovement : MonoBehaviour
         Animator.SetFloat(ForwardSpeedHash, CurrentForwardVelocity, 0.01f, deltaTime);
         // Right speed
         Animator.SetFloat(RightSpeedHash, CurrentRightVelocity, 0.01f, deltaTime);
-        // Is moving
-        Animator.SetBool(IsMovingHash, IsMoving);
     }
 
     public void Move()

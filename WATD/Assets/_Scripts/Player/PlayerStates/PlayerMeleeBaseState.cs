@@ -15,7 +15,6 @@ public abstract class PlayerMeleeBaseState : State
 
     public override void Enter()
     {
-        stateMachine.isMovementState = IsMovementState();
         if (stateMachine.WeaponHandler.bladeEnabled == false)
         {
             stateMachine.WeaponHandler.ActivateBlade();

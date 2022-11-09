@@ -8,6 +8,7 @@ public class PlayerFreeMovementState : State
     public PlayerFreeMovementState(PlayerStateMachine stateMachine) : base(stateMachine) {}
 
     protected readonly int MovementHash = Animator.StringToHash("Locomotion");
+    protected readonly int IsMovingHash = Animator.StringToHash("IsMoving");
     protected readonly int ArmsTuckedHash = Animator.StringToHash("ArmsTuckedIn");
     protected readonly int LookAngleHash = Animator.StringToHash("LookAngle");
     protected readonly int LookOffsetHash = Animator.StringToHash("LookOffset");
@@ -24,10 +25,8 @@ public class PlayerFreeMovementState : State
         {
             OnAim(true);
         }
-        stateMachine.Animator.CrossFadeInFixedTime(MovementHash, 0.1f);
         stateMachine.Animator.SetBool(ArmsTuckedHash, true);
         stateMachine.AgentMovement.ResetLastDirection(stateMachine.transform.forward);
-        //stateMachine.isMovementState = IsMovementState();
         stateMachine.InputReceiver.AttackEvent += OnAttack;
         stateMachine.InputReceiver.DashEvent += OnDash;
         stateMachine.InputReceiver.AimEvent += OnAim;
@@ -84,11 +83,6 @@ public class PlayerFreeMovementState : State
         {
             stateMachine.SwitchState(new PlayerAimingState(stateMachine));
         }*/
-    }
-
-    protected override bool IsMovementState()
-    {
-        return true;
     }
 
     protected void UpdateDirection()
@@ -155,5 +149,7 @@ public class PlayerFreeMovementState : State
             stateMachine.Animator.SetFloat(LookOffsetHash, lookOffset, 0.0f, Time.deltaTime);
             stateMachine.Animator.SetLayerWeight(stateMachine.Animator.GetLayerIndex("Crouch"), lookOffset);
         }
+        // Is moving
+        stateMachine.Animator.SetBool(IsMovingHash, stateMachine.InputReceiver.movementInput);
     }
 }

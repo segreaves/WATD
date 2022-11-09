@@ -17,7 +17,6 @@ public class PlayerStateMachine : StateMachine, IHittable
     public ForceReceiver ForceReceiver { get; private set; }
     public AgentMovement AgentMovement { get; private set; }
     public Animator Animator { get; private set; }
-    public bool isMovementState;
 
     private void Awake()
     {
