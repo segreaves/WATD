@@ -95,7 +95,7 @@ public class PlayerFreeMovementState : State
     {
         if (stateMachine.InputReceiver.movementInput == true)
         {
-            // If is moving
+            // Is moving
             if (stateMachine.InputReceiver.lookInput == true)
             {
                 // Look towards look input
@@ -114,7 +114,7 @@ public class PlayerFreeMovementState : State
         }
         else
         {
-            // If is moving
+            // Is not moving
             if (stateMachine.InputReceiver.lookInput == true)
             {
                 // Look towards look input
@@ -137,7 +137,11 @@ public class PlayerFreeMovementState : State
         {
             lookAngle = (360f - Math.Clamp(lookAngle, 0f, 180f)) / 360f;
         }
-        stateMachine.Animator.SetFloat(LookAngleHash, lookAngle, 0.0f, Time.deltaTime);
+        // Update look angle if not moving
+        if (stateMachine.InputReceiver.movementInput == false)
+        {
+            stateMachine.Animator.SetFloat(LookAngleHash, lookAngle, 0.0f, Time.deltaTime);
+        }
         // Look offset
         lookDelay = Vector3.SmoothDamp(lookDelay, stateMachine.transform.forward, ref dampVelocity, 0.2f);
         if (stateMachine.InputReceiver.movementInput == true)
