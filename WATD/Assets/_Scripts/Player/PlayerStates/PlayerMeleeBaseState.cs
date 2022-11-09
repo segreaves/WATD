@@ -6,31 +6,26 @@ public abstract class PlayerMeleeBaseState : State
 {
     public PlayerMeleeBaseState(PlayerStateMachine stateMachine) : base(stateMachine) {}
 
+    protected readonly int MovementHash = Animator.StringToHash("Locomotion");
     protected bool isListeningForEvents = false;
     protected bool shouldCombo = false;
     protected bool shouldDash = false;
     protected int attackIndex;
-    protected BladeSO currentWeaponData;
+    protected MeleeWeaponSO currentWeaponData;
     protected float attackTimer;
 
     public override void Enter()
     {
-        if (stateMachine.WeaponHandler.bladeEnabled == false)
-        {
-            stateMachine.WeaponHandler.ActivateBlade();
-        }
-        attackIndex = stateMachine.WeaponHandler.attackIndex;
-        stateMachine.WeaponHandler.IncrementAttackIndex();
-        currentWeaponData = stateMachine.WeaponHandler.currentBlade.bladeData;
+        stateMachine.MeleeWeaponHandler.AttachToHand();
+        attackIndex = stateMachine.MeleeWeaponHandler.attackIndex;
+        stateMachine.MeleeWeaponHandler.IncrementAttackIndex();
+        currentWeaponData = stateMachine.MeleeWeaponHandler.currentWeapon.weaponData;
         stateMachine.Animator.CrossFadeInFixedTime(currentWeaponData.AttackAnimations[attackIndex], 0.1f);
     }
 
     public override void Exit()
     {
-        if (stateMachine.WeaponHandler.bladeEnabled == true)
-        {
-            stateMachine.WeaponHandler.DeactivateBlade();
-        }
+        stateMachine.MeleeWeaponHandler.AttachToHolster();
         stateMachine.InputReceiver.AttackEvent -= OnAttack;
         stateMachine.InputReceiver.DashEvent -= OnDash;
     }
@@ -73,11 +68,13 @@ public abstract class PlayerMeleeBaseState : State
         if (attackTimer > currentWeaponData.AttackDuration + currentWeaponData.Cooldown && stateMachine.InputReceiver.MovementValue.magnitude > 0.1f)
         {
             stateMachine.SwitchState(new PlayerFreeMovementState(stateMachine));
+            stateMachine.Animator.CrossFadeInFixedTime(MovementHash, 0.1f);
         }
         // Exit if animation has finished
         if (GetAttackNormalizedTime() >= 1f)
         {
             stateMachine.SwitchState(new PlayerFreeMovementState(stateMachine));
+            stateMachine.Animator.CrossFadeInFixedTime(MovementHash, 0.1f);
         }
     }
 

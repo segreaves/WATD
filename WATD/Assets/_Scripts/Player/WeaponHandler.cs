@@ -5,9 +5,9 @@ using UnityEngine;
 public class WeaponHandler : MonoBehaviour
 {
     [field: SerializeField] private LayerMask damageLayer;
-    [field: SerializeField] private List<Blade> Blades;
+    [field: SerializeField] private List<MeleeWeapon> Blades;
     [field: SerializeField] private List<Projectile> Projectiles;
-    [field: SerializeField] public Blade currentBlade { get; private set; }
+    [field: SerializeField] public MeleeWeapon currentBlade { get; private set; }
     [field: SerializeField] public AnimationCurve WeaponExtendCurve { get; private set; }
     [SerializeField] private GameObject Weapon;
     [SerializeField] private GameObject handObject;
@@ -43,13 +43,13 @@ public class WeaponHandler : MonoBehaviour
             {
                 float curveValue = WeaponExtendCurve.Evaluate((1 - weaponExtendTimer) / transitionDuration);
                 if (curveValue > 0.95f) curveValue = 1f;
-                currentBlade.model.transform.localScale = targetDimensions * curveValue;
+                currentBlade.body.transform.localScale = targetDimensions * curveValue;
             }
             else
             {
                 float curveValue = WeaponExtendCurve.Evaluate(weaponExtendTimer / transitionDuration);
                 if (curveValue < 0.05f) curveValue = 1f;
-                currentBlade.model.transform.localScale = targetDimensions * curveValue;
+                currentBlade.body.transform.localScale = targetDimensions * curveValue;
             }
             weaponExtendTimer -= Time.deltaTime;
         }
@@ -62,9 +62,9 @@ public class WeaponHandler : MonoBehaviour
         if (index < 0 || index >= Blades.Count) { return; }
         currentBlade = Blades[index];
         // Set weapon dimensions
-        targetDimensions.x = currentBlade.bladeData.xDim;
-        targetDimensions.y = currentBlade.bladeData.yDim;
-        targetDimensions.z = currentBlade.bladeData.zDim;
+        targetDimensions.x = currentBlade.weaponData.xDim;
+        targetDimensions.y = currentBlade.weaponData.yDim;
+        targetDimensions.z = currentBlade.weaponData.zDim;
         Holster();
     }
 
@@ -85,14 +85,14 @@ public class WeaponHandler : MonoBehaviour
     IEnumerator EActivateBlade()
     {
         bladeEnabled = true;
-        currentBlade.model.transform.localScale = Vector3.zero;
-        currentBlade.model.SetActive(true);
+        currentBlade.body.transform.localScale = Vector3.zero;
+        currentBlade.body.SetActive(true);
         weaponExtendTimer = transitionDuration;
         Draw();
         yield return new WaitForSeconds(transitionDuration);
         if (bladeEnabled == true)
         {
-            currentBlade.model.transform.localScale = targetDimensions;
+            currentBlade.body.transform.localScale = targetDimensions;
         }
     }
 
@@ -107,8 +107,8 @@ public class WeaponHandler : MonoBehaviour
             }
         if (bladeEnabled == false)
         {
-            currentBlade.model.SetActive(false);
-            currentBlade.model.transform.localScale = Vector3.zero;
+            currentBlade.body.SetActive(false);
+            currentBlade.body.transform.localScale = Vector3.zero;
         }
     }
 
@@ -158,7 +158,7 @@ public class WeaponHandler : MonoBehaviour
 
     public void IncrementAttackIndex()
     {
-        if (attackIndex < currentBlade.bladeData.AttackAnimations.Count - 1)
+        if (attackIndex < currentBlade.weaponData.AttackAnimations.Count - 1)
         {
             attackIndex++;
         }
@@ -171,23 +171,23 @@ public class WeaponHandler : MonoBehaviour
     public void DamageFrame()
     {
         // Instantiate capsule collider in front of player with characteristics from the blade damage info
-        Collider[] collisions = Physics.OverlapCapsule(GetDamageCapsuleStart(), GetDamageCapsuleEnd(), currentBlade.bladeData.HitCapsuleRadius, damageLayer);
+        Collider[] collisions = Physics.OverlapCapsule(GetDamageCapsuleStart(), GetDamageCapsuleEnd(), currentBlade.weaponData.HitCapsuleRadius, damageLayer);
         foreach (Collider collision in collisions)
         {
             var damageable = collision.GetComponent<IHittable>();
             if (damageable == null) { return; }
-            damageable.GetHit(currentBlade.bladeData.Damage, gameObject);
+            damageable.GetHit(currentBlade.weaponData.Damage, gameObject);
         }
     }
 
     private Vector3 GetDamageCapsuleStart()
     {
-        return transform.position + currentBlade.bladeData.HitCapsuleForwardOffset * transform.forward;
+        return transform.position + currentBlade.weaponData.HitCapsuleForwardOffset * transform.forward;
     }
 
     private Vector3 GetDamageCapsuleEnd()
     {
-        return transform.position + (currentBlade.bladeData.HitCapsuleForwardOffset + (currentBlade.bladeData.HitCapsuleHeight - 1f)) * transform.forward;
+        return transform.position + (currentBlade.weaponData.HitCapsuleForwardOffset + (currentBlade.weaponData.HitCapsuleHeight - 1f)) * transform.forward;
     }
 
     private void OnDrawGizmosSelected()
@@ -196,8 +196,8 @@ public class WeaponHandler : MonoBehaviour
         if (Application.isPlaying)
         {
             Gizmos.color = Color.red;
-            Gizmos.DrawWireSphere(GetDamageCapsuleStart(), currentBlade.bladeData.HitCapsuleRadius);
-            Gizmos.DrawWireSphere(GetDamageCapsuleEnd(), currentBlade.bladeData.HitCapsuleRadius);
+            Gizmos.DrawWireSphere(GetDamageCapsuleStart(), currentBlade.weaponData.HitCapsuleRadius);
+            Gizmos.DrawWireSphere(GetDamageCapsuleEnd(), currentBlade.weaponData.HitCapsuleRadius);
         }
     }
 }

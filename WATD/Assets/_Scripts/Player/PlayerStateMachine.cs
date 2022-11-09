@@ -12,7 +12,7 @@ public class PlayerStateMachine : StateMachine, IHittable
     [field: SerializeField] public UnityEvent<bool> OnAim { get; set; }
     [field: SerializeField] public UnityEvent OnGetHit { get; set; }
     [field: SerializeField] public UnityEvent OnDie { get; set; }
-    [field: SerializeField] public WeaponHandler WeaponHandler;
+    [field: SerializeField] public MeleeWeaponHandler MeleeWeaponHandler;
     
     public ForceReceiver ForceReceiver { get; private set; }
     public AgentMovement AgentMovement { get; private set; }
@@ -23,7 +23,7 @@ public class PlayerStateMachine : StateMachine, IHittable
         ForceReceiver = GetComponent<ForceReceiver>();
         AgentMovement = GetComponent<AgentMovement>();
         Animator = GetComponent<Animator>();
-        WeaponHandler = GetComponent<WeaponHandler>();
+        MeleeWeaponHandler = GetComponent<MeleeWeaponHandler>();
         Health = GetComponent<Health>();
         Health.maxHealth = PlayerData.MaxHealth;
     }

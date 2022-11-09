@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Weapons/Melee")]
-public class BladeSO : ScriptableObject
+public class MeleeWeaponSO : ScriptableObject
 {
     [field: SerializeField] public List<string> AttackAnimations;
     [field: SerializeField] [Range(1, 100)] public int Damage = 1;
