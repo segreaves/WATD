@@ -40,6 +40,10 @@ public class AgentMovement : MonoBehaviour
     private void Update()
     {
         UpdateAnimationData(Time.deltaTime);
+        if (Controller.velocity.sqrMagnitude > 0.0001f)
+        {
+            lastDirection = transform.forward;
+        }
     }
 
     public void Move(Vector3 movement)
@@ -47,7 +51,6 @@ public class AgentMovement : MonoBehaviour
         if (movement != Vector3.zero)
         {
             currentMotion = movement;
-            lastDirection = transform.forward;
         }
         Controller.Move((currentMotion * CalculateSpeed(movement) + ForceReceiver.Movement) * Time.deltaTime);
     }

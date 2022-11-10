@@ -5,7 +5,7 @@ using UnityEngine;
 public class RangedWeaponHandler : MonoBehaviour
 {
     [field: SerializeField] private List<RangedWeapon> RangedWeapons;
-    [field: SerializeField] public RangedWeapon currentWeapon { get; private set; }
+    [field: SerializeField] public RangedWeapon currentRanged { get; private set; }
 
     void Start()
     {
@@ -17,17 +17,17 @@ public class RangedWeaponHandler : MonoBehaviour
         // Set all weapon data from array index into current weapon
         if (RangedWeapons == null) { return; }
         if (index < 0 || index >= RangedWeapons.Count) { return; }
-        currentWeapon = RangedWeapons[index];
+        currentRanged = RangedWeapons[index];
         AttachToHolster();
     }
 
     public void AttachToHand()
     {
-        currentWeapon.body.transform.SetParent(currentWeapon.hand.transform, false);
+        currentRanged.body.transform.SetParent(currentRanged.hand.transform, false);
     }
 
     public void AttachToHolster()
     {
-        currentWeapon.body.transform.SetParent(currentWeapon.holster.transform, false);
+        currentRanged.body.transform.SetParent(currentRanged.holster.transform, false);
     }
 }

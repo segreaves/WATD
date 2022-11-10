@@ -6,7 +6,7 @@ public class MeleeWeaponHandler : MonoBehaviour
 {
     [field: SerializeField] private LayerMask damageLayer;
     [field: SerializeField] private List<MeleeWeapon> MeleeWeapons;
-    [field: SerializeField] public MeleeWeapon currentWeapon { get; private set; }
+    [field: SerializeField] public MeleeWeapon currentMelee { get; private set; }
     public int attackIndex { get; private set; }
     [SerializeField] private bool showGizmos = true;
 
@@ -20,23 +20,23 @@ public class MeleeWeaponHandler : MonoBehaviour
         // Set all weapon data from array index into current weapon
         if (MeleeWeapons == null) { return; }
         if (index < 0 || index >= MeleeWeapons.Count) { return; }
-        currentWeapon = MeleeWeapons[index];
+        currentMelee = MeleeWeapons[index];
         AttachToHolster();
     }
 
     public void AttachToHand()
     {
-        currentWeapon.body.transform.SetParent(currentWeapon.hand.transform, false);
+        currentMelee.body.transform.SetParent(currentMelee.hand.transform, false);
     }
 
     public void AttachToHolster()
     {
-        currentWeapon.body.transform.SetParent(currentWeapon.holster.transform, false);
+        currentMelee.body.transform.SetParent(currentMelee.holster.transform, false);
     }
 
     public void IncrementAttackIndex()
     {
-        if (attackIndex < currentWeapon.weaponData.AttackAnimations.Count - 1)
+        if (attackIndex < currentMelee.weaponData.AttackAnimations.Count - 1)
         {
             attackIndex++;
         }
@@ -49,23 +49,23 @@ public class MeleeWeaponHandler : MonoBehaviour
     public void DamageFrame()
     {
         // Instantiate capsule collider in front of player with characteristics from the weapon damage info
-        Collider[] collisions = Physics.OverlapCapsule(GetDamageCapsuleStart(), GetDamageCapsuleEnd(), currentWeapon.weaponData.HitCapsuleRadius, damageLayer);
+        Collider[] collisions = Physics.OverlapCapsule(GetDamageCapsuleStart(), GetDamageCapsuleEnd(), currentMelee.weaponData.HitCapsuleRadius, damageLayer);
         foreach (Collider collision in collisions)
         {
             var damageable = collision.GetComponent<IHittable>();
             if (damageable == null) { return; }
-            damageable.GetHit(currentWeapon.weaponData.Damage, gameObject);
+            damageable.GetHit(currentMelee.weaponData.Damage, gameObject);
         }
     }
 
     private Vector3 GetDamageCapsuleStart()
     {
-        return transform.position + currentWeapon.weaponData.HitCapsuleForwardOffset * transform.forward;
+        return transform.position + currentMelee.weaponData.HitCapsuleForwardOffset * transform.forward;
     }
 
     private Vector3 GetDamageCapsuleEnd()
     {
-        return transform.position + (currentWeapon.weaponData.HitCapsuleForwardOffset + (currentWeapon.weaponData.HitCapsuleHeight - 1f)) * transform.forward;
+        return transform.position + (currentMelee.weaponData.HitCapsuleForwardOffset + (currentMelee.weaponData.HitCapsuleHeight - 1f)) * transform.forward;
     }
 
     private void OnDrawGizmosSelected()
@@ -74,8 +74,8 @@ public class MeleeWeaponHandler : MonoBehaviour
         if (Application.isPlaying)
         {
             Gizmos.color = Color.red;
-            Gizmos.DrawWireSphere(GetDamageCapsuleStart(), currentWeapon.weaponData.HitCapsuleRadius);
-            Gizmos.DrawWireSphere(GetDamageCapsuleEnd(), currentWeapon.weaponData.HitCapsuleRadius);
+            Gizmos.DrawWireSphere(GetDamageCapsuleStart(), currentMelee.weaponData.HitCapsuleRadius);
+            Gizmos.DrawWireSphere(GetDamageCapsuleEnd(), currentMelee.weaponData.HitCapsuleRadius);
         }
     }
 }
