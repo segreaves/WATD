@@ -383,7 +383,7 @@ AnimatorStateMachine:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Look
+  m_Name: Torso
   m_ChildStates:
   - serializedVersion: 1
     m_State: {fileID: 1952522585016717126}
@@ -465,49 +465,49 @@ AnimatorController:
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: RightSpeed
     m_Type: 1
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: Aiming
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: LookAngle
     m_Type: 1
-    m_DefaultFloat: 0
+    m_DefaultFloat: 0.5
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: IsMoving
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: ArmsTuckedIn
     m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: LookOffset
     m_Type: 1
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: FacingAngle
     m_Type: 1
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   m_AnimatorLayers:
   - serializedVersion: 5
     m_Name: Base Layer
@@ -522,9 +522,9 @@ AnimatorController:
     m_SyncedLayerAffectsTiming: 0
     m_Controller: {fileID: 9100000}
   - serializedVersion: 5
-    m_Name: Look
-    m_StateMachine: {fileID: -2001791132769793300}
-    m_Mask: {fileID: 31900000, guid: 4413f33bf2ce5b349b5a4bbfb3fb2e56, type: 2}
+    m_Name: Arms
+    m_StateMachine: {fileID: 7850544923242524042}
+    m_Mask: {fileID: 31900000, guid: 5381d382ebcb0a04f956563c5a550555, type: 2}
     m_Motions: []
     m_Behaviours: []
     m_BlendingMode: 0
@@ -534,9 +534,9 @@ AnimatorController:
     m_SyncedLayerAffectsTiming: 0
     m_Controller: {fileID: 9100000}
   - serializedVersion: 5
-    m_Name: Arms
-    m_StateMachine: {fileID: 7850544923242524042}
-    m_Mask: {fileID: 31900000, guid: 5381d382ebcb0a04f956563c5a550555, type: 2}
+    m_Name: Torso
+    m_StateMachine: {fileID: -2001791132769793300}
+    m_Mask: {fileID: 31900000, guid: 4413f33bf2ce5b349b5a4bbfb3fb2e56, type: 2}
     m_Motions: []
     m_Behaviours: []
     m_BlendingMode: 0

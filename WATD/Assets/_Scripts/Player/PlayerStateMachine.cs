@@ -17,6 +17,7 @@ public class PlayerStateMachine : StateMachine, IHittable
     public ForceReceiver ForceReceiver { get; private set; }
     public AgentMovement AgentMovement { get; private set; }
     public Animator Animator { get; private set; }
+    public LookIKControl lookIKControl { get; private set; }
 
     private void Awake()
     {
@@ -27,6 +28,7 @@ public class PlayerStateMachine : StateMachine, IHittable
         RangedWeaponHandler = GetComponent<RangedWeaponHandler>();
         Health = GetComponent<Health>();
         Health.maxHealth = PlayerData.MaxHealth;
+        lookIKControl = GetComponent<LookIKControl>();
     }
 
     private void Start()

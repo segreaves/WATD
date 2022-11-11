@@ -11,6 +11,7 @@ public partial class PlayerInput : MonoBehaviour, Controls.IPlayerActions, IAgen
 
     public CharacterController Controller;
     [field: SerializeField] public UnityEvent<Vector3> OnMovement { get; set; }
+    [field: SerializeField] public UnityEvent<Vector3> OnLookAt { get; set; }
     [field: SerializeField] public UnityEvent<Vector3> OnFaceDirection { get; set; }
     [field: SerializeField] public UnityEvent<Vector3, float> OnRotateTowards { get; set; }
     [field: SerializeField] public UnityEvent<bool> OnWalk { get; set; }

@@ -16,6 +16,7 @@ public class PlayerFreeMovementState : State
     private Vector3 facingDirection;
     private Vector3 lookDelay;
     private Vector3 dampVelocity;
+    private float lookAngle;
 
     public override void Enter()
     {
@@ -29,6 +30,7 @@ public class PlayerFreeMovementState : State
         stateMachine.InputReceiver.DashEvent += OnDash;
         stateMachine.InputReceiver.AimEvent += OnAim;
         facingDirection = stateMachine.AgentMovement.lastDirection;
+        stateMachine.lookIKControl.StartLooking();
     }
 
     public override void Exit()
@@ -37,6 +39,7 @@ public class PlayerFreeMovementState : State
         stateMachine.InputReceiver.AttackEvent -= OnAttack;
         stateMachine.InputReceiver.DashEvent -= OnDash;
         stateMachine.InputReceiver.AimEvent -= OnAim;
+        stateMachine.lookIKControl.StopLooking();
     }
 
     public override void Tick(float deltaTime)
@@ -44,6 +47,15 @@ public class PlayerFreeMovementState : State
         stateMachine.InputReceiver.OnMovement?.Invoke(stateMachine.InputReceiver.MovementValue);
         UpdateAnimationData();
         UpdateDirection();
+        //stateMachine.InputReceiver.OnWalk.Invoke(stateMachine.InputReceiver.lookInput);
+        if (stateMachine.InputReceiver.lookInput == true && lookAngle <= 135f)
+        {
+            stateMachine.InputReceiver.OnLookAt.Invoke(stateMachine.transform.position + Vector3.up * 0.5f + stateMachine.InputReceiver.LookValue.normalized * 2f);
+        }
+        else
+        {
+            stateMachine.InputReceiver.OnLookAt.Invoke(stateMachine.transform.position + Vector3.up * 0.5f + stateMachine.transform.forward * 2f);
+        }
     }
 
     private void OnDash()
@@ -71,21 +83,12 @@ public class PlayerFreeMovementState : State
     {
         if (stateMachine.InputReceiver.movementInput == true)
         {
-            // Is moving
-            if (stateMachine.InputReceiver.lookInput == true)
+            // Look towards movement velocity
+            Vector3 velocity = stateMachine.InputReceiver.Controller.velocity;
+            velocity.y = 0f;
+            if (velocity.sqrMagnitude > 0.01f)
             {
-                // Look towards look input
-                facingDirection = stateMachine.InputReceiver.LookValue;
-            }
-            else
-            {
-                // Look towards movement velocity
-                Vector3 velocity = stateMachine.InputReceiver.Controller.velocity;
-                velocity.y = 0f;
-                if (velocity.sqrMagnitude > 0.01f)
-                {
-                    facingDirection = velocity.normalized;
-                }
+                facingDirection = velocity.normalized;
             }
             stateMachine.InputReceiver.OnFaceDirection?.Invoke(facingDirection);
         }
@@ -134,12 +137,12 @@ public class PlayerFreeMovementState : State
         }
 
         // Look angle
-        float lookAngle = Vector3.Angle(stateMachine.transform.forward, stateMachine.InputReceiver.LookValue);
+        lookAngle = Vector3.Angle(stateMachine.transform.forward, stateMachine.InputReceiver.LookValue);
         float lookAngleSign = Vector3.Dot(stateMachine.transform.right, stateMachine.InputReceiver.LookValue) >= 0f ? 1f : -1f;
-        lookAngle = 0.5f + lookAngleSign * Math.Clamp(lookAngle, 0f, 180f) / 360f;
-        stateMachine.Animator.SetFloat(LookAngleHash, lookAngle, 0.1f, Time.deltaTime);
+        float updatelookAngle = 0.5f + lookAngleSign * Math.Clamp(lookAngle, 0f, 180f) / 360f;
+        stateMachine.Animator.SetFloat(LookAngleHash, updatelookAngle, 0.025f, Time.deltaTime);
         // Set weight of torso/head layer
-        stateMachine.Animator.SetLayerWeight(stateMachine.Animator.GetLayerIndex("Look"), 1f - Mathf.Clamp01(stateMachine.InputReceiver.MovementValue.sqrMagnitude));
+        stateMachine.Animator.SetLayerWeight(stateMachine.Animator.GetLayerIndex("Torso"), 1f - Mathf.Clamp01(stateMachine.InputReceiver.MovementValue.sqrMagnitude));
         // Look offset
         /*lookDelay = Vector3.SmoothDamp(lookDelay, stateMachine.transform.forward, ref dampVelocity, 0.2f);
         if (stateMachine.InputReceiver.movementInput == true)
