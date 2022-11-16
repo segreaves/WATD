@@ -6,7 +6,6 @@ public abstract class PlayerMeleeBaseState : State
 {
     public PlayerMeleeBaseState(PlayerStateMachine stateMachine) : base(stateMachine) {}
 
-    protected readonly int MovementHash = Animator.StringToHash("Locomotion");
     protected bool isListeningForEvents = false;
     protected bool shouldCombo = false;
     protected bool shouldDash = false;
@@ -68,13 +67,11 @@ public abstract class PlayerMeleeBaseState : State
         if (attackTimer > currentWeaponData.AttackDuration + currentWeaponData.Cooldown && stateMachine.InputReceiver.MovementValue.magnitude > 0.1f)
         {
             stateMachine.SwitchState(new PlayerFreeMovementState(stateMachine));
-            stateMachine.Animator.CrossFadeInFixedTime(MovementHash, 0.1f);
         }
         // Exit if animation has finished
         if (GetAttackNormalizedTime() >= 1f)
         {
             stateMachine.SwitchState(new PlayerFreeMovementState(stateMachine));
-            stateMachine.Animator.CrossFadeInFixedTime(MovementHash, 0.1f);
         }
     }
 

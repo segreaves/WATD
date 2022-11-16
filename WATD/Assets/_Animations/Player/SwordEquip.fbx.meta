@@ -1,11 +1,11 @@
 fileFormatVersion: 2
-guid: fe0537645560714419d33aeed6b32a8e
+guid: 443453da031d48242a9af4638cabe255
 ModelImporter:
   serializedVersion: 21300
   internalIDToNameTable:
   - first:
-      74: -7813635296899823279
-    second: Crouch
+      74: -8096416107454928883
+    second: SwordEquip
   externalObjects: {}
   materials:
     materialImportMode: 2
@@ -36,26 +36,26 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Crouch
-      takeName: Crouch
+      name: SwordEquip
+      takeName: SwordEquip
       internalID: 0
       firstFrame: 0
-      lastFrame: 1
+      lastFrame: 20
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
       loop: 0
-      hasAdditiveReferencePose: 1
+      hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
-      loopBlendOrientation: 0
-      loopBlendPositionY: 1
+      loopBlendOrientation: 1
+      loopBlendPositionY: 0
       loopBlendPositionXZ: 0
-      keepOriginalOrientation: 0
-      keepOriginalPositionY: 0
+      keepOriginalOrientation: 1
+      keepOriginalPositionY: 1
       keepOriginalPositionXZ: 0
-      heightFromFeet: 1
+      heightFromFeet: 0
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []

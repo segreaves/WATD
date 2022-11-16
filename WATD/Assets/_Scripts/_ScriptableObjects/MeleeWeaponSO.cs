@@ -5,6 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Weapons/Melee")]
 public class MeleeWeaponSO : ScriptableObject
 {
+    [field: SerializeField] public string WeaponName;
     [field: SerializeField] public List<string> AttackAnimations;
     [field: SerializeField] [Range(1, 100)] public int Damage = 1;
     [field: SerializeField] [Range(0.1f, 0.5f)] public float ComboStartTime = 0.1f;

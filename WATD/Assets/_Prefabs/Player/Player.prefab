@@ -23,15 +23,15 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1996148860414538479}
-  m_LocalRotation: {x: 0.00000009313218, y: -0.0000000302794, z: 0.97269547, w: 0.23208529}
-  m_LocalPosition: {x: 0.207, y: 0.35, z: -0.175}
+  m_LocalRotation: {x: 0.05298333, y: -0.060555425, z: 0.9502611, w: 0.30088153}
+  m_LocalPosition: {x: 0.202, y: 0.359, z: -0.185}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5876580893919245909}
   m_Father: {fileID: 3831826508838837027}
   m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 153.16}
+  m_LocalEulerAnglesHint: {x: 8.451, y: 3.725, z: 145.137}
 --- !u!1 &3831826507396700408
 GameObject:
   m_ObjectHideFlags: 0
@@ -50,6 +50,8 @@ GameObject:
   - component: {fileID: 3831826507396700385}
   - component: {fileID: 1958510825}
   - component: {fileID: 1202187256573972337}
+  - component: {fileID: 966226548}
+  - component: {fileID: 966226558}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -89,9 +91,6 @@ MonoBehaviour:
   <PlayerData>k__BackingField: {fileID: 11400000, guid: 3c7bfffd6d0c43044aaf14ff6d47bb44,
     type: 2}
   <Health>k__BackingField: {fileID: 4260993064750142790}
-  <OnAim>k__BackingField:
-    m_PersistentCalls:
-      m_Calls: []
   <OnGetHit>k__BackingField:
     m_PersistentCalls:
       m_Calls: []
@@ -99,6 +98,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   MeleeWeaponHandler: {fileID: 0}
+  RangedWeaponHandler: {fileID: 0}
 --- !u!143 &3831826507396700390
 CharacterController:
   m_ObjectHideFlags: 0
@@ -165,6 +165,21 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  <OnLookAt>k__BackingField:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 966226548}
+        m_TargetAssemblyTypeName: LookIKControl, Assembly-CSharp
+        m_MethodName: LookAt
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   <OnFaceDirection>k__BackingField:
     m_PersistentCalls:
       m_Calls:
@@ -212,6 +227,7 @@ MonoBehaviour:
         m_CallState: 2
   dashEnabled: 1
   aimEnabled: 0
+  meleeEnabled: 0
   movementInput: 0
   lookInput: 0
 --- !u!114 &3831826507396700389
@@ -294,15 +310,53 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RangedWeapons:
-  - body: {fileID: 0}
-    hand: {fileID: 0}
-    holster: {fileID: 0}
-    weaponData: {fileID: 0}
+  - body: {fileID: 1226002350906427324}
+    hand: {fileID: 3984322414615656599}
+    holster: {fileID: 4379784951295016637}
+    weaponData: {fileID: 11400000, guid: 4b78bb72a25b7a949b28719c6a63b098, type: 2}
   <currentRanged>k__BackingField:
     body: {fileID: 0}
     hand: {fileID: 0}
     holster: {fileID: 0}
     weaponData: {fileID: 0}
+--- !u!114 &966226548
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3831826507396700408}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d77849f933566a54997f34dbe4283a45, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LookTarget: {fileID: 0}
+  lookRig: {fileID: 0}
+--- !u!114 &966226558
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3831826507396700408}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fff0960ef4ea6e04eac66b4a7fd2189d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_RigLayers:
+  - m_Rig: {fileID: 0}
+    m_Active: 1
+  m_Effectors:
+  - m_Transform: {fileID: 0}
+    m_Style:
+      shape: {fileID: 4300000, guid: e050c2b16fe384bd994474655a4b4968, type: 2}
+      color: {r: 1, g: 0, b: 0, a: 0.5}
+      size: 0.1
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0}
+    m_Visible: 1
 --- !u!1 &3984322414615656599
 GameObject:
   m_ObjectHideFlags: 0
@@ -326,8 +380,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3984322414615656599}
-  m_LocalRotation: {x: -0.21352246, y: -0.86168677, z: -0.4584385, w: -0.041691992}
-  m_LocalPosition: {x: -0.002, y: 0.015, z: 0.02}
+  m_LocalRotation: {x: -0.21040243, y: -0.74427766, z: -0.6198457, w: -0.13256323}
+  m_LocalPosition: {x: 0.021, y: 0.005, z: 0.019}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -551,6 +605,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b12227c752b72334b9c3d0f15986f1c2, type: 3}
+--- !u!1 &1226002350906427324 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1947189329703348, guid: b12227c752b72334b9c3d0f15986f1c2,
+    type: 3}
+  m_PrefabInstance: {fileID: 1226465986859562504}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1230862861823870686 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4977564265705686, guid: b12227c752b72334b9c3d0f15986f1c2,

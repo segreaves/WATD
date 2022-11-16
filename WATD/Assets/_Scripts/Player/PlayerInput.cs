@@ -17,13 +17,15 @@ public partial class PlayerInput : MonoBehaviour, Controls.IPlayerActions, IAgen
     [field: SerializeField] public UnityEvent<bool> OnWalk { get; set; }
     public event Action AttackEvent;
     public event Action<bool> AimEvent;
+    public event Action<bool> MeleeEvent;
     public event Action DashEvent;
     public Vector3 MovementValue { get; private set; }
     public Vector3 LookValue { get; private set; }
     public Transform MainCameraTransform { get; private set; }
     private Animator Animator;
     public bool dashEnabled = true;
-    public bool aimEnabled = true;
+    public bool aimEnabled;
+    public bool meleeEnabled;
     public bool movementInput;
     public bool lookInput;
 
@@ -96,6 +98,12 @@ public partial class PlayerInput : MonoBehaviour, Controls.IPlayerActions, IAgen
     {
         aimEnabled = context.performed;
         AimEvent?.Invoke(context.performed);
+    }
+
+    public void OnMelee(InputAction.CallbackContext context)
+    {
+        meleeEnabled = context.performed;
+        MeleeEvent?.Invoke(context.performed);
     }
 
     public IEnumerator EDashCooldown(float duration)

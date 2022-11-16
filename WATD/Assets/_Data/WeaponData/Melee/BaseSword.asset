@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82a3af7c7d1e3d141b8af81c2e27cbd9, type: 3}
   m_Name: BaseSword
   m_EditorClassIdentifier: 
+  WeaponName: Sword
   AttackAnimations:
   - BasicAttackL
   - BasicAttackR

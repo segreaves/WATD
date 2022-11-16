@@ -1,30 +1,28 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerFreeMovementState : PlayerMovementStateBase
+public class PlayerMeleeState : PlayerMovementStateBase
 {
-    public PlayerFreeMovementState(PlayerStateMachine stateMachine) : base(stateMachine) {}
+    public PlayerMeleeState(PlayerStateMachine stateMachine) : base(stateMachine) {}
 
     public override void Enter()
     {
         base.Enter();
-        // Right arm layer
-        stateMachine.Animator.SetLayerWeight(stateMachine.Animator.GetLayerIndex("ArmR"), 1f);
-        stateMachine.Animator.SetBool(LArmOutHash, false);
-        stateMachine.Animator.SetBool(RArmOutHash, false);
-        stateMachine.InputReceiver.AttackEvent += OnAttack;
-        stateMachine.InputReceiver.DashEvent += OnDash;
+        stateMachine.Animator.SetBool(RArmOutHash, true);
         stateMachine.InputReceiver.MeleeEvent += OnMelee;
+        // Right arm layer
+        stateMachine.Animator.SetLayerWeight(stateMachine.Animator.GetLayerIndex("ArmR"), 0.7f);
+        stateMachine.MeleeWeaponHandler.AttachToHand();
+        stateMachine.Animator.CrossFadeInFixedTime(stateMachine.MeleeWeaponHandler.currentMelee.weaponData.WeaponName + "Equip", 0.1f, LayerMask.NameToLayer("UpperBody"));
     }
 
     public override void Exit()
     {
         base.Exit();
-        stateMachine.InputReceiver.AttackEvent -= OnAttack;
-        stateMachine.InputReceiver.DashEvent -= OnDash;
         stateMachine.InputReceiver.MeleeEvent -= OnMelee;
+        stateMachine.MeleeWeaponHandler.AttachToHolster();
+        stateMachine.Animator.CrossFadeInFixedTime(stateMachine.MeleeWeaponHandler.currentMelee.weaponData.WeaponName + "Unequip", 0.1f, LayerMask.NameToLayer("UpperBody"));
     }
 
     public override void Tick(float deltaTime)
@@ -38,23 +36,10 @@ public class PlayerFreeMovementState : PlayerMovementStateBase
 
     private void OnMelee(bool enabled)
     {
-        if (enabled == true)
+        if (enabled == false)
         {
-            stateMachine.SwitchState(new PlayerMeleeState(stateMachine));
+            stateMachine.SwitchState(new PlayerFreeMovementState(stateMachine));
         }
-    }
-
-    private void OnDash()
-    {
-        if (stateMachine.InputReceiver.MovementValue.sqrMagnitude > 0)
-        {
-            stateMachine.SwitchState(new PlayerDashState(stateMachine));
-        }
-    }
-
-    private void OnAttack()
-    {
-        stateMachine.SwitchState(new PlayerMeleeEntryState(stateMachine));
     }
 
     protected void UpdateDirection()
