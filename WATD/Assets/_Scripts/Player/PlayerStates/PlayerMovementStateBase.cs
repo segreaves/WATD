@@ -14,7 +14,6 @@ public abstract class PlayerMovementStateBase : State
     protected readonly int LArmOutHash = Animator.StringToHash("ArmL");
     protected readonly int RArmOutHash = Animator.StringToHash("ArmR");
     protected Vector3 facingDirection;
-    //private Vector3 dampVelocity;
     private float lookAngle;
 
     public override void Enter()
@@ -53,20 +52,54 @@ public abstract class PlayerMovementStateBase : State
         
         // Set weight of torso/head layer
         //stateMachine.Animator.SetLayerWeight(stateMachine.Animator.GetLayerIndex("ArmR"), 1f - Mathf.Clamp(stateMachine.AgentMovement.CurrentVelocity, 0f, 0.75f));
-        // Look offset
-        /*lookDelay = Vector3.SmoothDamp(lookDelay, stateMachine.transform.forward, ref dampVelocity, 0.2f);
+        // Is moving
+        stateMachine.Animator.SetBool(IsMovingHash, stateMachine.InputReceiver.movementInput);
+    }
+
+    protected void UpdateDirection()
+    {
         if (stateMachine.InputReceiver.movementInput == true)
         {
-            stateMachine.Animator.SetLayerWeight(stateMachine.Animator.GetLayerIndex("Crouch"), 0f);
+            // Is moving
+            if (stateMachine.InputReceiver.lookInput == true)
+            {
+                // Look towards look input
+                facingDirection = stateMachine.InputReceiver.LookValue;
+            }
+            else
+            {
+                // Look towards movement velocity
+                Vector3 velocity = stateMachine.InputReceiver.Controller.velocity;
+                velocity.y = 0f;
+                if (velocity.sqrMagnitude > 0.01f)
+                {
+                    facingDirection = velocity.normalized;
+                }
+            }
+            stateMachine.InputReceiver.OnFaceDirection?.Invoke(facingDirection);
         }
         else
         {
-            float lookOffset = Quaternion.Angle(stateMachine.transform.rotation, Quaternion.LookRotation(lookDelay));
-            lookOffset = Math.Clamp(lookOffset, 0f, 180f) / 180f;
-            stateMachine.Animator.SetFloat(LookOffsetHash, lookOffset, 0.0f, Time.deltaTime);
-            stateMachine.Animator.SetLayerWeight(stateMachine.Animator.GetLayerIndex("Crouch"), lookOffset);
-        }*/
-        // Is moving
-        stateMachine.Animator.SetBool(IsMovingHash, stateMachine.InputReceiver.movementInput);
+            // Is not moving
+            if (stateMachine.InputReceiver.lookInput == true)
+            {
+                // Look towards look input
+                float lookAngle = Vector3.Angle(stateMachine.AgentMovement.lastDirection, stateMachine.InputReceiver.LookValue);
+                if (lookAngle >= 135f)
+                {
+                    float lookAngleSign = Vector3.Dot(stateMachine.transform.right, stateMachine.InputReceiver.LookValue) >= 0f ? 1f : -1f;
+                    if (lookAngleSign >= 0f)
+                    {
+                        stateMachine.AgentMovement.ResetLastDirection(Quaternion.Euler(0, 120f, 0) * stateMachine.AgentMovement.lastDirection);
+                    }
+                    else
+                    {
+                        stateMachine.AgentMovement.ResetLastDirection(Quaternion.Euler(0, -120f, 0) * stateMachine.AgentMovement.lastDirection);
+                    }
+                }
+                facingDirection = stateMachine.AgentMovement.lastDirection;
+            }
+            stateMachine.InputReceiver.OnRotateTowards.Invoke(facingDirection, 10f);
+        }
     }
 }

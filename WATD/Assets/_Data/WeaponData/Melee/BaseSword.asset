@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   WeaponName: Sword
   AttackAnimations:
-  - BasicAttackL
-  - BasicAttackR
+  - SwordAttackR
+  - SwordAttackR
   Damage: 1
   ComboStartTime: 0.1
   AttackDuration: 0.5

@@ -19,7 +19,7 @@ public abstract class PlayerMeleeBaseState : State
         attackIndex = stateMachine.MeleeWeaponHandler.attackIndex;
         stateMachine.MeleeWeaponHandler.IncrementAttackIndex();
         currentWeaponData = stateMachine.MeleeWeaponHandler.currentMelee.weaponData;
-        stateMachine.Animator.CrossFadeInFixedTime(currentWeaponData.AttackAnimations[attackIndex], 0.1f);
+        stateMachine.Animator.CrossFadeInFixedTime(currentWeaponData.AttackAnimations[attackIndex], 0.0f);
     }
 
     public override void Exit()
