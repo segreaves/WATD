@@ -42,7 +42,7 @@ public class PlayerAimingState : State
     {
         stateMachine.InputReceiver.OnMovement?.Invoke(stateMachine.InputReceiver.MovementValue);
         UpdateDirection();
-        UpdateAnimationData();
+        //UpdateAnimationData();
     }
 
     private void OnDash()
@@ -99,7 +99,7 @@ public class PlayerAimingState : State
         stateMachine.InputReceiver.OnFaceDirection?.Invoke(facingDirection);
     }
 
-    private void UpdateAnimationData()
+    /*private void UpdateAnimationData()
     {
         // Look angle
         float lookAngle = Vector3.Angle(stateMachine.transform.forward, stateMachine.AgentMovement.lastDirection);
@@ -132,5 +132,5 @@ public class PlayerAimingState : State
         }
         // Is moving
         stateMachine.Animator.SetBool(IsMovingHash, stateMachine.InputReceiver.movementInput);
-    }
+    }*/
 }

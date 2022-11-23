@@ -42,10 +42,6 @@ public class AgentMovement : MonoBehaviour
     private void Update()
     {
         UpdateAnimationData(Time.deltaTime);
-        if (Controller.velocity.sqrMagnitude > 0.0001f)
-        {
-            lastDirection = transform.forward;
-        }
     }
 
     public void Move(Vector3 movement)
@@ -62,9 +58,9 @@ public class AgentMovement : MonoBehaviour
         // Speed
         Animator.SetFloat(SpeedHash, CurrentVelocity, 0.025f, Time.deltaTime);
         // Forward speed
-        Animator.SetFloat(ForwardSpeedHash, CurrentForwardVelocity, 0.01f, deltaTime);
+        Animator.SetFloat(ForwardSpeedHash, CurrentForwardVelocity, 0.025f, deltaTime);
         // Right speed
-        Animator.SetFloat(RightSpeedHash, CurrentRightVelocity, 0.01f, deltaTime);
+        Animator.SetFloat(RightSpeedHash, CurrentRightVelocity, 0.025f, deltaTime);
     }
 
     public void Move()
@@ -82,8 +78,8 @@ public class AgentMovement : MonoBehaviour
         {
             currentVelocity -= MovementData.deceleration * Time.deltaTime;
         }
-        float movementSpeed = isWalking ? MovementData.walkSpeed : MovementData.maxSpeed;
-        currentVelocity = Mathf.Clamp(currentVelocity, 0f, movementSpeed);
+        float targetSpeed = isWalking ? MovementData.walkSpeed : MovementData.maxSpeed;
+        currentVelocity = Mathf.Clamp(currentVelocity, 0f, targetSpeed);
         return currentVelocity;
     }
 
@@ -110,7 +106,7 @@ public class AgentMovement : MonoBehaviour
         isWalking = walk;
     }
 
-    public void ResetLastDirection(Vector3 newDirection)
+    public void SetLastDirection(Vector3 newDirection)
     {
         lastDirection = newDirection;
     }

@@ -10,6 +10,7 @@ public partial class PlayerInput : MonoBehaviour, Controls.IPlayerActions, IAgen
     private Controls controls;
 
     public CharacterController Controller;
+    [field: SerializeField] private AnimationCurve InputMovementCurve;
     [field: SerializeField] public UnityEvent<Vector3> OnMovement { get; set; }
     [field: SerializeField] public UnityEvent<Vector3> OnLookAt { get; set; }
     [field: SerializeField] public UnityEvent<Vector3> OnFaceDirection { get; set; }
@@ -53,7 +54,8 @@ public partial class PlayerInput : MonoBehaviour, Controls.IPlayerActions, IAgen
     public void OnMove(InputAction.CallbackContext context)
     {
         Vector2 MovementValueXY = context.ReadValue<Vector2>();
-        if (MovementValueXY.magnitude < 0.1f)
+        float inputMagnitude = InputMovementCurve.Evaluate(MovementValueXY.magnitude);
+        if (inputMagnitude <= 0.1f)
         {
             movementInput = false;
             MovementValue = Vector3.zero;
@@ -61,7 +63,7 @@ public partial class PlayerInput : MonoBehaviour, Controls.IPlayerActions, IAgen
         else
         {
             movementInput = true;
-            MovementValue = CalculateDirection(MovementValueXY);
+            MovementValue = CalculateDirection(MovementValueXY).normalized * inputMagnitude;
         }
     }
 

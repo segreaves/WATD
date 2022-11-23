@@ -34,6 +34,7 @@ public class PlayerFreeMovementState : PlayerMovementStateBase
         stateMachine.InputReceiver.OnWalk.Invoke(stateMachine.InputReceiver.lookInput);
         UpdateAnimationData();
         UpdateDirection();
+        stateMachine.Animator.SetFloat(GuardedFloatHash, 0f, 0.1f, Time.deltaTime);
     }
 
     private void OnMelee(bool enabled)

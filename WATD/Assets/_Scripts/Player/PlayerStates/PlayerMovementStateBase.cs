@@ -13,42 +13,72 @@ public abstract class PlayerMovementStateBase : State
     protected readonly int LookOffsetHash = Animator.StringToHash("LookOffset");
     protected readonly int LArmOutHash = Animator.StringToHash("ArmL");
     protected readonly int RArmOutHash = Animator.StringToHash("ArmR");
+    protected readonly int GuardedBoolHash = Animator.StringToHash("Guarded_bool");
+    protected readonly int GuardedFloatHash = Animator.StringToHash("Guarded_float");
     protected Vector3 facingDirection;
     private float lookAngle;
+    
 
     public override void Enter()
     {
-        facingDirection = stateMachine.AgentMovement.lastDirection;
+        facingDirection = stateMachine.transform.forward;
+        stateMachine.Animator.SetBool(GuardedBoolHash, false);
+        stateMachine.LookIKControl.StartLooking();
     }
 
-    public override void Exit() {}
-
-    public override void Tick(float deltaTime) {}
-
-    protected void UpdateAnimationData()
+    public override void Exit()
     {
-        // Facing angle
-        float facingAngle = Vector3.Angle(stateMachine.transform.forward, stateMachine.AgentMovement.lastDirection);
-        float facingAngleSign = Vector3.Dot(stateMachine.transform.right, stateMachine.AgentMovement.lastDirection) >= 0f ? -1f : 1f;
-        if (facingAngleSign <= 0)
+        stateMachine.LookIKControl.StopLooking();
+    }
+
+    public override void Tick(float deltaTime)
+    {
+        if (stateMachine.InputReceiver.movementInput == true)
         {
-            facingAngle = Math.Clamp(facingAngle, 0f, 180f) / 360f;
+            if (stateMachine.InputReceiver.lookInput)
+            {
+                stateMachine.AgentMovement.SetLastDirection(stateMachine.InputReceiver.LookValue.normalized);
+            }
+            else
+            {
+                stateMachine.AgentMovement.SetLastDirection(stateMachine.InputReceiver.MovementValue.normalized);
+            }
+        }
+        // Look direction
+        if (stateMachine.InputReceiver.lookInput == true)
+        {
+            stateMachine.LookIKControl.LookInDirection(stateMachine.InputReceiver.LookValue);
         }
         else
         {
-            facingAngle = (360f - Math.Clamp(facingAngle, 0f, 180f)) / 360f;
+            stateMachine.LookIKControl.LookInDirection(stateMachine.transform.forward);
         }
+    }
+
+    protected void UpdateAnimationData()
+    {
         // Update look angle if not moving
         if (stateMachine.InputReceiver.movementInput == false)
         {
+            // Facing angle
+            float facingAngle = Vector3.Angle(stateMachine.transform.forward, stateMachine.AgentMovement.lastDirection);
+            float facingAngleSign = Vector3.Dot(stateMachine.transform.right, stateMachine.AgentMovement.lastDirection) >= 0f ? -1f : 1f;
+            if (facingAngleSign <= 0)
+            {
+                facingAngle = Math.Clamp(facingAngle, 0f, 180f) / 360f;
+            }
+            else
+            {
+                facingAngle = (360f - Math.Clamp(facingAngle, 0f, 180f)) / 360f;
+            }
             stateMachine.Animator.SetFloat(FacingAngleHash, facingAngle, 0.0f, Time.deltaTime);
         }
 
         // Look angle
         lookAngle = Vector3.Angle(stateMachine.transform.forward, stateMachine.InputReceiver.LookValue);
         float lookAngleSign = Vector3.Dot(stateMachine.transform.right, stateMachine.InputReceiver.LookValue) >= 0f ? 1f : -1f;
-        float updatelookAngle = 0.5f + lookAngleSign * Math.Clamp(lookAngle, 0f, 180f) / 360f;
-        stateMachine.Animator.SetFloat(LookAngleHash, updatelookAngle, 0.025f, Time.deltaTime);
+        float updatelookAngle = 0.5f + lookAngleSign * Math.Clamp(lookAngle, 0f, 90f) / 180f;
+        stateMachine.Animator.SetFloat(LookAngleHash, updatelookAngle, 0.05f, Time.deltaTime);
         
         // Set weight of torso/head layer
         //stateMachine.Animator.SetLayerWeight(stateMachine.Animator.GetLayerIndex("ArmR"), 1f - Mathf.Clamp(stateMachine.AgentMovement.CurrentVelocity, 0f, 0.75f));
@@ -71,7 +101,7 @@ public abstract class PlayerMovementStateBase : State
                 // Look towards movement velocity
                 Vector3 velocity = stateMachine.InputReceiver.Controller.velocity;
                 velocity.y = 0f;
-                if (velocity.sqrMagnitude > 0.01f)
+                if (velocity.sqrMagnitude > 0.1f)
                 {
                     facingDirection = velocity.normalized;
                 }
@@ -85,21 +115,21 @@ public abstract class PlayerMovementStateBase : State
             {
                 // Look towards look input
                 float lookAngle = Vector3.Angle(stateMachine.AgentMovement.lastDirection, stateMachine.InputReceiver.LookValue);
-                if (lookAngle >= 135f)
+                if (lookAngle >= 90f)
                 {
                     float lookAngleSign = Vector3.Dot(stateMachine.transform.right, stateMachine.InputReceiver.LookValue) >= 0f ? 1f : -1f;
                     if (lookAngleSign >= 0f)
                     {
-                        stateMachine.AgentMovement.ResetLastDirection(Quaternion.Euler(0, 120f, 0) * stateMachine.AgentMovement.lastDirection);
+                        stateMachine.AgentMovement.SetLastDirection(Quaternion.Euler(0, 120f, 0) * stateMachine.AgentMovement.lastDirection);
                     }
                     else
                     {
-                        stateMachine.AgentMovement.ResetLastDirection(Quaternion.Euler(0, -120f, 0) * stateMachine.AgentMovement.lastDirection);
+                        stateMachine.AgentMovement.SetLastDirection(Quaternion.Euler(0, -120f, 0) * stateMachine.AgentMovement.lastDirection);
                     }
                 }
                 facingDirection = stateMachine.AgentMovement.lastDirection;
             }
-            stateMachine.InputReceiver.OnRotateTowards.Invoke(facingDirection, 10f);
+            stateMachine.InputReceiver.OnRotateTowards.Invoke(facingDirection, 5f);
         }
     }
 }

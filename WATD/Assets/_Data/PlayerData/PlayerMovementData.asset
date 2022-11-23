@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: PlayerMovementData
   m_EditorClassIdentifier: 
   maxSpeed: 6
-  walkSpeed: 2
+  walkSpeed: 1
   acceleration: 50
   deceleration: 50
   rotationSpeed: 25

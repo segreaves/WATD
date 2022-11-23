@@ -7,6 +7,8 @@ public class LookIKControl : MonoBehaviour
 {
     [field: SerializeField] private GameObject LookTarget;
     [field: SerializeField] private Rig lookRig;
+    [field: SerializeField] private float distance;
+    [field: SerializeField] private float height;
     private Vector3 dampingVelocity;
     private float baseSolveSpeed = 0.05f;
     private float desiredWeight;
@@ -30,8 +32,9 @@ public class LookIKControl : MonoBehaviour
         LookTarget.transform.position = Vector3.SmoothDamp(LookTarget.transform.position, lookPosition, ref dampingVelocity, solveSpeed);
     }
 
-    public void LookAt(Vector3 lookPosition)
+    public void LookInDirection(Vector3 lookDirection)
     {
+        Vector3 lookPosition = transform.position + distance * lookDirection + height * transform.up;
         LookAt(lookPosition, baseSolveSpeed);
     }
 }

@@ -10,6 +10,7 @@ public class PlayerMeleeState : PlayerMovementStateBase
     {
         base.Enter();
         stateMachine.Animator.SetBool(RArmOutHash, true);
+        stateMachine.Animator.SetBool(GuardedBoolHash, true);
         stateMachine.InputReceiver.MeleeEvent += OnMelee;
         // Right arm layer
         stateMachine.Animator.SetLayerWeight(stateMachine.Animator.GetLayerIndex("ArmR"), 0.7f);
@@ -32,6 +33,7 @@ public class PlayerMeleeState : PlayerMovementStateBase
         stateMachine.InputReceiver.OnWalk.Invoke(stateMachine.InputReceiver.lookInput);
         UpdateAnimationData();
         UpdateDirection();
+        stateMachine.Animator.SetFloat(GuardedFloatHash, 1f, 0.025f, Time.deltaTime);
     }
 
     private void OnMelee(bool enabled)
