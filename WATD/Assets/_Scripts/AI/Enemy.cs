@@ -4,6 +4,10 @@ using UnityEngine;
 using UnityEngine.Events;
 
 [RequireComponent(typeof(Health))]
+[RequireComponent(typeof(ForceReceiver))]
+[RequireComponent(typeof(FlashComponent))]
+[RequireComponent(typeof(SlowMotionComponent))]
+[RequireComponent(typeof(Target))]
 public class Enemy : MonoBehaviour, IHittable
 {
     [field: SerializeField] public EnemyDataSO EnemyData { get; set; }
@@ -15,9 +19,9 @@ public class Enemy : MonoBehaviour, IHittable
     
     private void Awake()
     {
+        Health = transform.root.GetComponent<Health>();
         Health.maxHealth = EnemyData.MaxHealth;
-        Health = GetComponent<Health>();
-        ForceReceiver = GetComponent<ForceReceiver>();
+        ForceReceiver = transform.root.GetComponent<ForceReceiver>();
     }
 
     public void GetHit(int damage, GameObject damageDealer)

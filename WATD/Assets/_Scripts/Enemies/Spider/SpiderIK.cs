@@ -5,6 +5,9 @@ using UnityEngine;
 public class SpiderIK : MonoBehaviour
 {
     private CharacterController Controller;
+    [SerializeField] private Transform body;
+    private Vector3 bodyOffset;
+    private float yStepOffset;
     public Transform[] legTargets;
     private Vector3[] Targets;
     private Vector3[] defaultLegPositions;
@@ -16,7 +19,7 @@ public class SpiderIK : MonoBehaviour
     [SerializeField] private AnimationCurve LegHeightCurve;
     private bool legMoving;
     private int legs;
-    private float stepSize = 0.3f;
+    private float stepSize = 0.4f;
     public float stepHeight = 0.25f;
     private float raycastRange = 1.5f;
     private float velocityMultiplier = 50f;
@@ -35,6 +38,7 @@ public class SpiderIK : MonoBehaviour
 
     private void Start()
     {
+        bodyOffset = body.position - transform.position;
         lastPosition = transform.position;
         legs = legTargets.Length;
         defaultLegPositions = new Vector3[legs];
@@ -82,6 +86,7 @@ public class SpiderIK : MonoBehaviour
                 legMoving = false;
             }
         }
+        SetBodyPosition();
         lastPosition = transform.position;
     }
 
@@ -96,6 +101,19 @@ public class SpiderIK : MonoBehaviour
             stepStartPosition[i] = lastLegPositions[i];
         }
     }
+
+    private void SetBodyPosition()
+    {
+        Vector3 averageLocation = Vector3.zero;
+        for (int i = 0; i < legs; ++i)
+        {
+            averageLocation += legTargets[i].position;
+        }
+        averageLocation /= legs;
+        yStepOffset = Vector3.ProjectOnPlane(transform.position - averageLocation, transform.forward).magnitude;
+        body.position = transform.position + bodyOffset - transform.up * yStepOffset;
+    }
+
     private void SetLegDesiredPositions()
     {
         for (int i = 0; i < legs; ++i)

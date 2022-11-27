@@ -5,16 +5,18 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.AI;
 
+[RequireComponent(typeof(ContextSolver))]
+[RequireComponent(typeof(AgentMovement))]
 public class EnemyAIBrain : MonoBehaviour, IAgentInput
 {
     [field: SerializeField] public AgentMovement MovementParameters { get; set; }
     [field: SerializeField] public GameObject Target { get; set; }
     [field: SerializeField] public AIState CurrentState { get; private set; }
     [field: SerializeField] public AIState DeadState { get; private set; }
-    [field: SerializeField] public ContextSolver MovementDirectionSolver { get; set; }
     [field: SerializeField] public UnityEvent<Vector3> OnMovement { get; set; }
     [field: SerializeField] public UnityEvent<Vector3> OnFaceDirection { get; set; }
     [field: SerializeField] public UnityEvent<Vector3, float> OnRotateTowards { get; set; }
+    public ContextSolver MovementDirectionSolver { get; set; }
     public NavMeshAgent Agent { get; private set; }
     public CharacterController Controller { get; private set; }
     public Animator Animator { get; private set; }
