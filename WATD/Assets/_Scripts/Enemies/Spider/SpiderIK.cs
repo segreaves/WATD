@@ -122,7 +122,7 @@ public class SpiderIK : MonoBehaviour
             rayOriginPositions[i] = basePosition + transform.up;
             // Targets
             RaycastHit hit;
-            if (Physics.Raycast(rayOriginPositions[i], -transform.up, out hit, raycastRange))
+            if (Physics.Raycast(rayOriginPositions[i], -transform.up, out hit, raycastRange/*, int layerMask*/))
             {
                 desiredLegPositions[i] = hit.point;
             }

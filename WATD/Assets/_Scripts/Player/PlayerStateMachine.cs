@@ -14,6 +14,7 @@ public class PlayerStateMachine : StateMachine, IHittable
     [field: SerializeField] public MeleeWeaponHandler MeleeWeaponHandler;
     [field: SerializeField] public RangedWeaponHandler RangedWeaponHandler;
     [field: SerializeField] public LookIKControl LookIKControl;
+    public LockIkSwitcher LockIkSwitcher;
     
     public ForceReceiver ForceReceiver { get; private set; }
     public AgentMovement AgentMovement { get; private set; }
@@ -27,6 +28,7 @@ public class PlayerStateMachine : StateMachine, IHittable
         MeleeWeaponHandler = GetComponent<MeleeWeaponHandler>();
         RangedWeaponHandler = GetComponent<RangedWeaponHandler>();
         LookIKControl = GetComponent<LookIKControl>();
+        LockIkSwitcher = GetComponent<LockIkSwitcher>();
         Health = GetComponent<Health>();
         Health.maxHealth = PlayerData.MaxHealth;
     }

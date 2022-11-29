@@ -17,21 +17,46 @@ public abstract class PlayerMovementStateBase : State
     protected readonly int GuardedFloatHash = Animator.StringToHash("Guarded_float");
     protected Vector3 facingDirection;
     private float lookAngle;
-    
 
     public override void Enter()
     {
         facingDirection = stateMachine.transform.forward;
         stateMachine.Animator.SetBool(GuardedBoolHash, false);
         stateMachine.LookIKControl.StartLooking();
+        stateMachine.LockIkSwitcher.enabled = true;
+        stateMachine.LockIkSwitcher.LockFeet();
     }
 
     public override void Exit()
     {
         stateMachine.LookIKControl.StopLooking();
+        stateMachine.LockIkSwitcher.enabled = false;
     }
 
     public override void Tick(float deltaTime)
+    {
+        UpdateLastDirection();
+        HeadAim();
+        if (stateMachine.InputReceiver.movementInput == true)
+        {
+            stateMachine.LockIkSwitcher.UnlockFeet();
+            stateMachine.LockIkSwitcher.UpdateFeet();
+        }
+    }
+
+    private void HeadAim()
+    {
+        if (stateMachine.InputReceiver.lookInput == true)
+        {
+            stateMachine.LookIKControl.LookInDirection(stateMachine.InputReceiver.LookValue);
+        }
+        else
+        {
+            stateMachine.LookIKControl.LookInDirection(stateMachine.transform.forward);
+        }
+    }
+
+    private void UpdateLastDirection()
     {
         if (stateMachine.InputReceiver.movementInput == true)
         {
@@ -43,15 +68,6 @@ public abstract class PlayerMovementStateBase : State
             {
                 stateMachine.AgentMovement.SetLastDirection(stateMachine.InputReceiver.MovementValue.normalized);
             }
-        }
-        // Look direction
-        if (stateMachine.InputReceiver.lookInput == true)
-        {
-            stateMachine.LookIKControl.LookInDirection(stateMachine.InputReceiver.LookValue);
-        }
-        else
-        {
-            stateMachine.LookIKControl.LookInDirection(stateMachine.transform.forward);
         }
     }
 
@@ -129,7 +145,7 @@ public abstract class PlayerMovementStateBase : State
                 }
                 facingDirection = stateMachine.AgentMovement.lastDirection;
             }
-            stateMachine.InputReceiver.OnRotateTowards.Invoke(facingDirection, 5f);
+            stateMachine.InputReceiver.OnRotateTowards.Invoke(facingDirection, 2.5f);
         }
     }
 }
