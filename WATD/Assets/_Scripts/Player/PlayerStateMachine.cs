@@ -58,4 +58,13 @@ public class PlayerStateMachine : StateMachine, IHittable
         damageDirection.y = 0f;
         ForceReceiver?.AddForce(damageDirection.normalized * 5f);
     }
+
+    private void OnDrawGizmos()
+    {
+        if (Application.isPlaying)
+        {
+            Gizmos.color = Color.magenta;
+            Gizmos.DrawRay(transform.position, AgentMovement.lastDirection * 2f);
+        }
+    }
 }

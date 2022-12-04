@@ -20,28 +20,28 @@ public abstract class PlayerMovementStateBase : State
 
     public override void Enter()
     {
-        facingDirection = stateMachine.transform.forward;
+        facingDirection = stateMachine.AgentMovement.lastDirection;
         stateMachine.Animator.SetBool(GuardedBoolHash, false);
         stateMachine.LookIKControl.StartLooking();
-        stateMachine.LockIkSwitcher.enabled = true;
-        stateMachine.LockIkSwitcher.LockFeet();
+        //stateMachine.LockIkSwitcher.enabled = true;
+        //stateMachine.LockIkSwitcher.LockFeet();
     }
 
     public override void Exit()
     {
         stateMachine.LookIKControl.StopLooking();
-        stateMachine.LockIkSwitcher.enabled = false;
+        //stateMachine.LockIkSwitcher.enabled = false;
     }
 
     public override void Tick(float deltaTime)
     {
         UpdateLastDirection();
         HeadAim();
-        if (stateMachine.InputReceiver.movementInput == true)
+        /*if (stateMachine.InputReceiver.movementInput == true)
         {
             stateMachine.LockIkSwitcher.UnlockFeet();
             stateMachine.LockIkSwitcher.UpdateFeet();
-        }
+        }*/
     }
 
     private void HeadAim()
@@ -142,10 +142,11 @@ public abstract class PlayerMovementStateBase : State
                     {
                         stateMachine.AgentMovement.SetLastDirection(Quaternion.Euler(0, -120f, 0) * stateMachine.AgentMovement.lastDirection);
                     }
+                    //stateMachine.LockIkSwitcher.UnlockFeet();
                 }
                 facingDirection = stateMachine.AgentMovement.lastDirection;
             }
-            stateMachine.InputReceiver.OnRotateTowards.Invoke(facingDirection, 2.5f);
+            stateMachine.InputReceiver.OnRotateTowards.Invoke(facingDirection, 5f);
         }
     }
 }
