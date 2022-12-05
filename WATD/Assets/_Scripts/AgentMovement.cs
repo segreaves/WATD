@@ -12,7 +12,7 @@ public class AgentMovement : MonoBehaviour
 
     public CharacterController Controller { get; private set; }
     private float currentVelocity;
-    public Vector3 lastDirection { get; private set; }
+    public Vector3 lastFacingDirection { get; private set; }
     private Quaternion currentRotation;
     private Vector3 currentMotion;
     private ForceReceiver ForceReceiver;
@@ -36,7 +36,7 @@ public class AgentMovement : MonoBehaviour
 
     private void Start()
     {
-        lastDirection = transform.forward;
+        lastFacingDirection = transform.forward;
     }
 
     private void Update()
@@ -108,6 +108,6 @@ public class AgentMovement : MonoBehaviour
 
     public void SetLastDirection(Vector3 newDirection)
     {
-        lastDirection = newDirection;
+        lastFacingDirection = newDirection;
     }
 }

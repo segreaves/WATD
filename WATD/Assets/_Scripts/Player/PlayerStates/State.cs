@@ -11,8 +11,6 @@ public abstract class State
         this.stateMachine = stateMachine;
     }
 
-    private Vector3 inputLookDirection;
-
     public abstract void Enter();
     public abstract void Tick(float deltaTime);
     public abstract void Exit();

@@ -10,7 +10,7 @@ public class LookIKControl : MonoBehaviour
     [field: SerializeField] private float distance;
     [field: SerializeField] private float height;
     private Vector3 dampingVelocity;
-    private float baseSolveSpeed = 0.05f;
+    private float baseSolveSpeed = 0.025f;
     private float desiredWeight;
 
     private void Update()

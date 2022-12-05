@@ -64,7 +64,7 @@ public class PlayerStateMachine : StateMachine, IHittable
         if (Application.isPlaying)
         {
             Gizmos.color = Color.magenta;
-            Gizmos.DrawRay(transform.position, AgentMovement.lastDirection * 2f);
+            Gizmos.DrawRay(transform.position, AgentMovement.lastFacingDirection * 2f);
         }
     }
 }

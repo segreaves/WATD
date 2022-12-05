@@ -229,12 +229,23 @@ public class LockIkSwitcher : MonoBehaviour
     {
         if (Application.isPlaying)
         {
-            Gizmos.color = Color.red;
-            Gizmos.DrawWireSphere(m_leftFootTargetPos, 0.1f);
-            Gizmos.DrawWireSphere(m_rightFootTargetPos, 0.1f);
-            Gizmos.color = Color.green;
-            Gizmos.DrawWireSphere(m_leftFootLockedPos, 0.1f);
-            Gizmos.DrawWireSphere(m_rightFootLockedPos, 0.1f);
+            if (m_animator.pivotWeight < 0.5f)
+            {
+                Gizmos.color = Color.green;
+                Gizmos.DrawWireSphere(m_leftFootTargetPos, 0.1f);
+                Gizmos.color = Color.red;
+                Gizmos.DrawWireSphere(m_rightFootTargetPos, 0.1f);
+            }
+            else
+            {
+                Gizmos.color = Color.red;
+                Gizmos.DrawWireSphere(m_leftFootTargetPos, 0.1f);
+                Gizmos.color = Color.green;
+                Gizmos.DrawWireSphere(m_rightFootTargetPos, 0.1f);
+            }
+            //Gizmos.color = Color.green;
+            //Gizmos.DrawWireSphere(m_leftFootLockedPos, 0.1f);
+            //Gizmos.DrawWireSphere(m_rightFootLockedPos, 0.1f);
         }
     }
 }
