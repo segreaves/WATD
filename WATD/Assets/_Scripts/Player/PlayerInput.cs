@@ -29,6 +29,7 @@ public partial class PlayerInput : MonoBehaviour, Controls.IPlayerActions, IAgen
     public bool meleeEnabled;
     public bool movementInput;
     public bool lookInput;
+    public bool IsInteracting;
 
     private void Awake()
     {

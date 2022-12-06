@@ -10,10 +10,9 @@ public class PlayerMeleeState : PlayerMovementStateBase
     {
         base.Enter();
         stateMachine.Animator.SetBool(RArmOutHash, true);
-        stateMachine.Animator.SetBool(GuardedBoolHash, true);
-        stateMachine.InputReceiver.MeleeEvent += OnMelee;
+        stateMachine.InputHandler.MeleeEvent += OnMelee;
         // Right arm layer
-        stateMachine.Animator.SetLayerWeight(stateMachine.Animator.GetLayerIndex("ArmR"), 0.7f);
+        stateMachine.Animator.SetLayerWeight(stateMachine.Animator.GetLayerIndex("ArmR"), 1f);
         stateMachine.MeleeWeaponHandler.AttachToHand();
         stateMachine.Animator.CrossFadeInFixedTime(stateMachine.MeleeWeaponHandler.currentMelee.weaponData.WeaponName + "Equip", 0.0f, LayerMask.NameToLayer("ArmR"));
     }
@@ -21,7 +20,7 @@ public class PlayerMeleeState : PlayerMovementStateBase
     public override void Exit()
     {
         base.Exit();
-        stateMachine.InputReceiver.MeleeEvent -= OnMelee;
+        stateMachine.InputHandler.MeleeEvent -= OnMelee;
         stateMachine.MeleeWeaponHandler.AttachToHolster();
         stateMachine.Animator.CrossFadeInFixedTime(stateMachine.MeleeWeaponHandler.currentMelee.weaponData.WeaponName + "Unequip", 0.0f, LayerMask.NameToLayer("UpperBody"));
     }
@@ -29,11 +28,10 @@ public class PlayerMeleeState : PlayerMovementStateBase
     public override void Tick(float deltaTime)
     {
         base.Tick(deltaTime);
-        stateMachine.InputReceiver.OnMovement?.Invoke(stateMachine.InputReceiver.MovementValue);
-        stateMachine.InputReceiver.OnWalk.Invoke(stateMachine.InputReceiver.lookInput);
+        stateMachine.InputHandler.OnMovement?.Invoke(stateMachine.InputHandler.MovementValue);
+        stateMachine.InputHandler.OnWalk.Invoke(stateMachine.InputHandler.lookInput);
         UpdateAnimationData();
         UpdateDirection();
-        stateMachine.Animator.SetFloat(GuardedFloatHash, 1f, 0.025f, Time.deltaTime);
     }
 
     private void OnMelee(bool enabled)

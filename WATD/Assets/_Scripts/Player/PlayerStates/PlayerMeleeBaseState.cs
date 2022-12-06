@@ -25,8 +25,8 @@ public abstract class PlayerMeleeBaseState : State
     public override void Exit()
     {
         stateMachine.MeleeWeaponHandler.AttachToHolster();
-        stateMachine.InputReceiver.AttackEvent -= OnAttack;
-        stateMachine.InputReceiver.DashEvent -= OnDash;
+        stateMachine.InputHandler.AttackEvent -= OnAttack;
+        stateMachine.InputHandler.DashEvent -= OnDash;
     }
 
     public override void Tick(float deltaTime)
@@ -36,19 +36,19 @@ public abstract class PlayerMeleeBaseState : State
         // Update direction
         if (attackTimer < currentWeaponData.RotationDuration)
         {
-            if (stateMachine.InputReceiver.lookInput)
+            if (stateMachine.InputHandler.lookInput)
             {
-                stateMachine.InputReceiver.OnRotateTowards?.Invoke(stateMachine.InputReceiver.LookValue, currentWeaponData.RotationSpeed);
+                stateMachine.InputHandler.OnRotateTowards?.Invoke(stateMachine.InputHandler.LookValue, currentWeaponData.RotationSpeed);
             }
-            else if (stateMachine.InputReceiver.MovementValue.sqrMagnitude >= 0.01f)
+            else if (stateMachine.InputHandler.MovementValue.sqrMagnitude >= 0.01f)
             {
-                stateMachine.InputReceiver.OnRotateTowards?.Invoke(stateMachine.InputReceiver.MovementValue, currentWeaponData.RotationSpeed);
+                stateMachine.InputHandler.OnRotateTowards?.Invoke(stateMachine.InputHandler.MovementValue, currentWeaponData.RotationSpeed);
             }
             else
             {
                 Vector3 lookDirection = stateMachine.gameObject.transform.forward;
                 lookDirection.y = 0f;
-                stateMachine.InputReceiver.OnRotateTowards?.Invoke(lookDirection.normalized, currentWeaponData.RotationSpeed);
+                stateMachine.InputHandler.OnRotateTowards?.Invoke(lookDirection.normalized, currentWeaponData.RotationSpeed);
             }
         }
         ExitConditions();
@@ -56,15 +56,15 @@ public abstract class PlayerMeleeBaseState : State
 
     protected virtual void StartListeningForEvents()
     {
-        stateMachine.InputReceiver.AttackEvent += OnAttack;
-        stateMachine.InputReceiver.DashEvent += OnDash;
+        stateMachine.InputHandler.AttackEvent += OnAttack;
+        stateMachine.InputHandler.DashEvent += OnDash;
         isListeningForEvents = true;
     }
 
     protected void ExitConditions()
     {
         // Exit if is moving after MaxDuration
-        if (attackTimer > currentWeaponData.AttackDuration + currentWeaponData.Cooldown && stateMachine.InputReceiver.MovementValue.magnitude > 0.1f)
+        if (attackTimer > currentWeaponData.AttackDuration + currentWeaponData.Cooldown && stateMachine.InputHandler.MovementValue.magnitude > 0.1f)
         {
             stateMachine.SwitchState(new PlayerFreeMovementState(stateMachine));
         }
@@ -89,13 +89,14 @@ public abstract class PlayerMeleeBaseState : State
 
     protected float GetAttackNormalizedTime()
     {
-        AnimatorStateInfo currentInfo = stateMachine.Animator.GetCurrentAnimatorStateInfo(0);
-        AnimatorStateInfo nextInfo = stateMachine.Animator.GetNextAnimatorStateInfo(0);
-        if (stateMachine.Animator.IsInTransition(0) && nextInfo.IsTag("Attack"))
+        int layerIndex = stateMachine.Animator.GetLayerIndex("FullBody");
+        AnimatorStateInfo currentInfo = stateMachine.Animator.GetCurrentAnimatorStateInfo(layerIndex);
+        AnimatorStateInfo nextInfo = stateMachine.Animator.GetNextAnimatorStateInfo(layerIndex);
+        if (stateMachine.Animator.IsInTransition(layerIndex) && nextInfo.IsTag("Attack"))
         {
             return nextInfo.normalizedTime;
         }
-        else if (!stateMachine.Animator.IsInTransition(0) && currentInfo.IsTag("Attack"))
+        else if (!stateMachine.Animator.IsInTransition(layerIndex) && currentInfo.IsTag("Attack"))
         {
             return currentInfo.normalizedTime;
         }

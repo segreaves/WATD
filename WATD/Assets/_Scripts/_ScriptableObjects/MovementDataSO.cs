@@ -6,7 +6,7 @@ using UnityEngine;
 public class MovementDataSO : ScriptableObject
 {
     [Range(1f, 10f)]
-    public float maxSpeed = 5f, walkSpeed = 2f;
+    public float maxSpeed = 5f, walkSpeed = 2f, sprintSpeed = 6f;
 
     [Range(0.1f, 100f)]
     public float acceleration = 50f, deceleration = 50f, rotationSpeed = 25f;

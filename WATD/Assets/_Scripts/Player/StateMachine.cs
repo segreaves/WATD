@@ -6,7 +6,7 @@ public class StateMachine : MonoBehaviour
 {
     protected State currentState;
 
-    void Update()
+    protected virtual void Update()
     {
         currentState?.Tick(Time.deltaTime);
     }

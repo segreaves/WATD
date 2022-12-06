@@ -20,34 +20,34 @@ public class PlayerAimingState : State
     public override void Enter()
     {
         stateMachine.Animator.CrossFadeInFixedTime(AimHash, 0.1f);
-        stateMachine.InputReceiver.OnWalk?.Invoke(true);
+        stateMachine.InputHandler.OnWalk?.Invoke(true);
         //stateMachine.Animator.SetBool(AimHash, true);
-        stateMachine.InputReceiver.DashEvent += OnDash;
-        stateMachine.InputReceiver.AttackEvent += OnAttack;
-        stateMachine.InputReceiver.AimEvent += OnAim;
+        stateMachine.InputHandler.DashEvent += OnDash;
+        stateMachine.InputHandler.AttackEvent += OnAttack;
+        stateMachine.InputHandler.AimEvent += OnAim;
         stateMachine.RangedWeaponHandler.AttachToHand();
     }
 
     public override void Exit()
     {
-        stateMachine.InputReceiver.OnWalk?.Invoke(false);
+        stateMachine.InputHandler.OnWalk?.Invoke(false);
         //stateMachine.Animator.SetBool(AimHash, false);
-        stateMachine.InputReceiver.DashEvent -= OnDash;
-        stateMachine.InputReceiver.AttackEvent -= OnAttack;
-        stateMachine.InputReceiver.AimEvent -= OnAim;
+        stateMachine.InputHandler.DashEvent -= OnDash;
+        stateMachine.InputHandler.AttackEvent -= OnAttack;
+        stateMachine.InputHandler.AimEvent -= OnAim;
         stateMachine.RangedWeaponHandler.AttachToHolster();
     }
 
     public override void Tick(float deltaTime)
     {
-        stateMachine.InputReceiver.OnMovement?.Invoke(stateMachine.InputReceiver.MovementValue);
+        stateMachine.InputHandler.OnMovement?.Invoke(stateMachine.InputHandler.MovementValue);
         UpdateDirection();
         //UpdateAnimationData();
     }
 
     private void OnDash()
     {
-        if (stateMachine.InputReceiver.MovementValue.sqrMagnitude > 0)
+        if (stateMachine.InputHandler.MovementValue.sqrMagnitude > 0)
         {
             stateMachine.SwitchState(new PlayerDashState(stateMachine));
         }
@@ -68,18 +68,18 @@ public class PlayerAimingState : State
 
     protected void UpdateDirection()
     {
-        if (stateMachine.InputReceiver.movementInput == true)
+        if (stateMachine.InputHandler.movementInput == true)
         {
             // Is moving
-            if (stateMachine.InputReceiver.lookInput == true)
+            if (stateMachine.InputHandler.lookInput == true)
             {
                 // Look towards look input
-                facingDirection = stateMachine.InputReceiver.LookValue;
+                facingDirection = stateMachine.InputHandler.LookValue;
             }
             else
             {
                 // Look towards movement velocity
-                Vector3 velocity = stateMachine.InputReceiver.Controller.velocity;
+                Vector3 velocity = stateMachine.InputHandler.Controller.velocity;
                 velocity.y = 0f;
                 if (velocity.sqrMagnitude > 0.01f)
                 {
@@ -90,13 +90,13 @@ public class PlayerAimingState : State
         else
         {
             // Is not moving
-            if (stateMachine.InputReceiver.lookInput == true)
+            if (stateMachine.InputHandler.lookInput == true)
             {
                 // Look towards look input
-                facingDirection = stateMachine.InputReceiver.LookValue;
+                facingDirection = stateMachine.InputHandler.LookValue;
             }
         }
-        stateMachine.InputReceiver.OnFaceDirection?.Invoke(facingDirection);
+        stateMachine.InputHandler.OnFaceDirection?.Invoke(facingDirection);
     }
 
     /*private void UpdateAnimationData()

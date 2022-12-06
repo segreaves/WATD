@@ -13,27 +13,26 @@ public class PlayerFreeMovementState_OLD : PlayerMovementStateBase
         stateMachine.Animator.SetLayerWeight(stateMachine.Animator.GetLayerIndex("ArmR"), 1f);
         stateMachine.Animator.SetBool(LArmOutHash, false);
         stateMachine.Animator.SetBool(RArmOutHash, false);
-        stateMachine.InputReceiver.AttackEvent += OnAttack;
-        stateMachine.InputReceiver.DashEvent += OnDash;
-        stateMachine.InputReceiver.MeleeEvent += OnMelee;
+        stateMachine.InputHandler.AttackEvent += OnAttack;
+        stateMachine.InputHandler.DashEvent += OnDash;
+        stateMachine.InputHandler.MeleeEvent += OnMelee;
     }
 
     public override void Exit()
     {
         base.Exit();
-        stateMachine.InputReceiver.AttackEvent -= OnAttack;
-        stateMachine.InputReceiver.DashEvent -= OnDash;
-        stateMachine.InputReceiver.MeleeEvent -= OnMelee;
+        stateMachine.InputHandler.AttackEvent -= OnAttack;
+        stateMachine.InputHandler.DashEvent -= OnDash;
+        stateMachine.InputHandler.MeleeEvent -= OnMelee;
     }
 
     public override void Tick(float deltaTime)
     {
         base.Tick(deltaTime);
-        stateMachine.InputReceiver.OnMovement?.Invoke(stateMachine.InputReceiver.MovementValue);
-        stateMachine.InputReceiver.OnWalk.Invoke(stateMachine.InputReceiver.lookInput);
+        stateMachine.InputHandler.OnMovement?.Invoke(stateMachine.InputHandler.MovementValue);
+        stateMachine.InputHandler.OnWalk.Invoke(stateMachine.InputHandler.lookInput);
         UpdateAnimationData();
         UpdateDirection();
-        stateMachine.Animator.SetFloat(GuardedFloatHash, 0f, 0.1f, Time.deltaTime);
     }
 
     private void OnMelee(bool enabled)
@@ -46,7 +45,7 @@ public class PlayerFreeMovementState_OLD : PlayerMovementStateBase
 
     private void OnDash()
     {
-        if (stateMachine.InputReceiver.MovementValue.sqrMagnitude > 0)
+        if (stateMachine.InputHandler.MovementValue.sqrMagnitude > 0)
         {
             stateMachine.SwitchState(new PlayerDashState(stateMachine));
         }
