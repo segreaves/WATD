@@ -12,7 +12,7 @@ public class PlayerMeleeState : PlayerMovementStateBase
         stateMachine.Animator.SetBool(RArmOutHash, true);
         stateMachine.InputHandler.MeleeEvent += OnMelee;
         // Right arm layer
-        stateMachine.Animator.SetLayerWeight(stateMachine.Animator.GetLayerIndex("ArmR"), 1f);
+        stateMachine.Animator.SetLayerWeight(stateMachine.Animator.GetLayerIndex("ArmR"), 0.7f);
         stateMachine.MeleeWeaponHandler.AttachToHand();
         stateMachine.Animator.CrossFadeInFixedTime(stateMachine.MeleeWeaponHandler.currentMelee.weaponData.WeaponName + "Equip", 0.0f, LayerMask.NameToLayer("ArmR"));
     }
@@ -29,7 +29,7 @@ public class PlayerMeleeState : PlayerMovementStateBase
     {
         base.Tick(deltaTime);
         stateMachine.InputHandler.OnMovement?.Invoke(stateMachine.InputHandler.MovementValue);
-        stateMachine.InputHandler.OnWalk.Invoke(stateMachine.InputHandler.lookInput);
+        //stateMachine.InputHandler.OnWalk.Invoke(stateMachine.InputHandler.lookInput);
         UpdateAnimationData();
         UpdateDirection();
     }

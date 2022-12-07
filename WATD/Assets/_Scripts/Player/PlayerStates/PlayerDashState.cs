@@ -5,8 +5,6 @@ using UnityEngine;
 public class PlayerDashState : State
 {
     public PlayerDashState(PlayerStateMachine stateMachine) : base(stateMachine) {}
-    
-    private float rawTime = 0f;
 
     public override void Enter()
     {
@@ -25,10 +23,45 @@ public class PlayerDashState : State
     public override void Tick(float deltaTime)
     {
         stateMachine.AgentMovement.Move();
-        rawTime += deltaTime;
-        if (rawTime >= stateMachine.PlayerData.DashDuration)
+        UpdateHeadAim();
+        if (GetDashNormalizedTime() >= stateMachine.PlayerData.DashDuration)
         {
             stateMachine.SwitchState(new PlayerFreeMovementState(stateMachine));
         }
+    }
+
+    protected float GetDashNormalizedTime()
+    {
+        int layerIndex = stateMachine.Animator.GetLayerIndex("FullBody");
+        AnimatorStateInfo currentInfo = stateMachine.Animator.GetCurrentAnimatorStateInfo(layerIndex);
+        AnimatorStateInfo nextInfo = stateMachine.Animator.GetNextAnimatorStateInfo(layerIndex);
+        if (stateMachine.Animator.IsInTransition(layerIndex) && nextInfo.IsTag("Dash"))
+        {
+            return nextInfo.normalizedTime;
+        }
+        else if (!stateMachine.Animator.IsInTransition(layerIndex) && currentInfo.IsTag("Dash"))
+        {
+            return currentInfo.normalizedTime;
+        }
+        else
+        {
+            return 0f;
+        }
+    }
+
+    private void InitializeHeadAim()
+    {
+        stateMachine.AnimatorHandler.LookDirection = stateMachine.transform.forward;
+        stateMachine.AnimatorHandler.LookIKControl.StartLooking();
+    }
+
+    private void FinalizeHeadAim()
+    {
+        stateMachine.AnimatorHandler.LookIKControl.StopLooking();
+    }
+
+    private void UpdateHeadAim()
+    {
+        stateMachine.AnimatorHandler.LookIKControl.LookInDirection(stateMachine.transform.forward);
     }
 }

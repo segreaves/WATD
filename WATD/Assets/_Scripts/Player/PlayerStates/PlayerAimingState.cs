@@ -20,7 +20,7 @@ public class PlayerAimingState : State
     public override void Enter()
     {
         stateMachine.Animator.CrossFadeInFixedTime(AimHash, 0.1f);
-        stateMachine.InputHandler.OnWalk?.Invoke(true);
+        //stateMachine.InputHandler.OnWalk?.Invoke(true);
         //stateMachine.Animator.SetBool(AimHash, true);
         stateMachine.InputHandler.DashEvent += OnDash;
         stateMachine.InputHandler.AttackEvent += OnAttack;
@@ -30,7 +30,7 @@ public class PlayerAimingState : State
 
     public override void Exit()
     {
-        stateMachine.InputHandler.OnWalk?.Invoke(false);
+        //stateMachine.InputHandler.OnWalk?.Invoke(false);
         //stateMachine.Animator.SetBool(AimHash, false);
         stateMachine.InputHandler.DashEvent -= OnDash;
         stateMachine.InputHandler.AttackEvent -= OnAttack;

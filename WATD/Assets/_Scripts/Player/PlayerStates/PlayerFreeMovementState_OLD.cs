@@ -30,7 +30,7 @@ public class PlayerFreeMovementState_OLD : PlayerMovementStateBase
     {
         base.Tick(deltaTime);
         stateMachine.InputHandler.OnMovement?.Invoke(stateMachine.InputHandler.MovementValue);
-        stateMachine.InputHandler.OnWalk.Invoke(stateMachine.InputHandler.lookInput);
+        //stateMachine.InputHandler.OnWalk.Invoke(stateMachine.InputHandler.lookInput);
         UpdateAnimationData();
         UpdateDirection();
     }

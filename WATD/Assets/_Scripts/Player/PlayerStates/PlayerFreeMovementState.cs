@@ -30,10 +30,28 @@ public class PlayerFreeMovementState : PlayerMovementStateBase
     public override void Tick(float deltaTime)
     {
         base.Tick(deltaTime);
-        stateMachine.InputHandler.OnMovement?.Invoke(stateMachine.InputHandler.MovementValue);
-        //stateMachine.InputReceiver.OnWalk.Invoke(stateMachine.InputReceiver.lookInput);
+        HandleMovement();
         UpdateAnimationData();
         UpdateDirection();
+    }
+
+    private void HandleMovement()
+    {
+        if (stateMachine.InputHandler.lookInput)
+        {
+            stateMachine.InputHandler.OnMovement?.Invoke(Vector3.ClampMagnitude(stateMachine.InputHandler.MovementValue, 0.3f));
+        }
+        else
+        {
+            if (stateMachine.AgentMovement.isSprinting)
+            {
+                stateMachine.InputHandler.OnMovement?.Invoke(stateMachine.InputHandler.MovementValue.normalized);
+            }
+            else
+            {
+                stateMachine.InputHandler.OnMovement?.Invoke(stateMachine.InputHandler.MovementValue);
+            }
+        }
     }
 
     private void OnMelee(bool enabled)

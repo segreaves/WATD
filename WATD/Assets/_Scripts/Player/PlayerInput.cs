@@ -15,7 +15,7 @@ public partial class PlayerInput : MonoBehaviour, Controls.IPlayerActions, IAgen
     [field: SerializeField] public UnityEvent<Vector3> OnLookAt { get; set; }
     [field: SerializeField] public UnityEvent<Vector3> OnFaceDirection { get; set; }
     [field: SerializeField] public UnityEvent<Vector3, float> OnRotateTowards { get; set; }
-    [field: SerializeField] public UnityEvent<bool> OnWalk { get; set; }
+    [field: SerializeField] public UnityEvent<bool> OnSprint { get; set; }
     public event Action AttackEvent;
     public event Action<bool> AimEvent;
     public event Action<bool> MeleeEvent;
@@ -124,6 +124,7 @@ public partial class PlayerInput : MonoBehaviour, Controls.IPlayerActions, IAgen
 
     public void OnDash(InputAction.CallbackContext context)
     {
+        OnSprint?.Invoke(context.performed);
         if (!context.performed) { return; }
         if (!dashEnabled) { return; }
         if (MovementValue.magnitude < 0.1f) { return; }

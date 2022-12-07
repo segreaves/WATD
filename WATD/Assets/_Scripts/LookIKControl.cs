@@ -15,7 +15,7 @@ public class LookIKControl : MonoBehaviour
 
     private void Update()
     {
-        lookRig.weight = Mathf.Lerp(lookRig.weight, desiredWeight, Time.deltaTime);
+        lookRig.weight = Mathf.Lerp(lookRig.weight, desiredWeight, 2f * Time.deltaTime);
     }
     public void StartLooking()
     {
