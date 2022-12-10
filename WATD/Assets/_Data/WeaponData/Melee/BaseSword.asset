@@ -17,7 +17,7 @@ MonoBehaviour:
   - SwordAttack_L
   - SwordAttack_R
   Damage: 1
-  ComboStartTime: 0.1
+  ComboStartTime: 0.15
   AttackDuration: 0.5
   Cooldown: 0.2
   RotationSpeed: 50

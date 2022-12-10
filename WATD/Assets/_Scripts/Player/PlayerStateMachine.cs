@@ -40,7 +40,7 @@ public class PlayerStateMachine : StateMachine, IHittable
     protected override void Update()
     {
         base.Update();
-        InputHandler.IsInteracting = AnimatorHandler.animator.GetBool("IsInteracting");
+        InputHandler.IsInteracting = AnimatorHandler.animator.GetBool(AnimatorHandler.IsInteractingHash);
     }
 
     public void GetHit(int damage, GameObject damageDealer)

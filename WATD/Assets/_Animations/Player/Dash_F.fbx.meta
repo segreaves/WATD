@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: afe8a3330c59e04488fc06ba6a702865
+guid: 2cbbf1e638a115345856804ea7908bc1
 ModelImporter:
   serializedVersion: 21300
   internalIDToNameTable: []
@@ -33,11 +33,11 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Dash
-      takeName: Dash
-      internalID: -8444228808809566427
+      name: Dash_F
+      takeName: Dash_F
+      internalID: -2224629559353888843
       firstFrame: 0
-      lastFrame: 30
+      lastFrame: 15
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -47,7 +47,7 @@ ModelImporter:
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 1
-      loopBlendPositionY: 0
+      loopBlendPositionY: 1
       loopBlendPositionXZ: 1
       keepOriginalOrientation: 1
       keepOriginalPositionY: 0

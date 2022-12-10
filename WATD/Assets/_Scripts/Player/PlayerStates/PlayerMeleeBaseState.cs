@@ -15,16 +15,18 @@ public abstract class PlayerMeleeBaseState : State
 
     public override void Enter()
     {
-        stateMachine.MeleeWeaponHandler.AttachToHand();
+        //stateMachine.MeleeWeaponHandler.AttachToHand();
         attackIndex = stateMachine.MeleeWeaponHandler.attackIndex;
         stateMachine.MeleeWeaponHandler.IncrementAttackIndex();
         currentWeaponData = stateMachine.MeleeWeaponHandler.currentMelee.weaponData;
-        stateMachine.Animator.CrossFadeInFixedTime(currentWeaponData.AttackAnimations[attackIndex], 0.0f);
+        //stateMachine.AnimatorHandler.animator.CrossFadeInFixedTime(currentWeaponData.AttackAnimations[attackIndex], 0f);
+        stateMachine.AnimatorHandler.PlayTargetAnimation(currentWeaponData.AttackAnimations[attackIndex], true, 0f);
     }
 
     public override void Exit()
     {
-        stateMachine.MeleeWeaponHandler.AttachToHolster();
+        //stateMachine.MeleeWeaponHandler.AttachToHolster();
+        stateMachine.AnimatorHandler.animator.SetBool(stateMachine.AnimatorHandler.IsInteractingHash, false);
         stateMachine.InputHandler.AttackEvent -= OnAttack;
         stateMachine.InputHandler.DashEvent -= OnDash;
     }
@@ -64,7 +66,7 @@ public abstract class PlayerMeleeBaseState : State
     protected void ExitConditions()
     {
         // Exit if is moving after MaxDuration
-        if (attackTimer > currentWeaponData.AttackDuration + currentWeaponData.Cooldown && stateMachine.InputHandler.MovementValue.magnitude > 0.1f)
+        if (attackTimer > currentWeaponData.AttackDuration + currentWeaponData.Cooldown && stateMachine.InputHandler.movementInput == true)
         {
             stateMachine.SwitchState(new PlayerFreeMovementState(stateMachine));
         }
@@ -89,7 +91,7 @@ public abstract class PlayerMeleeBaseState : State
 
     protected float GetAttackNormalizedTime()
     {
-        int layerIndex = stateMachine.Animator.GetLayerIndex("FullBody");
+        int layerIndex = stateMachine.Animator.GetLayerIndex("Full Body");
         AnimatorStateInfo currentInfo = stateMachine.Animator.GetCurrentAnimatorStateInfo(layerIndex);
         AnimatorStateInfo nextInfo = stateMachine.Animator.GetNextAnimatorStateInfo(layerIndex);
         if (stateMachine.Animator.IsInTransition(layerIndex) && nextInfo.IsTag("Attack"))

@@ -3,70 +3,100 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerAimingState : State
+public class PlayerAimingState : PlayerMovementStateBase
 {
     public PlayerAimingState(PlayerStateMachine stateMachine) : base(stateMachine) {}
 
-    protected readonly int MovementHash = Animator.StringToHash("Locomotion");
-    protected readonly int IsMovingHash = Animator.StringToHash("IsMoving");
-    protected readonly int ArmsTuckedHash = Animator.StringToHash("ArmsTuckedIn");
-    protected readonly int LookAngleHash = Animator.StringToHash("LookAngle");
-    protected readonly int LookOffsetHash = Animator.StringToHash("LookOffset");
-    protected readonly int AimHash = Animator.StringToHash("Aim");
-    private Vector3 facingDirection;
-    private Vector3 lookDelay;
-    private Vector3 dampVelocity;
+    private float lookAngle;
 
     public override void Enter()
     {
-        stateMachine.Animator.CrossFadeInFixedTime(AimHash, 0.1f);
-        //stateMachine.InputHandler.OnWalk?.Invoke(true);
-        //stateMachine.Animator.SetBool(AimHash, true);
-        stateMachine.InputHandler.DashEvent += OnDash;
+        base.Enter();
+        // Right arm layer
+        stateMachine.Animator.SetLayerWeight(stateMachine.Animator.GetLayerIndex("ArmR"), 1f);
+        stateMachine.Animator.SetBool(stateMachine.AnimatorHandler.LArmOutHash, false);
+        stateMachine.Animator.SetBool(stateMachine.AnimatorHandler.RArmOutHash, false);
         stateMachine.InputHandler.AttackEvent += OnAttack;
-        stateMachine.InputHandler.AimEvent += OnAim;
-        stateMachine.RangedWeaponHandler.AttachToHand();
+        stateMachine.InputHandler.DashEvent += OnDash;
     }
 
     public override void Exit()
     {
-        //stateMachine.InputHandler.OnWalk?.Invoke(false);
-        //stateMachine.Animator.SetBool(AimHash, false);
-        stateMachine.InputHandler.DashEvent -= OnDash;
+        base.Exit();
         stateMachine.InputHandler.AttackEvent -= OnAttack;
-        stateMachine.InputHandler.AimEvent -= OnAim;
-        stateMachine.RangedWeaponHandler.AttachToHolster();
+        stateMachine.InputHandler.DashEvent -= OnDash;
     }
 
     public override void Tick(float deltaTime)
     {
-        stateMachine.InputHandler.OnMovement?.Invoke(stateMachine.InputHandler.MovementValue);
+        base.Tick(deltaTime);
+        HandleMovement();
+        UpdateAnimationData();
         UpdateDirection();
-        //UpdateAnimationData();
+    }
+
+    private void HandleMovement()
+    {
+        if (stateMachine.InputHandler.lookInput)
+        {
+            stateMachine.InputHandler.OnMovement?.Invoke(Vector3.ClampMagnitude(stateMachine.InputHandler.MovementValue, 0.3f));
+        }
+        else
+        {
+            if (stateMachine.AgentMovement.isSprinting)
+            {
+                stateMachine.InputHandler.OnMovement?.Invoke(stateMachine.InputHandler.MovementValue.normalized);
+            }
+            else
+            {
+                stateMachine.InputHandler.OnMovement?.Invoke(stateMachine.InputHandler.MovementValue);
+            }
+        }
     }
 
     private void OnDash()
     {
-        if (stateMachine.InputHandler.MovementValue.sqrMagnitude > 0)
-        {
-            stateMachine.SwitchState(new PlayerDashState(stateMachine));
-        }
+        if (stateMachine.InputHandler.IsInteracting == true) { return; }
+        if (stateMachine.InputHandler.MovementValue.sqrMagnitude <= 0) { return; }
+        stateMachine.SwitchState(new PlayerDashState(stateMachine));
     }
 
     private void OnAttack()
     {
-        Debug.Log("Aiming state SHOOT");
+        if (stateMachine.InputHandler.IsInteracting == true) { return; }
+        stateMachine.SwitchState(new PlayerMeleeEntryState(stateMachine));
     }
 
-    private void OnAim(bool enabled)
+    private void UpdateAnimationData()
     {
-        if (enabled == false)
+        // Update look angle if not moving
+        if (stateMachine.InputHandler.movementInput == false)
         {
-            stateMachine.SwitchState(new PlayerFreeMovementState(stateMachine));
+            // Facing angle
+            float facingAngle = Vector3.Angle(stateMachine.transform.forward, stateMachine.AgentMovement.LastForwardDirection);
+            float facingAngleSign = Vector3.Dot(stateMachine.transform.right, stateMachine.AgentMovement.LastForwardDirection) >= 0f ? -1f : 1f;
+            if (facingAngleSign <= 0)
+            {
+                facingAngle = Math.Clamp(facingAngle, 0f, 180f) / 360f;
+            }
+            else
+            {
+                facingAngle = (360f - Math.Clamp(facingAngle, 0f, 180f)) / 360f;
+            }
+            stateMachine.Animator.SetFloat(stateMachine.AnimatorHandler.FacingAngleHash, facingAngle, 0.0f, Time.deltaTime);
         }
+
+        // Look angle
+        lookAngle = Vector3.Angle(stateMachine.transform.forward, stateMachine.AnimatorHandler.LookDirection);
+        float lookAngleSign = Vector3.Dot(stateMachine.transform.right, stateMachine.AnimatorHandler.LookDirection) >= 0f ? 1f : -1f;
+        float updatelookAngle = 0.5f + lookAngleSign * Math.Clamp(lookAngle, 0f, 90f) / 180f;
+        stateMachine.Animator.SetFloat(stateMachine.AnimatorHandler.LookAngleHash, updatelookAngle, 0.05f, Time.deltaTime);
+        
+        // Is moving
+        stateMachine.Animator.SetBool(stateMachine.AnimatorHandler.IsMovingHash, stateMachine.InputHandler.movementInput);
     }
 
-    protected void UpdateDirection()
+    private void UpdateDirection()
     {
         if (stateMachine.InputHandler.movementInput == true)
         {
@@ -81,11 +111,12 @@ public class PlayerAimingState : State
                 // Look towards movement velocity
                 Vector3 velocity = stateMachine.InputHandler.Controller.velocity;
                 velocity.y = 0f;
-                if (velocity.sqrMagnitude > 0.01f)
+                if (velocity.sqrMagnitude > 0.1f)
                 {
                     facingDirection = velocity.normalized;
                 }
             }
+            stateMachine.InputHandler.OnFaceDirection?.Invoke(facingDirection);
         }
         else
         {
@@ -93,44 +124,22 @@ public class PlayerAimingState : State
             if (stateMachine.InputHandler.lookInput == true)
             {
                 // Look towards look input
-                facingDirection = stateMachine.InputHandler.LookValue;
+                float lookAngle = Vector3.Angle(stateMachine.AgentMovement.LastForwardDirection, stateMachine.InputHandler.LookValue);
+                if (lookAngle >= 90f)
+                {
+                    float lookAngleSign = Vector3.Dot(stateMachine.transform.right, stateMachine.InputHandler.LookValue) >= 0f ? 1f : -1f;
+                    if (lookAngleSign >= 0f)
+                    {
+                        stateMachine.AgentMovement.LastForwardDirection = Quaternion.Euler(0, 120f, 0) * stateMachine.AgentMovement.LastForwardDirection;
+                    }
+                    else
+                    {
+                        stateMachine.AgentMovement.LastForwardDirection = Quaternion.Euler(0, -120f, 0) * stateMachine.AgentMovement.LastForwardDirection;
+                    }
+                }
+                facingDirection = stateMachine.AgentMovement.LastForwardDirection;
             }
+            stateMachine.InputHandler.OnRotateTowards.Invoke(facingDirection, 7f);
         }
-        stateMachine.InputHandler.OnFaceDirection?.Invoke(facingDirection);
     }
-
-    /*private void UpdateAnimationData()
-    {
-        // Look angle
-        float lookAngle = Vector3.Angle(stateMachine.transform.forward, stateMachine.AgentMovement.lastDirection);
-        float angleSign = Vector3.Dot(stateMachine.transform.right, stateMachine.AgentMovement.lastDirection) >= 0f ? -1f : 1f;
-        if (angleSign <= 0)
-        {
-            lookAngle = Math.Clamp(lookAngle, 0f, 180f) / 360f;
-        }
-        else
-        {
-            lookAngle = (360f - Math.Clamp(lookAngle, 0f, 180f)) / 360f;
-        }
-        // Update look angle if not moving
-        if (stateMachine.InputReceiver.movementInput == false)
-        {
-            stateMachine.Animator.SetFloat(LookAngleHash, lookAngle, 0.0f, Time.deltaTime);
-        }
-        // Look offset
-        lookDelay = Vector3.SmoothDamp(lookDelay, stateMachine.transform.forward, ref dampVelocity, 0.2f);
-        if (stateMachine.InputReceiver.movementInput == true)
-        {
-            stateMachine.Animator.SetLayerWeight(stateMachine.Animator.GetLayerIndex("Crouch"), 0f);
-        }
-        else
-        {
-            float lookOffset = Quaternion.Angle(stateMachine.transform.rotation, Quaternion.LookRotation(lookDelay));
-            lookOffset = Math.Clamp(lookOffset, 0f, 180f) / 180f;
-            stateMachine.Animator.SetFloat(LookOffsetHash, lookOffset, 0.0f, Time.deltaTime);
-            stateMachine.Animator.SetLayerWeight(stateMachine.Animator.GetLayerIndex("Crouch"), lookOffset);
-        }
-        // Is moving
-        stateMachine.Animator.SetBool(IsMovingHash, stateMachine.InputReceiver.movementInput);
-    }*/
 }

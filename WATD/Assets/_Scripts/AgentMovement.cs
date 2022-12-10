@@ -53,6 +53,15 @@ public class AgentMovement : MonoBehaviour
         Controller.Move((currentMotion * CalculateSpeed(movement) + ForceReceiver.Movement) * Time.deltaTime);
     }
 
+    public void Move(Vector3 movement, float speed)
+    {
+        if (movement != Vector3.zero)
+        {
+            currentMotion = movement;
+        }
+        Controller.Move((currentMotion * speed + ForceReceiver.Movement) * Time.deltaTime);
+    }
+
     protected void UpdateAnimationData(float deltaTime)
     {
         // Speed

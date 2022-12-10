@@ -9,8 +9,8 @@ public class PlayerMeleeState : PlayerMovementStateBase
     public override void Enter()
     {
         base.Enter();
-        stateMachine.Animator.SetBool(RArmOutHash, true);
-        stateMachine.InputHandler.MeleeEvent += OnMelee;
+        stateMachine.Animator.SetBool(stateMachine.AnimatorHandler.RArmOutHash, true);
+        stateMachine.InputHandler.AttackEvent += OnAttack;
         // Right arm layer
         stateMachine.Animator.SetLayerWeight(stateMachine.Animator.GetLayerIndex("ArmR"), 0.7f);
         stateMachine.MeleeWeaponHandler.AttachToHand();
@@ -20,7 +20,7 @@ public class PlayerMeleeState : PlayerMovementStateBase
     public override void Exit()
     {
         base.Exit();
-        stateMachine.InputHandler.MeleeEvent -= OnMelee;
+        stateMachine.InputHandler.AttackEvent -= OnAttack;
         stateMachine.MeleeWeaponHandler.AttachToHolster();
         stateMachine.Animator.CrossFadeInFixedTime(stateMachine.MeleeWeaponHandler.currentMelee.weaponData.WeaponName + "Unequip", 0.0f, LayerMask.NameToLayer("UpperBody"));
     }
@@ -30,15 +30,12 @@ public class PlayerMeleeState : PlayerMovementStateBase
         base.Tick(deltaTime);
         stateMachine.InputHandler.OnMovement?.Invoke(stateMachine.InputHandler.MovementValue);
         //stateMachine.InputHandler.OnWalk.Invoke(stateMachine.InputHandler.lookInput);
-        UpdateAnimationData();
-        UpdateDirection();
+        //UpdateAnimationData();
+        //UpdateDirection();
     }
 
-    private void OnMelee(bool enabled)
+    private void OnAttack()
     {
-        if (enabled == false)
-        {
-            stateMachine.SwitchState(new PlayerFreeMovementState(stateMachine));
-        }
+        stateMachine.SwitchState(new PlayerMeleeEntryState(stateMachine));
     }
 }

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MaxHealth: 5
   Damage: 1
-  DashDuration: 0.45
-  DashInvulnerability: 0.1
-  DashImpulse: 15
-  DashCooldown: 0.25
+  DashDuration: 0.4
+  DashInvulnerability: 0.15
+  DashImpulse: 20
+  DashCooldown: 0.2
