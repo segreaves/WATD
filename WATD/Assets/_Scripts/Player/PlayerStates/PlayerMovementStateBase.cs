@@ -10,66 +10,107 @@ public abstract class PlayerMovementStateBase : State
 
     public override void Enter()
     {
-        facingDirection = stateMachine.AgentMovement.LastForwardDirection;
-        InitializeHeadAim();
+        facingDirection = stateMachine.AnimatorHandler.LastBodyDirection;
+        stateMachine.AnimatorHandler.LastLookDirection = stateMachine.transform.forward;
+        stateMachine.AnimatorHandler.LookIKControl.StartLooking();
     }
 
     public override void Exit()
     {
-        FinalizeHeadAim();
+        stateMachine.AnimatorHandler.LookIKControl.StopLooking();
         stateMachine.Animator.SetBool(stateMachine.AnimatorHandler.IsMovingHash, false);
     }
 
     public override void Tick(float deltaTime)
     {
-        UpdateLastForwardDirection();
-        UpdateLookDirection();
-        UpdateHeadAim();
+        SetDirection();
+        SetAnimationData();
     }
 
-    private void InitializeHeadAim()
+    private void SetDirection()
     {
-        stateMachine.AnimatorHandler.LookDirection = stateMachine.transform.forward;
-        stateMachine.AnimatorHandler.LookIKControl.StartLooking();
-    }
-
-    private void FinalizeHeadAim()
-    {
-        stateMachine.AnimatorHandler.LookIKControl.StopLooking();
-    }
-
-    private void UpdateHeadAim()
-    {
-        stateMachine.AnimatorHandler.LookIKControl.LookInDirection(stateMachine.AnimatorHandler.LookDirection);
-    }
-
-    private void UpdateLastForwardDirection()
-    {
-        if (stateMachine.AgentMovement.IsMoving == true)
+        if (stateMachine.InputHandler.movementInput == true)
         {
+            Vector3 bodyDirection;
             if (stateMachine.InputHandler.lookInput == true)
             {
-                stateMachine.AgentMovement.LastForwardDirection = stateMachine.InputHandler.LookValue.normalized;
+                bodyDirection = stateMachine.InputHandler.LookValue.normalized;
             }
             else
             {
-                stateMachine.AgentMovement.LastForwardDirection = stateMachine.transform.forward;
+                bodyDirection = stateMachine.InputHandler.MovementValue.normalized;
             }
-        }
-    }
-
-    private void UpdateLookDirection()
-    {
-        if (stateMachine.AgentMovement.IsMoving == true)
-        {
-            stateMachine.AnimatorHandler.LookDirection = stateMachine.transform.forward;
+            stateMachine.InputHandler.OnFaceDirection?.Invoke(bodyDirection);
+            stateMachine.AnimatorHandler.LastLookDirection = bodyDirection;
+            stateMachine.AnimatorHandler.LastBodyDirection = bodyDirection;
+            stateMachine.AnimatorHandler.LookIKControl.LookInDirection(bodyDirection);
         }
         else
         {
             if (stateMachine.InputHandler.lookInput == true)
             {
-                stateMachine.AnimatorHandler.LookDirection = stateMachine.InputHandler.LookValue.normalized;
+                // Look towards look input
+                stateMachine.AnimatorHandler.LastLookDirection = stateMachine.InputHandler.LookValue.normalized;
+                float lookAngle = Vector3.Angle(stateMachine.AnimatorHandler.LastBodyDirection, stateMachine.InputHandler.LookValue);
+                if (lookAngle >= 90f)
+                {
+                    float lookAngleSign = Vector3.Dot(stateMachine.transform.right, stateMachine.InputHandler.LookValue) >= 0f ? 1f : -1f;
+                    if (lookAngleSign >= 0f)
+                    {
+                        stateMachine.AnimatorHandler.LastBodyDirection = Quaternion.Euler(0, 120f, 0) * stateMachine.AnimatorHandler.LastBodyDirection;
+                    }
+                    else
+                    {
+                        stateMachine.AnimatorHandler.LastBodyDirection = Quaternion.Euler(0, -120f, 0) * stateMachine.AnimatorHandler.LastBodyDirection;
+                    }
+                }
             }
+            stateMachine.InputHandler.OnFaceDirection?.Invoke(stateMachine.AnimatorHandler.LastBodyDirection);
         }
+    }
+
+    private void SetAnimationData()
+    {
+        // Update look angle if not moving
+        if (stateMachine.InputHandler.movementInput == false)
+        {
+            // Facing angle
+            float facingAngle = Vector3.Angle(stateMachine.transform.forward, stateMachine.AnimatorHandler.LastBodyDirection);
+            float facingAngleSign = Vector3.Dot(stateMachine.transform.right, stateMachine.AnimatorHandler.LastBodyDirection) >= 0f ? -1f : 1f;
+            if (facingAngleSign <= 0)
+            {
+                facingAngle = Math.Clamp(facingAngle, 0f, 180f) / 360f;
+            }
+            else
+            {
+                facingAngle = (360f - Math.Clamp(facingAngle, 0f, 180f)) / 360f;
+            }
+            stateMachine.Animator.SetFloat(stateMachine.AnimatorHandler.FacingAngleHash, facingAngle, 0.0f, Time.deltaTime);
+
+            // Look angle
+            float lookAngle;
+            float lookAngleSign;
+            if (stateMachine.InputHandler.lookInput == true)
+            {
+                lookAngle = Vector3.Angle(stateMachine.transform.forward, stateMachine.InputHandler.LookValue);
+                lookAngleSign = Vector3.Dot(stateMachine.transform.right, stateMachine.InputHandler.LookValue) >= 0f ? 1f : -1f;
+                stateMachine.AnimatorHandler.LookIKControl.LookInDirection(stateMachine.InputHandler.LookValue);
+            }
+            else
+            {
+                lookAngle = Vector3.Angle(stateMachine.transform.forward, stateMachine.AnimatorHandler.LastLookDirection);
+                lookAngleSign = Vector3.Dot(stateMachine.transform.right, stateMachine.AnimatorHandler.LastLookDirection) >= 0f ? 1f : -1f;
+                stateMachine.AnimatorHandler.LookIKControl.LookInDirection(stateMachine.AnimatorHandler.LastLookDirection);
+            }
+            float updatelookAngle = 0.5f + lookAngleSign * Math.Clamp(lookAngle, 0f, 90f) / 180f;
+            stateMachine.Animator.SetFloat(stateMachine.AnimatorHandler.LookAngleHash, updatelookAngle, 0.05f, Time.deltaTime);
+        }
+        else
+        {
+            stateMachine.Animator.SetFloat(stateMachine.AnimatorHandler.LookAngleHash, 0.5f, 0.05f, Time.deltaTime);
+        }
+        
+        // Is moving
+        stateMachine.Animator.SetBool(stateMachine.AnimatorHandler.IsMovingHash, stateMachine.InputHandler.movementInput);
     }
 }

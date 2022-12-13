@@ -12,7 +12,6 @@ public class AgentMovement : MonoBehaviour
 
     public CharacterController Controller { get; private set; }
     private float currentVelocity;
-    public Vector3 LastForwardDirection;
     private Quaternion currentRotation;
     private Vector3 currentMotion;
     private ForceReceiver ForceReceiver;
@@ -32,11 +31,6 @@ public class AgentMovement : MonoBehaviour
         Controller = GetComponentInChildren<CharacterController>();
         ForceReceiver = GetComponent<ForceReceiver>();
         Animator = GetComponent<Animator>();
-    }
-
-    private void Start()
-    {
-        LastForwardDirection = transform.forward;
     }
 
     private void Update()
@@ -95,10 +89,7 @@ public class AgentMovement : MonoBehaviour
     public void FaceDirection(Vector3 look)
     {
         if (look == Vector3.zero) { return; }
-        transform.rotation = Quaternion.Lerp(
-            transform.rotation,
-            Quaternion.LookRotation(look),
-            Time.deltaTime * MovementData.rotationSpeed);
+        FaceDirection(look, MovementData.rotationSpeed);
     }
 
     public void FaceDirection(Vector3 look, float rotationSpeed)

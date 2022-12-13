@@ -18,6 +18,7 @@ public class PlayerStateMachine : StateMachine, IHittable
     public AgentMovement AgentMovement { get; private set; }
     public Animator Animator { get; private set; }
     public bool IsInteracting { get; private set; }
+    public bool IsMeleeMode;
 
     private void Awake()
     {
@@ -62,14 +63,5 @@ public class PlayerStateMachine : StateMachine, IHittable
         Vector3 damageDirection = transform.position - damageDealer.transform.position;
         damageDirection.y = 0f;
         ForceReceiver?.AddForce(damageDirection.normalized * 5f);
-    }
-
-    private void OnDrawGizmos()
-    {
-        if (Application.isPlaying)
-        {
-            Gizmos.color = Color.magenta;
-            Gizmos.DrawRay(transform.position, AgentMovement.LastForwardDirection * 2f);
-        }
     }
 }

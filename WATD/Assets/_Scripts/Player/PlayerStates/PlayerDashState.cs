@@ -16,7 +16,7 @@ public class PlayerDashState : State
         stateMachine.ForceReceiver?.ResetImpact();
         stateMachine.transform.rotation = Quaternion.LookRotation(dashDirection);
         stateMachine.AnimatorHandler.PlayTargetAnimation(stateMachine.AnimatorHandler.DashFHash, true, 0.1f);
-        stateMachine.AgentMovement.LastForwardDirection = dashDirection;
+        stateMachine.AnimatorHandler.LastBodyDirection = dashDirection;
     }
 
     public override void Exit()

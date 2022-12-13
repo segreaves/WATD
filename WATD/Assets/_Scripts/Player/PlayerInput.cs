@@ -52,7 +52,7 @@ public partial class PlayerInput : MonoBehaviour, Controls.IPlayerActions, IAgen
     {
         Vector2 MovementValueXY = context.ReadValue<Vector2>();
         float inputMagnitude = InputMovementCurve.Evaluate(MovementValueXY.magnitude);
-        if (inputMagnitude <= 0.1f)
+        if (inputMagnitude <= 0.2f)
         {
             movementInput = false;
             MovementValue = Vector3.zero;

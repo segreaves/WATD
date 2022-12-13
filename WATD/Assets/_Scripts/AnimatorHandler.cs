@@ -13,9 +13,8 @@ public class AnimatorHandler : MonoBehaviour
     public readonly int FacingAngleHash = Animator.StringToHash("FacingAngle");
     public readonly int LookAngleHash = Animator.StringToHash("LookAngle");
     public readonly int DashFHash = Animator.StringToHash("Dash");
-    public readonly int LArmOutHash = Animator.StringToHash("ArmL");
-    public readonly int RArmOutHash = Animator.StringToHash("ArmR");
-    public Vector3 LookDirection;
+    public Vector3 LastLookDirection;
+    public Vector3 LastBodyDirection;
 
     private void Awake()
     {
@@ -25,7 +24,8 @@ public class AnimatorHandler : MonoBehaviour
 
     private void Start()
     {
-        LookDirection = transform.forward;
+        LastLookDirection = transform.forward;
+        LastBodyDirection = transform.forward;
     }
 
     public void PlayTargetAnimation(int targetAnimHash, bool isInteracting, float transitionDuration)
@@ -38,5 +38,16 @@ public class AnimatorHandler : MonoBehaviour
     {
         animator.SetBool(IsInteractingHash, isInteracting);
         animator.CrossFadeInFixedTime(targetAnimString, transitionDuration);
+    }
+
+    private void OnDrawGizmos()
+    {
+        if (Application.isPlaying)
+        {
+            Gizmos.color = Color.magenta;
+            Gizmos.DrawRay(transform.position, LastBodyDirection * 2f);
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawRay(transform.position, LastLookDirection * 2f);
+        }
     }
 }
