@@ -50,6 +50,7 @@ public class PlayerFreeMovementState : PlayerMovementStateBase
 
     private void EnterCombatMode()
     {
+        stateMachine.IsMeleeMode = true;
         stateMachine.MeleeWeaponHandler.AttachToHand();
         stateMachine.Animator.CrossFadeInFixedTime(stateMachine.MeleeWeaponHandler.currentMelee.weaponData.WeaponName + "InHand", 0.2f, LayerMask.NameToLayer("ArmR_Additive"));
         stateMachine.Animator.CrossFadeInFixedTime(stateMachine.MeleeWeaponHandler.currentMelee.weaponData.WeaponName + "Equip", 0.0f, LayerMask.NameToLayer("ArmR"));

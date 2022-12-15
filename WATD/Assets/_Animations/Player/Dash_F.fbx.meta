@@ -19,7 +19,32 @@ ModelImporter:
     rigImportErrors: 
     rigImportWarnings: 
     animationImportErrors: 
-    animationImportWarnings: 
+    animationImportWarnings: "\nClip 'Dash_F' has import animation warnings that
+      might lower retargeting quality:\n\t'index_01_l' has translation animation
+      that will be discarded.\n\t'index_02_l' has translation animation that will
+      be discarded.\n\t'index_03_l' has translation animation that will be discarded.\n\t'thumb_01_l'
+      has translation animation that will be discarded.\n\t'thumb_02_l' has translation
+      animation that will be discarded.\n\t'thumb_03_l' has translation animation
+      that will be discarded.\n\t'middle_01_l' has translation animation that will
+      be discarded.\n\t'middle_02_l' has translation animation that will be discarded.\n\t'middle_03_l'
+      has translation animation that will be discarded.\n\t'ring_01_l' has translation
+      animation that will be discarded.\n\t'ring_02_l' has translation animation
+      that will be discarded.\n\t'ring_03_l' has translation animation that will
+      be discarded.\n\t'pinky_01_l' has translation animation that will be discarded.\n\t'pinky_02_l'
+      has translation animation that will be discarded.\n\t'pinky_03_l' has translation
+      animation that will be discarded.\n\t'index_01_r' has translation animation
+      that will be discarded.\n\t'index_02_r' has translation animation that will
+      be discarded.\n\t'index_03_r' has translation animation that will be discarded.\n\t'thumb_01_r'
+      has translation animation that will be discarded.\n\t'thumb_02_r' has translation
+      animation that will be discarded.\n\t'thumb_03_r' has translation animation
+      that will be discarded.\n\t'middle_01_r' has translation animation that will
+      be discarded.\n\t'middle_02_r' has translation animation that will be discarded.\n\t'middle_03_r'
+      has translation animation that will be discarded.\n\t'ring_01_r' has translation
+      animation that will be discarded.\n\t'ring_02_r' has translation animation
+      that will be discarded.\n\t'ring_03_r' has translation animation that will
+      be discarded.\n\t'pinky_01_r' has translation animation that will be discarded.\n\t'pinky_02_r'
+      has translation animation that will be discarded.\n\t'pinky_03_r' has translation
+      animation that will be discarded.\n"
     animationRetargetingWarnings: 
     animationDoRetargetingWarnings: 0
     importAnimatedCustomProperties: 0
@@ -37,7 +62,7 @@ ModelImporter:
       takeName: Dash_F
       internalID: -2224629559353888843
       firstFrame: 0
-      lastFrame: 15
+      lastFrame: 25
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -47,7 +72,7 @@ ModelImporter:
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 1
-      loopBlendPositionY: 1
+      loopBlendPositionY: 0
       loopBlendPositionXZ: 1
       keepOriginalOrientation: 1
       keepOriginalPositionY: 0

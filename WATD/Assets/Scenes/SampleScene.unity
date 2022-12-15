@@ -1131,18 +1131,6 @@ MonoBehaviour:
   m_MaximumFOV: 60
   m_MinimumOrthoSize: 1
   m_MaximumOrthoSize: 5000
---- !u!114 &2012504163 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3831826507396700389, guid: 6ceab631c3e854245a1e8eebdf2b2aea,
-    type: 3}
-  m_PrefabInstance: {fileID: 3831826507859143829}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0ab5c35706c9d574d90f0bf22506013d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &2146476969
 GameObject:
   m_ObjectHideFlags: 0
@@ -1234,135 +1222,12 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 663811188, guid: 6ceab631c3e854245a1e8eebdf2b2aea, type: 3}
-      propertyPath: m_WarningMessage
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 1723677496, guid: 6ceab631c3e854245a1e8eebdf2b2aea, type: 3}
-      propertyPath: m_Data.m_WorldUpType
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3831826507396700388, guid: 6ceab631c3e854245a1e8eebdf2b2aea,
-        type: 3}
-      propertyPath: InputMovementCurve.m_Curve.Array.size
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 3831826507396700388, guid: 6ceab631c3e854245a1e8eebdf2b2aea,
-        type: 3}
-      propertyPath: InputMovementCurve.m_Curve.Array.data[1].time
-      value: 0.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 3831826507396700388, guid: 6ceab631c3e854245a1e8eebdf2b2aea,
-        type: 3}
-      propertyPath: InputMovementCurve.m_Curve.Array.data[2].time
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3831826507396700388, guid: 6ceab631c3e854245a1e8eebdf2b2aea,
-        type: 3}
-      propertyPath: InputMovementCurve.m_Curve.Array.data[3].time
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3831826507396700388, guid: 6ceab631c3e854245a1e8eebdf2b2aea,
-        type: 3}
-      propertyPath: InputMovementCurve.m_Curve.Array.data[1].value
-      value: 0.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 3831826507396700388, guid: 6ceab631c3e854245a1e8eebdf2b2aea,
-        type: 3}
-      propertyPath: InputMovementCurve.m_Curve.Array.data[2].value
-      value: 1.0030289
-      objectReference: {fileID: 0}
-    - target: {fileID: 3831826507396700388, guid: 6ceab631c3e854245a1e8eebdf2b2aea,
-        type: 3}
-      propertyPath: InputMovementCurve.m_Curve.Array.data[2].inSlope
-      value: 2.8473098
-      objectReference: {fileID: 0}
-    - target: {fileID: 3831826507396700388, guid: 6ceab631c3e854245a1e8eebdf2b2aea,
-        type: 3}
-      propertyPath: InputMovementCurve.m_Curve.Array.data[3].inSlope
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3831826507396700388, guid: 6ceab631c3e854245a1e8eebdf2b2aea,
-        type: 3}
-      propertyPath: InputMovementCurve.m_Curve.Array.data[2].inWeight
-      value: 0.021272633
-      objectReference: {fileID: 0}
-    - target: {fileID: 3831826507396700388, guid: 6ceab631c3e854245a1e8eebdf2b2aea,
-        type: 3}
-      propertyPath: InputMovementCurve.m_Curve.Array.data[2].outSlope
-      value: 2.8473098
-      objectReference: {fileID: 0}
-    - target: {fileID: 3831826507396700388, guid: 6ceab631c3e854245a1e8eebdf2b2aea,
-        type: 3}
-      propertyPath: InputMovementCurve.m_Curve.Array.data[3].inWeight
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3831826507396700388, guid: 6ceab631c3e854245a1e8eebdf2b2aea,
-        type: 3}
-      propertyPath: InputMovementCurve.m_Curve.Array.data[3].outSlope
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3831826507396700388, guid: 6ceab631c3e854245a1e8eebdf2b2aea,
-        type: 3}
-      propertyPath: InputMovementCurve.m_Curve.Array.data[2].outWeight
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3831826507396700388, guid: 6ceab631c3e854245a1e8eebdf2b2aea,
-        type: 3}
-      propertyPath: InputMovementCurve.m_Curve.Array.data[3].outWeight
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3831826507396700388, guid: 6ceab631c3e854245a1e8eebdf2b2aea,
-        type: 3}
-      propertyPath: InputMovementCurve.m_Curve.Array.data[2].tangentMode
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3831826507396700388, guid: 6ceab631c3e854245a1e8eebdf2b2aea,
-        type: 3}
-      propertyPath: InputMovementCurve.m_Curve.Array.data[3].tangentMode
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3831826507396700388, guid: 6ceab631c3e854245a1e8eebdf2b2aea,
-        type: 3}
-      propertyPath: <OnSprint>k__BackingField.m_PersistentCalls.m_Calls.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3831826507396700388, guid: 6ceab631c3e854245a1e8eebdf2b2aea,
-        type: 3}
-      propertyPath: <OnSprint>k__BackingField.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 3831826507396700388, guid: 6ceab631c3e854245a1e8eebdf2b2aea,
         type: 3}
       propertyPath: <OnLookAt>k__BackingField.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 966226548, guid: 6ceab631c3e854245a1e8eebdf2b2aea,
         type: 3}
-    - target: {fileID: 3831826507396700388, guid: 6ceab631c3e854245a1e8eebdf2b2aea,
-        type: 3}
-      propertyPath: <OnSprint>k__BackingField.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 2012504163}
-    - target: {fileID: 3831826507396700388, guid: 6ceab631c3e854245a1e8eebdf2b2aea,
-        type: 3}
-      propertyPath: <OnSprint>k__BackingField.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 3831826507396700388, guid: 6ceab631c3e854245a1e8eebdf2b2aea,
-        type: 3}
-      propertyPath: <OnSprint>k__BackingField.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: Sprint
-      objectReference: {fileID: 0}
-    - target: {fileID: 3831826507396700388, guid: 6ceab631c3e854245a1e8eebdf2b2aea,
-        type: 3}
-      propertyPath: <OnSprint>k__BackingField.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: AgentMovement, Assembly-CSharp
-      objectReference: {fileID: 0}
-    - target: {fileID: 3831826507396700388, guid: 6ceab631c3e854245a1e8eebdf2b2aea,
-        type: 3}
-      propertyPath: <OnSprint>k__BackingField.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
-      objectReference: {fileID: 0}
     - target: {fileID: 3831826507396700408, guid: 6ceab631c3e854245a1e8eebdf2b2aea,
         type: 3}
       propertyPath: m_Name

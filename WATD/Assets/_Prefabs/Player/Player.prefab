@@ -254,7 +254,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 3831826508434195567}
   - {fileID: 8095173218360610674}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -271,7 +270,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5d30de98a5776b4db4227d9e27b0f2e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <InputReceiver>k__BackingField: {fileID: 3831826507396700388}
+  <InputHandler>k__BackingField: {fileID: 0}
   <PlayerData>k__BackingField: {fileID: 11400000, guid: 3c7bfffd6d0c43044aaf14ff6d47bb44,
     type: 2}
   <Health>k__BackingField: {fileID: 4260993064750142790}
@@ -283,8 +282,7 @@ MonoBehaviour:
       m_Calls: []
   MeleeWeaponHandler: {fileID: 0}
   RangedWeaponHandler: {fileID: 0}
-  LookIKControl: {fileID: 0}
-  LockIkSwitcher: {fileID: 0}
+  IsMeleeMode: 0
 --- !u!143 &3831826507396700390
 CharacterController:
   m_ObjectHideFlags: 0
@@ -315,6 +313,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf103d13578ea0c4881a6af24eb7e32e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  animator: {fileID: 0}
+  LookIKControl: {fileID: 0}
+  LastLookDirection: {x: 0, y: 0, z: 0}
+  LastBodyDirection: {x: 0, y: 0, z: 0}
 --- !u!95 &663811188
 Animator:
   serializedVersion: 4
@@ -361,7 +363,7 @@ MonoBehaviour:
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
-      time: 0.1
+      time: 0.2
       value: 0.2
       inSlope: Infinity
       outSlope: 0.012290265
@@ -370,31 +372,13 @@ MonoBehaviour:
       inWeight: 0.33333334
       outWeight: 0.09857105
     - serializedVersion: 3
-      time: 0.5
-      value: 0.5
-      inSlope: 2.3048708
-      outSlope: 2.8115115
-      tangentMode: 1
-      weightedMode: 0
-      inWeight: 0.06208375
-      outWeight: 0.0662458
-    - serializedVersion: 3
-      time: 0.9
-      value: 1
-      inSlope: 0.2832365
-      outSlope: Infinity
-      tangentMode: 97
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
       time: 1
-      value: 1
-      inSlope: 0
-      outSlope: 0
+      value: 1.0030289
+      inSlope: 2.8473098
+      outSlope: 2.8473098
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0
+      inWeight: 0.021272633
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
@@ -459,26 +443,10 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  <OnWalk>k__BackingField:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 3831826507396700389}
-        m_TargetAssemblyTypeName: AgentMovement, Assembly-CSharp
-        m_MethodName: Walk
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
   dashEnabled: 1
-  aimEnabled: 0
-  meleeEnabled: 0
   movementInput: 0
   lookInput: 0
+  IsInteracting: 0
 --- !u!114 &3831826507396700389
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -493,6 +461,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <MovementData>k__BackingField: {fileID: 11400000, guid: 1a44e27ee9fa598448c239d639757c3b,
     type: 2}
+  isSprinting: 0
 --- !u!114 &4260993064750142790
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -799,6 +768,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1656816664611363769}
     m_Modifications:
+    - target: {fileID: 335752439574559663, guid: d6b9dc5a8316ca74889465ea1e4a6742,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5832385371978986866, guid: d6b9dc5a8316ca74889465ea1e4a6742,
         type: 3}
       propertyPath: m_RootOrder
@@ -958,74 +932,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1226465986859562504}
   m_PrefabAsset: {fileID: 0}
---- !u!1001 &3831826508434071173
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 3831826507396700411}
-    m_Modifications:
-    - target: {fileID: 100106, guid: db0e58d0841b90c478cc919c554c298c, type: 3}
-      propertyPath: m_Name
-      value: SK_Mannequin
-      objectReference: {fileID: 0}
-    - target: {fileID: 100106, guid: db0e58d0841b90c478cc919c554c298c, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 400106, guid: db0e58d0841b90c478cc919c554c298c, type: 3}
-      propertyPath: m_RootOrder
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 400106, guid: db0e58d0841b90c478cc919c554c298c, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 400106, guid: db0e58d0841b90c478cc919c554c298c, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 400106, guid: db0e58d0841b90c478cc919c554c298c, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 400106, guid: db0e58d0841b90c478cc919c554c298c, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 400106, guid: db0e58d0841b90c478cc919c554c298c, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 400106, guid: db0e58d0841b90c478cc919c554c298c, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 400106, guid: db0e58d0841b90c478cc919c554c298c, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 400106, guid: db0e58d0841b90c478cc919c554c298c, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 400106, guid: db0e58d0841b90c478cc919c554c298c, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 400106, guid: db0e58d0841b90c478cc919c554c298c, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 9500000, guid: db0e58d0841b90c478cc919c554c298c, type: 3}
-  m_SourcePrefab: {fileID: 100100000, guid: db0e58d0841b90c478cc919c554c298c, type: 3}
---- !u!4 &3831826508434195567 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 400106, guid: db0e58d0841b90c478cc919c554c298c,
-    type: 3}
-  m_PrefabInstance: {fileID: 3831826508434071173}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &3831826508804678760
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1036,7 +942,7 @@ PrefabInstance:
     - target: {fileID: -4216859302048453862, guid: 320b1c2af77554f99a1658df4a6d3d5c,
         type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 320b1c2af77554f99a1658df4a6d3d5c,
         type: 3}

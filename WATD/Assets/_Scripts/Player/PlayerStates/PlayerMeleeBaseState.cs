@@ -25,10 +25,10 @@ public abstract class PlayerMeleeBaseState : State
 
     public override void Exit()
     {
-        //stateMachine.MeleeWeaponHandler.AttachToHolster();
-        stateMachine.AnimatorHandler.animator.SetBool(stateMachine.AnimatorHandler.IsInteractingHash, false);
         stateMachine.InputHandler.AttackEvent -= OnAttack;
         stateMachine.InputHandler.DashEvent -= OnDash;
+        //stateMachine.MeleeWeaponHandler.AttachToHolster();
+        stateMachine.AnimatorHandler.animator.SetBool(stateMachine.AnimatorHandler.IsInteractingHash, false);
     }
 
     public override void Tick(float deltaTime)
@@ -50,7 +50,7 @@ public abstract class PlayerMeleeBaseState : State
             {
                 Vector3 lookDirection = stateMachine.gameObject.transform.forward;
                 lookDirection.y = 0f;
-                stateMachine.InputHandler.OnRotateTowards?.Invoke(lookDirection.normalized, currentWeaponData.RotationSpeed);
+                stateMachine.InputHandler.OnRotateTowards?.Invoke(stateMachine.AnimatorHandler.LastLookDirection, currentWeaponData.RotationSpeed);
             }
         }
         ExitConditions();
@@ -65,15 +65,11 @@ public abstract class PlayerMeleeBaseState : State
 
     protected void ExitConditions()
     {
-        // Exit if is moving after MaxDuration
-        if (attackTimer > currentWeaponData.AttackDuration + currentWeaponData.Cooldown && stateMachine.InputHandler.movementInput == true)
-        {
-            stateMachine.SwitchState(new PlayerCombatState(stateMachine));
-        }
         // Exit if animation has finished
-        if (GetAttackNormalizedTime() >= 1f)
+        // Exit if is moving after MaxDuration
+        if (GetAttackNormalizedTime() >= 1f || attackTimer > currentWeaponData.AttackDuration + currentWeaponData.Cooldown && stateMachine.InputHandler.movementInput == true)
         {
-            stateMachine.SwitchState(new PlayerCombatState(stateMachine));
+            stateMachine.SwitchState(new PlayerFreeMovementState(stateMachine));
         }
     }
 
