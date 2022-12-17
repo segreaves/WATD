@@ -16,5 +16,5 @@ MonoBehaviour:
   Damage: 1
   DashDuration: 0.4
   DashInvulnerability: 0.15
-  DashImpulse: 20
+  DashImpulse: 30
   DashCooldown: 0.2

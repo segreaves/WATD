@@ -14,10 +14,20 @@ public class PlayerDashState : State
         stateMachine.Animator.SetFloat(stateMachine.AnimatorHandler.LookAngleHash, 0.5f, 0f, Time.deltaTime);
         dashDirection = stateMachine.InputHandler.MovementValue.normalized;
         stateMachine.ForceReceiver?.ResetImpact();
+        float dashAngle = Vector3.Angle(stateMachine.transform.forward, stateMachine.InputHandler.MovementValue.normalized);
+        if (dashAngle > 120f)
+        {
+            stateMachine.transform.rotation = Quaternion.LookRotation(-dashDirection);
+            stateMachine.AnimatorHandler.PlayTargetAnimation(stateMachine.AnimatorHandler.DashBHash, true, 0.1f);
+            stateMachine.AnimatorHandler.LastBodyDirection = -dashDirection;
+        }
+        else
+        {
+            stateMachine.transform.rotation = Quaternion.LookRotation(dashDirection);
+            stateMachine.AnimatorHandler.PlayTargetAnimation(stateMachine.AnimatorHandler.DashFHash, true, 0.1f);
+            stateMachine.AnimatorHandler.LastBodyDirection = dashDirection;
+        }
         //stateMachine.ForceReceiver?.AddForce(dashDirection * stateMachine.PlayerData.DashImpulse);
-        stateMachine.transform.rotation = Quaternion.LookRotation(dashDirection);
-        stateMachine.AnimatorHandler.PlayTargetAnimation(stateMachine.AnimatorHandler.DashFHash, true, 0.1f);
-        stateMachine.AnimatorHandler.LastBodyDirection = dashDirection;
     }
 
     public override void Exit()

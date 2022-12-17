@@ -15,11 +15,10 @@ public abstract class PlayerMeleeBaseState : State
 
     public override void Enter()
     {
-        //stateMachine.MeleeWeaponHandler.AttachToHand();
+        stateMachine.MeleeWeaponHandler.AttachToHand();
         attackIndex = stateMachine.MeleeWeaponHandler.attackIndex;
         stateMachine.MeleeWeaponHandler.IncrementAttackIndex();
         currentWeaponData = stateMachine.MeleeWeaponHandler.currentMelee.weaponData;
-        //stateMachine.AnimatorHandler.animator.CrossFadeInFixedTime(currentWeaponData.AttackAnimations[attackIndex], 0f);
         stateMachine.AnimatorHandler.PlayTargetAnimation(currentWeaponData.AttackAnimations[attackIndex], true, 0f);
     }
 
@@ -27,7 +26,6 @@ public abstract class PlayerMeleeBaseState : State
     {
         stateMachine.InputHandler.AttackEvent -= OnAttack;
         stateMachine.InputHandler.DashEvent -= OnDash;
-        //stateMachine.MeleeWeaponHandler.AttachToHolster();
         stateMachine.AnimatorHandler.animator.SetBool(stateMachine.AnimatorHandler.IsInteractingHash, false);
     }
 
@@ -70,6 +68,10 @@ public abstract class PlayerMeleeBaseState : State
         if (GetAttackNormalizedTime() >= 1f || attackTimer > currentWeaponData.AttackDuration + currentWeaponData.Cooldown && stateMachine.InputHandler.movementInput == true)
         {
             stateMachine.SwitchState(new PlayerFreeMovementState(stateMachine));
+        }
+        if (attackTimer > currentWeaponData.AttackDuration + currentWeaponData.Cooldown)
+        {
+            stateMachine.MeleeWeaponHandler.AttachToHolster();
         }
     }
 

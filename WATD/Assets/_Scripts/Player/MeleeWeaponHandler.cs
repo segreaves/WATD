@@ -9,10 +9,55 @@ public class MeleeWeaponHandler : MonoBehaviour
     [field: SerializeField] public MeleeWeapon currentMelee { get; private set; }
     public int attackIndex { get; private set; }
     [SerializeField] private bool showGizmos = true;
+    [SerializeField] private AnimationCurve activationCurve;
+    [SerializeField] private float transitionSpeed = 5f;
+    private bool isActivated;
+    private bool isTransitioning;
+    private float activationValue;
 
     void Start()
     {
         SetActiveMeleeWeapon(0);
+        currentMelee.body.SetActive(false);
+    }
+
+    private void Update()
+    { 
+        UpdateWeaponScale();
+    }
+
+    private void UpdateWeaponScale()
+    {
+        if (isTransitioning == true)
+        {
+            if (isActivated == true)
+            {
+                activationValue += Time.deltaTime * transitionSpeed;
+                if (activationValue >= 1f)
+                {
+                    isTransitioning = false;
+                }
+                else
+                {
+                    float newScale = activationCurve.Evaluate(activationValue);
+                    currentMelee.body.gameObject.transform.localScale = new Vector3(1f, 1f, newScale);
+                }
+            }
+            else
+            {
+                activationValue -= Time.deltaTime * transitionSpeed;
+                if (activationValue <= 0f)
+                {
+                    isTransitioning = false;
+                    currentMelee.body.SetActive(false);
+                }
+                else
+                {
+                    float newScale = activationCurve.Evaluate(activationValue);
+                    currentMelee.body.gameObject.transform.localScale = new Vector3(1f, 1f, newScale);
+                }
+            }
+        }
     }
 
     public void SetActiveMeleeWeapon(int index)
@@ -21,17 +66,29 @@ public class MeleeWeaponHandler : MonoBehaviour
         if (MeleeWeapons == null) { return; }
         if (index < 0 || index >= MeleeWeapons.Count) { return; }
         currentMelee = MeleeWeapons[index];
-        AttachToHolster();
     }
 
     public void AttachToHand()
     {
-        currentMelee.body.transform.SetParent(currentMelee.hand.transform, false);
+        //currentMelee.body.transform.SetParent(currentMelee.hand.transform, false);
+        if (isActivated == false)
+        {
+            currentMelee.body.SetActive(true);
+            activationValue = 0f;
+            isActivated = true;
+            isTransitioning = true;
+        }
     }
 
     public void AttachToHolster()
     {
-        currentMelee.body.transform.SetParent(currentMelee.holster.transform, false);
+        //currentMelee.body.transform.SetParent(currentMelee.holster.transform, false);
+        if (isActivated == true)
+        {
+            activationValue = 1f;
+            isActivated = false;
+            isTransitioning = true;
+        }
     }
 
     public void IncrementAttackIndex()

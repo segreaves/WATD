@@ -62,9 +62,9 @@ public class WeaponHandler : MonoBehaviour
         if (index < 0 || index >= Blades.Count) { return; }
         currentBlade = Blades[index];
         // Set weapon dimensions
-        targetDimensions.x = currentBlade.weaponData.xDim;
-        targetDimensions.y = currentBlade.weaponData.yDim;
-        targetDimensions.z = currentBlade.weaponData.zDim;
+        targetDimensions.x = 1f;
+        targetDimensions.y = 1f;
+        targetDimensions.z = 1f;
         Holster();
     }
 

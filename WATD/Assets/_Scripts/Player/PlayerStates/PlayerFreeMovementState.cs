@@ -38,14 +38,15 @@ public class PlayerFreeMovementState : PlayerMovementStateBase
     private void OnAttack()
     {
         if (stateMachine.InputHandler.IsInteracting == true) { return; }
-        if (stateMachine.IsMeleeMode == true)
+        /*if (stateMachine.IsMeleeMode == true)
         {
             stateMachine.SwitchState(new PlayerMeleeEntryState(stateMachine));
         }
         else
         {
             EnterCombatMode();
-        }
+        }*/
+        stateMachine.SwitchState(new PlayerMeleeEntryState(stateMachine));
     }
 
     private void EnterCombatMode()

@@ -12,7 +12,8 @@ public class AnimatorHandler : MonoBehaviour
     public readonly int LocomotionHash = Animator.StringToHash("Locomotion");
     public readonly int FacingAngleHash = Animator.StringToHash("FacingAngle");
     public readonly int LookAngleHash = Animator.StringToHash("LookAngle");
-    public readonly int DashFHash = Animator.StringToHash("Dash");
+    public readonly int DashFHash = Animator.StringToHash("Dash_F");
+    public readonly int DashBHash = Animator.StringToHash("Dash_B");
     public Vector3 LastLookDirection;
     public Vector3 LastBodyDirection;
 

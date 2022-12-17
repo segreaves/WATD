@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 2cbbf1e638a115345856804ea7908bc1
+guid: d5fee03c2854ee248949280f4a68380e
 ModelImporter:
   serializedVersion: 21300
   internalIDToNameTable: []
@@ -19,18 +19,7 @@ ModelImporter:
     rigImportErrors: 
     rigImportWarnings: 
     animationImportErrors: 
-    animationImportWarnings: "\nClip 'Dash_F' has import animation warnings that
-      might lower retargeting quality:\n\t'index_01_l' has translation animation
-      that will be discarded.\n\t'thumb_01_l' has translation animation that will
-      be discarded.\n\t'thumb_02_l' has translation animation that will be discarded.\n\t'thumb_03_l'
-      has translation animation that will be discarded.\n\t'middle_01_l' has translation
-      animation that will be discarded.\n\t'ring_01_l' has translation animation
-      that will be discarded.\n\t'pinky_01_l' has translation animation that will
-      be discarded.\n\t'index_01_r' has translation animation that will be discarded.\n\t'thumb_01_r'
-      has translation animation that will be discarded.\n\t'thumb_02_r' has translation
-      animation that will be discarded.\n\t'middle_01_r' has translation animation
-      that will be discarded.\n\t'ring_01_r' has translation animation that will
-      be discarded.\n\t'pinky_01_r' has translation animation that will be discarded.\n"
+    animationImportWarnings: 
     animationRetargetingWarnings: 
     animationDoRetargetingWarnings: 0
     importAnimatedCustomProperties: 0
@@ -44,9 +33,9 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Dash_F
-      takeName: Dash_F
-      internalID: -2224629559353888843
+      name: Dash_B
+      takeName: Dash_B
+      internalID: -4750982082784423917
       firstFrame: 0
       lastFrame: 20
       wrapMode: 0
