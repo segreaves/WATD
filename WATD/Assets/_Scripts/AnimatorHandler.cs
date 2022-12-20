@@ -9,6 +9,7 @@ public class AnimatorHandler : MonoBehaviour
     public readonly int IsInteractingHash = Animator.StringToHash("IsInteracting");
     public readonly int FullBodyHash = Animator.StringToHash("Full Body");
     public readonly int IsMovingHash = Animator.StringToHash("IsMoving");
+    public readonly int IsAimingHash = Animator.StringToHash("IsAiming");
     public readonly int LocomotionHash = Animator.StringToHash("Locomotion");
     public readonly int FacingAngleHash = Animator.StringToHash("FacingAngle");
     public readonly int LookAngleHash = Animator.StringToHash("LookAngle");

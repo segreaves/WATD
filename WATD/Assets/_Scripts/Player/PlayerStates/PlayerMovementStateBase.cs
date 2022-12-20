@@ -103,7 +103,7 @@ public abstract class PlayerMovementStateBase : State
                 stateMachine.AnimatorHandler.LookIKControl.LookInDirection(stateMachine.AnimatorHandler.LastLookDirection);
             }
             float updatelookAngle = 0.5f + lookAngleSign * Math.Clamp(lookAngle, 0f, 90f) / 180f;
-            stateMachine.Animator.SetFloat(stateMachine.AnimatorHandler.LookAngleHash, updatelookAngle, 0.05f, Time.deltaTime);
+            stateMachine.Animator.SetFloat(stateMachine.AnimatorHandler.LookAngleHash, updatelookAngle, 0.025f, Time.deltaTime);
         }
         else
         {

@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 766dd529aacfc88439d3074fa4c65bc2
+guid: f3cf4ac5ded04b2419729ea344346745
 ModelImporter:
   serializedVersion: 21300
   internalIDToNameTable: []
@@ -33,17 +33,17 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: AimF
-      takeName: AimF
-      internalID: 5517314908516919954
+      name: AimLook
+      takeName: AimLook
+      internalID: -5239180282988671553
       firstFrame: 0
-      lastFrame: 20
+      lastFrame: 24
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
       loop: 0
-      hasAdditiveReferencePose: 0
+      hasAdditiveReferencePose: 1
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
@@ -60,7 +60,7 @@ ModelImporter:
       transformMask: []
       maskType: 3
       maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 0
+      additiveReferencePoseFrame: 12
     isReadable: 0
   meshes:
     lODScreenPercentages: []

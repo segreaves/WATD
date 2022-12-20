@@ -13,6 +13,7 @@ public class PlayerFreeMovementState : PlayerMovementStateBase
         stateMachine.AnimatorHandler.animator.SetFloat(stateMachine.AnimatorHandler.FacingAngleHash, 0f);
         stateMachine.InputHandler.AttackEvent += OnAttack;
         stateMachine.InputHandler.DashEvent += OnDash;
+        stateMachine.InputHandler.AimEvent += EnterRangeMode;
     }
 
     public override void Exit()
@@ -20,6 +21,7 @@ public class PlayerFreeMovementState : PlayerMovementStateBase
         base.Exit();
         stateMachine.InputHandler.AttackEvent -= OnAttack;
         stateMachine.InputHandler.DashEvent -= OnDash;
+        stateMachine.InputHandler.AimEvent -= EnterRangeMode;
     }
 
     public override void Tick(float deltaTime)
@@ -38,22 +40,22 @@ public class PlayerFreeMovementState : PlayerMovementStateBase
     private void OnAttack()
     {
         if (stateMachine.InputHandler.IsInteracting == true) { return; }
-        /*if (stateMachine.IsMeleeMode == true)
-        {
-            stateMachine.SwitchState(new PlayerMeleeEntryState(stateMachine));
-        }
-        else
-        {
-            EnterCombatMode();
-        }*/
         stateMachine.SwitchState(new PlayerMeleeEntryState(stateMachine));
     }
 
-    private void EnterCombatMode()
+    private void EnterRangeMode(bool enable)
     {
-        stateMachine.IsMeleeMode = true;
-        stateMachine.MeleeWeaponHandler.AttachToHand();
-        stateMachine.Animator.CrossFadeInFixedTime(stateMachine.MeleeWeaponHandler.currentMelee.weaponData.WeaponName + "InHand", 0.2f, LayerMask.NameToLayer("ArmR_Additive"));
-        stateMachine.Animator.CrossFadeInFixedTime(stateMachine.MeleeWeaponHandler.currentMelee.weaponData.WeaponName + "Equip", 0.0f, LayerMask.NameToLayer("ArmR"));
+        stateMachine.AnimatorHandler.animator.SetBool(stateMachine.AnimatorHandler.IsAimingHash, enable);
+        if (enable)
+        {
+            stateMachine.IsRangeMode = true;
+            stateMachine.RangedWeaponHandler.AttachToHand();
+            stateMachine.Animator.CrossFadeInFixedTime("AimF", 0.2f, LayerMask.NameToLayer("ArmR"));
+            //stateMachine.Animator.CrossFadeInFixedTime(stateMachine.MeleeWeaponHandler.currentMelee.weaponData.WeaponName + "Equip", 0.0f, LayerMask.NameToLayer("ArmR"));
+        }
+        else
+        {
+            stateMachine.RangedWeaponHandler.AttachToHolster();
+        }
     }
 }

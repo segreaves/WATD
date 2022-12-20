@@ -18,7 +18,6 @@ public class MeleeWeaponHandler : MonoBehaviour
     void Start()
     {
         SetActiveMeleeWeapon(0);
-        currentMelee.body.SetActive(false);
     }
 
     private void Update()
@@ -66,6 +65,10 @@ public class MeleeWeaponHandler : MonoBehaviour
         if (MeleeWeapons == null) { return; }
         if (index < 0 || index >= MeleeWeapons.Count) { return; }
         currentMelee = MeleeWeapons[index];
+        currentMelee.body.SetActive(false);
+        Renderer renderer = currentMelee.body.gameObject.GetComponent<Renderer>();
+        renderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+        renderer.receiveShadows = false;
     }
 
     public void AttachToHand()
