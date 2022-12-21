@@ -6,7 +6,7 @@ using UnityEngine.Animations.Rigging;
 public class LookIKControl : MonoBehaviour
 {
     [field: SerializeField] private GameObject LookTarget;
-    [field: SerializeField] private Rig lookRig;
+    [field: SerializeField] private MultiAimConstraint lookRig;
     [field: SerializeField] private float distance;
     [field: SerializeField] private float height;
     private Vector3 dampingVelocity;

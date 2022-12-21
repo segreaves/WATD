@@ -65,7 +65,7 @@ public abstract class PlayerMeleeBaseState : State
     {
         // Exit if animation has finished
         // Exit if is moving after MaxDuration
-        if (GetAttackNormalizedTime() >= 1f || attackTimer > currentWeaponData.AttackDuration + currentWeaponData.Cooldown && stateMachine.InputHandler.movementInput == true)
+        if (GetAttackNormalizedTime() >= 1f || (attackTimer > currentWeaponData.AttackDuration + currentWeaponData.Cooldown && (stateMachine.InputHandler.movementInput == true || stateMachine.InputHandler.IsAimingPressed == true)))
         {
             stateMachine.SwitchState(new PlayerFreeMovementState(stateMachine));
         }

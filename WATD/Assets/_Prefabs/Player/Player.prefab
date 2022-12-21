@@ -250,7 +250,7 @@ MonoBehaviour:
       m_Calls: []
   MeleeWeaponHandler: {fileID: 0}
   RangedWeaponHandler: {fileID: 0}
-  IsMeleeMode: 0
+  IsRangeMode: 0
 --- !u!143 &3831826507396700390
 CharacterController:
   m_ObjectHideFlags: 0
@@ -411,6 +411,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  IsAimingPressed: 0
   dashEnabled: 1
   movementInput: 0
   lookInput: 0
@@ -516,7 +517,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  transitionSpeed: 3
+  transitionSpeed: 5
 --- !u!114 &1202187256573972337
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -692,7 +693,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3984322414615656599}
-  m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalRotation: {x: -0.65249795, y: 0.04545168, z: 0.019745946, w: 0.7561684}
   m_LocalPosition: {x: 0.092, y: 0.014, z: -0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -801,7 +802,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4977564265705686, guid: b12227c752b72334b9c3d0f15986f1c2, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 0.031
       objectReference: {fileID: 0}
     - target: {fileID: 4977564265705686, guid: b12227c752b72334b9c3d0f15986f1c2, type: 3}
       propertyPath: m_LocalRotation.w

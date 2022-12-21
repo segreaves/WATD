@@ -103,7 +103,7 @@ public abstract class PlayerMovementStateBase : State
                 stateMachine.AnimatorHandler.LookIKControl.LookInDirection(stateMachine.AnimatorHandler.LastLookDirection);
             }
             float updatelookAngle = 0.5f + lookAngleSign * Math.Clamp(lookAngle, 0f, 90f) / 180f;
-            stateMachine.Animator.SetFloat(stateMachine.AnimatorHandler.LookAngleHash, updatelookAngle, 0.025f, Time.deltaTime);
+            stateMachine.Animator.SetFloat(stateMachine.AnimatorHandler.LookAngleHash, updatelookAngle, 0.01f, Time.deltaTime);
         }
         else
         {
@@ -112,5 +112,8 @@ public abstract class PlayerMovementStateBase : State
         
         // Is moving
         stateMachine.Animator.SetBool(stateMachine.AnimatorHandler.IsMovingHash, stateMachine.InputHandler.movementInput);
+        // Aiming offset
+        float moving = stateMachine.InputHandler.movementInput ? 0.5f : 1f;
+        stateMachine.AnimatorHandler.animator.SetFloat(stateMachine.AnimatorHandler.AimingOffsetHash, moving, 0.1f, Time.deltaTime);
     }
 }

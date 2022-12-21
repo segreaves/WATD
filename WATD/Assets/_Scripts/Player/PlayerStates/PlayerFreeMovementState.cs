@@ -7,6 +7,8 @@ public class PlayerFreeMovementState : PlayerMovementStateBase
 {
     public PlayerFreeMovementState(PlayerStateMachine stateMachine) : base(stateMachine) {}
 
+    private bool IsRangeMode;
+
     public override void Enter()
     {
         base.Enter();
@@ -14,6 +16,10 @@ public class PlayerFreeMovementState : PlayerMovementStateBase
         stateMachine.InputHandler.AttackEvent += OnAttack;
         stateMachine.InputHandler.DashEvent += OnDash;
         stateMachine.InputHandler.AimEvent += EnterRangeMode;
+        if (stateMachine.InputHandler.IsAimingPressed)
+        {
+            EnterRangeMode(true);
+        }
     }
 
     public override void Exit()
@@ -22,6 +28,7 @@ public class PlayerFreeMovementState : PlayerMovementStateBase
         stateMachine.InputHandler.AttackEvent -= OnAttack;
         stateMachine.InputHandler.DashEvent -= OnDash;
         stateMachine.InputHandler.AimEvent -= EnterRangeMode;
+        EnterRangeMode(false);
     }
 
     public override void Tick(float deltaTime)
@@ -40,22 +47,29 @@ public class PlayerFreeMovementState : PlayerMovementStateBase
     private void OnAttack()
     {
         if (stateMachine.InputHandler.IsInteracting == true) { return; }
-        stateMachine.SwitchState(new PlayerMeleeEntryState(stateMachine));
+        if (IsRangeMode == true)
+        {
+            //stateMachine.RangedWeaponHandler.
+        }
+        else
+        {
+            stateMachine.SwitchState(new PlayerMeleeEntryState(stateMachine));
+        }
     }
 
     private void EnterRangeMode(bool enable)
     {
         stateMachine.AnimatorHandler.animator.SetBool(stateMachine.AnimatorHandler.IsAimingHash, enable);
+        IsRangeMode = enable;
         if (enable)
         {
-            stateMachine.IsRangeMode = true;
             stateMachine.RangedWeaponHandler.AttachToHand();
-            stateMachine.Animator.CrossFadeInFixedTime("AimF", 0.2f, LayerMask.NameToLayer("ArmR"));
-            //stateMachine.Animator.CrossFadeInFixedTime(stateMachine.MeleeWeaponHandler.currentMelee.weaponData.WeaponName + "Equip", 0.0f, LayerMask.NameToLayer("ArmR"));
+            stateMachine.RangedWeaponHandler.StartAiming();
         }
         else
         {
             stateMachine.RangedWeaponHandler.AttachToHolster();
+            stateMachine.RangedWeaponHandler.StopAiming();
         }
     }
 }

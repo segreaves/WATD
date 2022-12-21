@@ -17,6 +17,7 @@ public partial class PlayerInput : MonoBehaviour, Controls.IPlayerActions, IAgen
     [field: SerializeField] public UnityEvent<Vector3, float> OnRotateTowards { get; set; }
     public event Action AttackEvent;
     public event Action<bool> AimEvent;
+    public bool IsAimingPressed;
     public event Action DashEvent;
     public Vector3 MovementValue { get; private set; }
     public Vector3 LookValue { get; private set; }
@@ -96,6 +97,7 @@ public partial class PlayerInput : MonoBehaviour, Controls.IPlayerActions, IAgen
     public void OnAim(InputAction.CallbackContext context)
     {
         AimEvent?.Invoke(context.performed);
+        IsAimingPressed = context.performed;
     }
 
     public IEnumerator EDashCooldown(float duration)

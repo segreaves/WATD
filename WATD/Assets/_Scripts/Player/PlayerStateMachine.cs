@@ -18,7 +18,6 @@ public class PlayerStateMachine : StateMachine, IHittable
     public AgentMovement AgentMovement { get; private set; }
     public Animator Animator { get; private set; }
     public bool IsInteracting { get; private set; }
-    public bool IsRangeMode;
 
     private void Awake()
     {

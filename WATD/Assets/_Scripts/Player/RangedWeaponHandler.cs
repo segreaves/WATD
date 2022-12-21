@@ -2,10 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+using UnityEngine.Animations.Rigging;
+
 public class RangedWeaponHandler : MonoBehaviour
 {
     [field: SerializeField] private List<RangedWeapon> RangedWeapons;
-    [field: SerializeField] public RangedWeapon currentRanged { get; private set; }
+    //[field: SerializeField] private GameObject BulletSpawn;
+    [field: SerializeField] private MultiAimConstraint aimRig;
+    private RangedWeapon currentRanged;
+    
 
     void Start()
     {
@@ -29,5 +34,15 @@ public class RangedWeaponHandler : MonoBehaviour
     public void AttachToHolster()
     {
         currentRanged.body.transform.SetParent(currentRanged.holster.transform, false);
+    }
+
+    public void StartAiming()
+    {
+        aimRig.weight = 1f;
+    }
+
+    public void StopAiming()
+    {
+        aimRig.weight = 0f;
     }
 }
