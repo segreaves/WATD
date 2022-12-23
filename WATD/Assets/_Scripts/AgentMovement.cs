@@ -23,7 +23,7 @@ public class AgentMovement : MonoBehaviour
     public float CurrentForwardVelocity => Vector3.Dot(Controller.velocity, transform.forward);
     public float CurrentRightVelocity => Vector3.Dot(Controller.velocity, transform.right);
     public bool IsMoving => Controller.velocity.sqrMagnitude > 0.01f;
-    public bool isSprinting = false;
+    public bool isWalking = false;
 
     
     private void Awake()
@@ -81,7 +81,7 @@ public class AgentMovement : MonoBehaviour
         {
             currentVelocity -= MovementData.deceleration * Time.deltaTime;
         }
-        float targetSpeed = isSprinting ? MovementData.sprintSpeed : MovementData.maxSpeed;
+        float targetSpeed = isWalking ? MovementData.walkSpeed : MovementData.maxSpeed;
         currentVelocity = Mathf.Clamp(currentVelocity, 0f, targetSpeed);
         return currentVelocity;
     }
@@ -101,8 +101,8 @@ public class AgentMovement : MonoBehaviour
             Time.deltaTime * rotationSpeed);
     }
 
-    public void Sprint(bool sprint)
+    public void Walk(bool walk)
     {
-        isSprinting = sprint;
+        isWalking = walk;
     }
 }

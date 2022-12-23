@@ -39,7 +39,7 @@ public class PlayerAimingState : PlayerMovementStateBase
         }
         else
         {
-            if (stateMachine.AgentMovement.isSprinting)
+            if (stateMachine.AgentMovement.isWalking)
             {
                 stateMachine.InputHandler.OnMovement?.Invoke(stateMachine.InputHandler.MovementValue.normalized);
             }

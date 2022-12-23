@@ -973,6 +973,12 @@ Transform:
   m_Father: {fileID: 1674688890}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1247308323 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3984322414615656599, guid: 6ceab631c3e854245a1e8eebdf2b2aea,
+    type: 3}
+  m_PrefabInstance: {fileID: 3831826507859143829}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1514061583
 GameObject:
   m_ObjectHideFlags: 0
@@ -1470,7 +1476,7 @@ PrefabInstance:
         type: 3}
       propertyPath: BulletSpawn
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1247308323}
     - target: {fileID: 3831826507396700388, guid: 6ceab631c3e854245a1e8eebdf2b2aea,
         type: 3}
       propertyPath: <OnLookAt>k__BackingField.m_PersistentCalls.m_Calls.Array.data[0].m_Target

@@ -7,13 +7,12 @@ public class PlayerFreeMovementState : PlayerMovementStateBase
 {
     public PlayerFreeMovementState(PlayerStateMachine stateMachine) : base(stateMachine) {}
 
-    private bool IsRangeMode;
-
     public override void Enter()
     {
         base.Enter();
         stateMachine.AnimatorHandler.animator.SetFloat(stateMachine.AnimatorHandler.FacingAngleHash, 0f);
         stateMachine.InputHandler.AttackEvent += OnAttack;
+        stateMachine.InputHandler.ShootEvent += OnShoot;
         stateMachine.InputHandler.DashEvent += OnDash;
         stateMachine.InputHandler.AimEvent += EnterRangeMode;
         if (stateMachine.InputHandler.IsAimingPressed)
@@ -26,6 +25,7 @@ public class PlayerFreeMovementState : PlayerMovementStateBase
     {
         base.Exit();
         stateMachine.InputHandler.AttackEvent -= OnAttack;
+        stateMachine.InputHandler.ShootEvent -= OnShoot;
         stateMachine.InputHandler.DashEvent -= OnDash;
         stateMachine.InputHandler.AimEvent -= EnterRangeMode;
         EnterRangeMode(false);
@@ -47,20 +47,18 @@ public class PlayerFreeMovementState : PlayerMovementStateBase
     private void OnAttack()
     {
         if (stateMachine.InputHandler.IsInteracting == true) { return; }
-        if (IsRangeMode == true)
-        {
-            //stateMachine.RangedWeaponHandler.
-        }
-        else
-        {
-            stateMachine.SwitchState(new PlayerMeleeEntryState(stateMachine));
-        }
+        stateMachine.SwitchState(new PlayerMeleeEntryState(stateMachine));
+    }
+
+    private void OnShoot(bool shoot)
+    {
+        if (stateMachine.InputHandler.IsInteracting == true) { return; }
+        stateMachine.RangedWeaponHandler.SetShooting(shoot);
     }
 
     private void EnterRangeMode(bool enable)
     {
         stateMachine.AnimatorHandler.animator.SetBool(stateMachine.AnimatorHandler.IsAimingHash, enable);
-        IsRangeMode = enable;
         if (enable)
         {
             stateMachine.RangedWeaponHandler.AttachToHand();
@@ -68,6 +66,7 @@ public class PlayerFreeMovementState : PlayerMovementStateBase
         }
         else
         {
+            stateMachine.RangedWeaponHandler.SetShooting(false);
             stateMachine.RangedWeaponHandler.AttachToHolster();
             stateMachine.RangedWeaponHandler.StopAiming();
         }

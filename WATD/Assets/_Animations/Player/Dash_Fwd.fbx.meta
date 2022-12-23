@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 2cbbf1e638a115345856804ea7908bc1
+guid: f522d43558a86e24cbc10108b2f44c87
 ModelImporter:
   serializedVersion: 21300
   internalIDToNameTable: []
@@ -17,16 +17,15 @@ ModelImporter:
     removeConstantScaleCurves: 1
     motionNodeName: 
     rigImportErrors: 
-    rigImportWarnings: 
+    rigImportWarnings: "Copied Avatar Rig Configuration mis-match. Bone length in
+      copied configuration does not match position in animation file:\n\t'thigh_l'
+      : position error = 96.602089 mm\n\t'calf_l' : position error = 416.058289 mm\n\t'foot_l'
+      : position error = 382.423615 mm\n\t'ball_l' : position error = 143.436447
+      mm\n\t'thigh_r' : position error = 96.602127 mm\n\t'calf_r' : position error
+      = 416.058746 mm\n\t'foot_r' : position error = 382.423615 mm\n\t'ball_r' :
+      position error = 143.436798 mm\n"
     animationImportErrors: 
-    animationImportWarnings: "\nClip 'Dash_F' has import animation warnings that
-      might lower retargeting quality:\n\t'index_01_l' has translation animation
-      that will be discarded.\n\t'thumb_01_l' has translation animation that will
-      be discarded.\n\t'thumb_02_l' has translation animation that will be discarded.\n\t'thumb_03_l'
-      has translation animation that will be discarded.\n\t'middle_01_l' has translation
-      animation that will be discarded.\n\t'ring_01_l' has translation animation
-      that will be discarded.\n\t'pinky_01_l' has translation animation that will
-      be discarded.\n"
+    animationImportWarnings: 
     animationRetargetingWarnings: 
     animationDoRetargetingWarnings: 0
     importAnimatedCustomProperties: 0
@@ -40,11 +39,11 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Dash_F
-      takeName: Dash_F
-      internalID: -2224629559353888843
+      name: Dash_Fwd
+      takeName: Dash_Fwd
+      internalID: -5470827663628586717
       firstFrame: 0
-      lastFrame: 20
+      lastFrame: 12
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
