@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 using UnityEngine.Animations.Rigging;
 
@@ -13,6 +14,7 @@ public class RangedWeaponHandler : MonoBehaviour
     private RangedWeapon currentRanged;
     private bool shouldShoot, shooting, readyToShoot;
     private int bulletsLeft, bulletsShot;
+    private bool allowInvoke = true;
 
     private void Awake()
     {
@@ -33,8 +35,6 @@ public class RangedWeaponHandler : MonoBehaviour
             bulletsShot = 0;
             Shoot();
         }
-        // Check if allowed to hold down shoot button
-        shooting = currentRanged.weaponData.AllowButtonHold && shouldShoot;
     }
 
     private void Shoot()
@@ -47,9 +47,35 @@ public class RangedWeaponHandler : MonoBehaviour
         // Shooting direction with spread
         Vector3 directionWithSpread = directionWithoutSpread + new Vector3(spread, 0f, 0f);
         // Instantiate bullet
-        GameObject currentBullet = Instantiate(currentRanged.weaponData.projectile, BulletSpawn.transform.position, Quaternion.identity);
+        GameObject currentBullet = Instantiate(currentRanged.weaponData.bullet, BulletSpawn.transform.position, Quaternion.identity);
+        currentBullet.transform.forward = directionWithSpread;
+        // Instantiate muzzle flash
+        if (currentRanged.weaponData.MuzzleFlash != null)
+        {
+            Instantiate(currentRanged.weaponData.MuzzleFlash, BulletSpawn.transform.position, currentBullet.transform.rotation);
+        }
+        // Add forces to bullet
+        currentBullet.GetComponent<Rigidbody>().AddForce(directionWithSpread.normalized * currentRanged.weaponData.ShootForce, ForceMode.Impulse);
+        // Invoke ResetShot function (if not already invoked)
+        if (allowInvoke)
+        {
+            Invoke("ResetShot", currentRanged.weaponData.TimeBetweenShooting);
+            allowInvoke = false;
+        }
         bulletsLeft--;
         bulletsShot++;
+        // If more than one BulletsPerTap make sure to repeat Shoot function
+        if (bulletsShot < currentRanged.weaponData.BulletsPerTap)
+        {
+            Invoke("Shoot", currentRanged.weaponData.TimeBetweenShots);
+        }
+    }
+
+    private void ResetShot()
+    {
+        shooting = currentRanged.weaponData.AllowButtonHold && shouldShoot;
+        readyToShoot = true;
+        allowInvoke = true;
     }
 
     public void SetActiveRangedWeapon(int index)
@@ -58,6 +84,7 @@ public class RangedWeaponHandler : MonoBehaviour
         if (RangedWeapons == null) { return; }
         if (index < 0 || index >= RangedWeapons.Count) { return; }
         currentRanged = RangedWeapons[index];
+        BulletSpawn = currentRanged.bulletSpawn;
         AttachToHolster();
     }
 
@@ -84,5 +111,6 @@ public class RangedWeaponHandler : MonoBehaviour
     public void SetShooting(bool shoot)
     {
         shouldShoot = shoot;
+        shooting = shouldShoot;
     }
 }

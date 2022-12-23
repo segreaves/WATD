@@ -12,8 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 554b5f557542481478b8203b11cb0444, type: 3}
   m_Name: Revolver
   m_EditorClassIdentifier: 
-  projectile:
-    model: {fileID: 835263807146183893, guid: 9ffca377ef51a3f42ad29f94ef2238c5, type: 3}
-    projectileData: {fileID: 11400000, guid: 35ec2c630cdc1944d9a72e2618ac9f72, type: 2}
+  bullet: {fileID: 835263807146183893, guid: 9ffca377ef51a3f42ad29f94ef2238c5, type: 3}
+  Damage: 1
   ShootAnimation: Shoot
-  Cooldown: 0.2
+  ShootForce: 1
+  AllowButtonHold: 0
+  TimeBetweenShooting: 0.1
+  TimeBetweenShots: 0.2
+  Spread: 0
+  BulletsPerTap: 3
+  MuzzleFlash: {fileID: 0}

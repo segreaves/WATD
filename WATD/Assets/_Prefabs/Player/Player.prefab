@@ -30,6 +30,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1723677495}
+  - {fileID: 1171732149}
   m_Father: {fileID: 8095173218360610674}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -59,6 +60,22 @@ MonoBehaviour:
     m_Style:
       shape: {fileID: 4300000, guid: e050c2b16fe384bd994474655a4b4968, type: 2}
       color: {r: 1, g: 0, b: 0, a: 0.5}
+      size: 0.1
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0}
+    m_Visible: 1
+  - m_Transform: {fileID: 0}
+    m_Style:
+      shape: {fileID: 4300000, guid: e050c2b16fe384bd994474655a4b4968, type: 2}
+      color: {r: 1, g: 0.8185215, b: 0, a: 0.5}
+      size: 0.1
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0}
+    m_Visible: 1
+  - m_Transform: {fileID: 0}
+    m_Style:
+      shape: {fileID: 4300000, guid: e050c2b16fe384bd994474655a4b4968, type: 2}
+      color: {r: 1, g: 0.42728096, b: 0, a: 0.5}
       size: 0.1
       position: {x: 0, y: 0, z: 0}
       rotation: {x: 0, y: 0, z: 0}
@@ -94,6 +111,92 @@ Transform:
   m_Father: {fileID: 1723677495}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1171732147
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1171732149}
+  - component: {fileID: 1171732148}
+  m_Layer: 0
+  m_Name: GunAim
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1171732149
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1171732147}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 67710401}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1171732148
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1171732147}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3c430f382484144e925c097c2d33cfe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Weight: 1
+  m_Data:
+    m_ConstrainedObject: {fileID: 4411278992065071466}
+    m_SourceObjects:
+      m_Length: 1
+      m_Item0:
+        transform: {fileID: 1084690079}
+        weight: 1
+      m_Item1:
+        transform: {fileID: 0}
+        weight: 0
+      m_Item2:
+        transform: {fileID: 0}
+        weight: 0
+      m_Item3:
+        transform: {fileID: 0}
+        weight: 0
+      m_Item4:
+        transform: {fileID: 0}
+        weight: 0
+      m_Item5:
+        transform: {fileID: 0}
+        weight: 0
+      m_Item6:
+        transform: {fileID: 0}
+        weight: 0
+      m_Item7:
+        transform: {fileID: 0}
+        weight: 0
+    m_Offset: {x: 0, y: -7, z: 0}
+    m_MinLimit: -10
+    m_MaxLimit: 10
+    m_AimAxis: 0
+    m_UpAxis: 5
+    m_WorldUpType: 0
+    m_WorldUpObject: {fileID: 0}
+    m_WorldUpAxis: 2
+    m_MaintainOffset: 0
+    m_ConstrainedAxes:
+      x: 1
+      y: 1
+      z: 1
 --- !u!1 &1723677494
 GameObject:
   m_ObjectHideFlags: 0
@@ -250,7 +353,6 @@ MonoBehaviour:
       m_Calls: []
   MeleeWeaponHandler: {fileID: 0}
   RangedWeaponHandler: {fileID: 0}
-  IsRangeMode: 0
 --- !u!143 &3831826507396700390
 CharacterController:
   m_ObjectHideFlags: 0
@@ -430,7 +532,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <MovementData>k__BackingField: {fileID: 11400000, guid: 1a44e27ee9fa598448c239d639757c3b,
     type: 2}
-  isSprinting: 0
+  isWalking: 0
 --- !u!114 &4260993064750142790
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -534,12 +636,11 @@ MonoBehaviour:
   - body: {fileID: 1226002350906427324}
     hand: {fileID: 3984322414615656599}
     holster: {fileID: 4379784951295016637}
+    bulletSpawn: {fileID: 4359793619175034825}
     weaponData: {fileID: 11400000, guid: 4b78bb72a25b7a949b28719c6a63b098, type: 2}
-  <currentRanged>k__BackingField:
-    body: {fileID: 0}
-    hand: {fileID: 0}
-    holster: {fileID: 0}
-    weaponData: {fileID: 0}
+  BulletSpawn: {fileID: 3984322414615656599}
+  magazineSize: 50
+  aimRig: {fileID: 1171732148}
 --- !u!114 &1098842394
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -667,7 +768,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   LookTarget: {fileID: 1084690078}
-  lookRig: {fileID: 67710400}
+  lookRig: {fileID: 1723677496}
   distance: 2.5
   height: 1.5
 --- !u!1 &3984322414615656599
@@ -847,6 +948,12 @@ GameObject:
 --- !u!4 &1230862861823870686 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4977564265705686, guid: b12227c752b72334b9c3d0f15986f1c2,
+    type: 3}
+  m_PrefabInstance: {fileID: 1226465986859562504}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &4359793619175034825 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3279835917215185345, guid: b12227c752b72334b9c3d0f15986f1c2,
     type: 3}
   m_PrefabInstance: {fileID: 1226465986859562504}
   m_PrefabAsset: {fileID: 0}

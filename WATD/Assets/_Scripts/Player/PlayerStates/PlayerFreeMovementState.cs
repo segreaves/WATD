@@ -66,7 +66,7 @@ public class PlayerFreeMovementState : PlayerMovementStateBase
         }
         else
         {
-            stateMachine.RangedWeaponHandler.SetShooting(false);
+            //stateMachine.RangedWeaponHandler.SetShooting(false);
             stateMachine.RangedWeaponHandler.AttachToHolster();
             stateMachine.RangedWeaponHandler.StopAiming();
         }
