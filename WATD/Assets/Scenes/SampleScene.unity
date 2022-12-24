@@ -1271,26 +1271,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1202187256573972337, guid: 6ceab631c3e854245a1e8eebdf2b2aea,
-        type: 3}
-      propertyPath: magazineSize
-      value: 500
-      objectReference: {fileID: 0}
-    - target: {fileID: 2482761017634375047, guid: 6ceab631c3e854245a1e8eebdf2b2aea,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.7071068
-      objectReference: {fileID: 0}
-    - target: {fileID: 2482761017634375047, guid: 6ceab631c3e854245a1e8eebdf2b2aea,
-        type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0.7071068
-      objectReference: {fileID: 0}
-    - target: {fileID: 2482761017634375047, guid: 6ceab631c3e854245a1e8eebdf2b2aea,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 90
-      objectReference: {fileID: 0}
     - target: {fileID: 3831826507396700388, guid: 6ceab631c3e854245a1e8eebdf2b2aea,
         type: 3}
       propertyPath: <OnLookAt>k__BackingField.m_PersistentCalls.m_Calls.Array.data[0].m_Target

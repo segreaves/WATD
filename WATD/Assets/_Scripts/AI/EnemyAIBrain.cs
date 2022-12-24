@@ -7,7 +7,7 @@ using UnityEngine.AI;
 
 [RequireComponent(typeof(ContextSolver))]
 [RequireComponent(typeof(AgentMovement))]
-public class EnemyAIBrain : MonoBehaviour, IAgentInput
+public class EnemyAIBrain : MonoBehaviour
 {
     [field: SerializeField] public AgentMovement MovementParameters { get; set; }
     [field: SerializeField] public GameObject Target { get; set; }

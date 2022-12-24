@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: BaseSword
   m_EditorClassIdentifier: 
   WeaponName: Sword
+  WeaponPrefab: {fileID: 1947189329703348, guid: bd58c52fcafc72e44803e5bc2ec2c6e9,
+    type: 3}
   AttackAnimations:
   - SwordAttack_L
   - SwordAttack_R
@@ -25,6 +27,3 @@ MonoBehaviour:
   HitCapsuleForwardOffset: 1
   HitCapsuleRadius: 1
   HitCapsuleHeight: 1
-  xDim: 1
-  yDim: 1
-  zDim: 1

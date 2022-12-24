@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Events;
 
-public partial class PlayerInput : MonoBehaviour, Controls.IPlayerActions, IAgentInput
+public partial class PlayerInput : MonoBehaviour, Controls.IPlayerActions
 {
     private Controls controls;
 

@@ -11,6 +11,7 @@ public class MeleeWeaponHandler : MonoBehaviour
     [SerializeField] private bool showGizmos = true;
     [SerializeField] private AnimationCurve activationCurve;
     [SerializeField] private float transitionSpeed = 5f;
+    private GameObject WeaponBody;
     private bool isActivated;
     private bool isTransitioning;
     private float activationValue;
@@ -39,7 +40,7 @@ public class MeleeWeaponHandler : MonoBehaviour
                 else
                 {
                     float newScale = activationCurve.Evaluate(activationValue);
-                    currentMelee.body.gameObject.transform.localScale = new Vector3(1f, 1f, newScale);
+                    WeaponBody.gameObject.transform.localScale = new Vector3(1f, 1f, newScale);
                 }
             }
             else
@@ -48,12 +49,12 @@ public class MeleeWeaponHandler : MonoBehaviour
                 if (activationValue <= 0f)
                 {
                     isTransitioning = false;
-                    currentMelee.body.SetActive(false);
+                    WeaponBody.SetActive(false);
                 }
                 else
                 {
                     float newScale = activationCurve.Evaluate(activationValue);
-                    currentMelee.body.gameObject.transform.localScale = new Vector3(1f, 1f, newScale);
+                    WeaponBody.gameObject.transform.localScale = new Vector3(1f, 1f, newScale);
                 }
             }
         }
@@ -65,8 +66,10 @@ public class MeleeWeaponHandler : MonoBehaviour
         if (MeleeWeapons == null) { return; }
         if (index < 0 || index >= MeleeWeapons.Count) { return; }
         currentMelee = MeleeWeapons[index];
-        currentMelee.body.SetActive(false);
-        Renderer renderer = currentMelee.body.gameObject.GetComponent<Renderer>();
+        WeaponBody = Instantiate(currentMelee.weaponData.WeaponPrefab, currentMelee.hand.transform.position, currentMelee.hand.transform.rotation);
+        WeaponBody.transform.SetParent(currentMelee.hand.transform, true);
+        WeaponBody.SetActive(false);
+        Renderer renderer = WeaponBody.gameObject.GetComponentInChildren<Renderer>();
         renderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
         renderer.receiveShadows = false;
     }
@@ -76,7 +79,7 @@ public class MeleeWeaponHandler : MonoBehaviour
         //currentMelee.body.transform.SetParent(currentMelee.hand.transform, false);
         if (isActivated == false)
         {
-            currentMelee.body.SetActive(true);
+            WeaponBody.SetActive(true);
             activationValue = 0f;
             isActivated = true;
             isTransitioning = true;
