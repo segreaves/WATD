@@ -261,6 +261,7 @@ GameObject:
   - component: {fileID: 4977564265705686}
   - component: {fileID: 33525540299468318}
   - component: {fileID: 23119825627996454}
+  - component: {fileID: 2880304980499536602}
   m_Layer: 0
   m_Name: BaseGun
   m_TagString: Untagged
@@ -277,8 +278,8 @@ Transform:
   m_GameObject: {fileID: 1947189329703348}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 4825051426711642}
   - {fileID: 4454749597287928}
@@ -337,6 +338,22 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &2880304980499536602
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1947189329703348}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ecb346f1f46ce7b46a8a1381254f8bee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <OnShoot>k__BackingField:
+    m_PersistentCalls:
+      m_Calls: []
+  <BulletSpawn>k__BackingField: {fileID: 3279835917215185345}
 --- !u!1 &1978593677310974
 GameObject:
   m_ObjectHideFlags: 0

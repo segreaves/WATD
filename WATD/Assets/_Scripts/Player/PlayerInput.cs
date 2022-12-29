@@ -17,7 +17,7 @@ public partial class PlayerInput : MonoBehaviour, Controls.IPlayerActions
     [field: SerializeField] public UnityEvent<Vector3, float> OnRotateTowards { get; set; }
     public event Action AttackEvent;
     public event Action<bool> AimEvent;
-    public event Action<bool> ShootEvent;
+    public event Action AimStopEvent;
     public bool IsAimingPressed;
     public event Action DashEvent;
     public Vector3 MovementValue { get; private set; }
@@ -97,8 +97,15 @@ public partial class PlayerInput : MonoBehaviour, Controls.IPlayerActions
 
     public void OnAim(InputAction.CallbackContext context)
     {
-        AimEvent?.Invoke(context.performed);
         IsAimingPressed = context.performed;
+        AimEvent?.Invoke(context.performed);
+    }
+
+    public void OnAimStop(InputAction.CallbackContext context)
+    {
+        if (!context.performed) { return; }
+        IsAimingPressed = false;
+        AimStopEvent?.Invoke();
     }
 
     public IEnumerator EDashCooldown(float duration)
@@ -110,15 +117,8 @@ public partial class PlayerInput : MonoBehaviour, Controls.IPlayerActions
 
     public void OnAttack(InputAction.CallbackContext context)
     {
-        if (IsAimingPressed == true)
-        {
-            ShootEvent?.Invoke(context.performed);
-        }
-        else
-        {
-            if (!context.performed) { return; }
-            AttackEvent?.Invoke();
-        }
+        if (!context.performed) { return; }
+        AttackEvent?.Invoke();
     }
 
     public void OnDash(InputAction.CallbackContext context)

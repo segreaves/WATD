@@ -12,12 +12,11 @@ public class PlayerFreeMovementState : PlayerMovementStateBase
         base.Enter();
         stateMachine.AnimatorHandler.animator.SetFloat(stateMachine.AnimatorHandler.FacingAngleHash, 0f);
         stateMachine.InputHandler.AttackEvent += OnAttack;
-        stateMachine.InputHandler.ShootEvent += OnShoot;
         stateMachine.InputHandler.DashEvent += OnDash;
-        stateMachine.InputHandler.AimEvent += EnterRangeMode;
+        stateMachine.InputHandler.AimEvent += OnAim;
         if (stateMachine.InputHandler.IsAimingPressed)
         {
-            EnterRangeMode(true);
+            stateMachine.SwitchState(new PlayerAimingState(stateMachine));
         }
     }
 
@@ -25,10 +24,8 @@ public class PlayerFreeMovementState : PlayerMovementStateBase
     {
         base.Exit();
         stateMachine.InputHandler.AttackEvent -= OnAttack;
-        stateMachine.InputHandler.ShootEvent -= OnShoot;
         stateMachine.InputHandler.DashEvent -= OnDash;
-        stateMachine.InputHandler.AimEvent -= EnterRangeMode;
-        EnterRangeMode(false);
+        stateMachine.InputHandler.AimEvent -= OnAim;
     }
 
     public override void Tick(float deltaTime)
@@ -50,25 +47,9 @@ public class PlayerFreeMovementState : PlayerMovementStateBase
         stateMachine.SwitchState(new PlayerMeleeEntryState(stateMachine));
     }
 
-    private void OnShoot(bool shoot)
+    private void OnAim(bool aim)
     {
-        if (stateMachine.InputHandler.IsInteracting == true) { return; }
-        stateMachine.RangedWeaponHandler.SetShooting(shoot);
-    }
-
-    private void EnterRangeMode(bool enable)
-    {
-        stateMachine.AnimatorHandler.animator.SetBool(stateMachine.AnimatorHandler.IsAimingHash, enable);
-        if (enable)
-        {
-            stateMachine.RangedWeaponHandler.AttachToHand();
-            stateMachine.RangedWeaponHandler.StartAiming();
-        }
-        else
-        {
-            //stateMachine.RangedWeaponHandler.SetShooting(false);
-            stateMachine.RangedWeaponHandler.AttachToHolster();
-            stateMachine.RangedWeaponHandler.StopAiming();
-        }
+        if (aim == false) { return; }
+        stateMachine.SwitchState(new PlayerAimingState(stateMachine));
     }
 }

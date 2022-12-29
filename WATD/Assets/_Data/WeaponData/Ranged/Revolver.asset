@@ -12,6 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 554b5f557542481478b8203b11cb0444, type: 3}
   m_Name: Revolver
   m_EditorClassIdentifier: 
+  WeaponName: BaseGun
+  WeaponPrefab: {fileID: 1947189329703348, guid: b12227c752b72334b9c3d0f15986f1c2,
+    type: 3}
   bullet: {fileID: 835263807146183893, guid: 9ffca377ef51a3f42ad29f94ef2238c5, type: 3}
   Damage: 1
   ShootAnimation: Shoot

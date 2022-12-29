@@ -5,6 +5,8 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Weapons/Ranged/Weapon")]
 public class RangedWeaponSO : ScriptableObject
 {
+    [field: SerializeField] public string WeaponName;
+    [field: SerializeField] public GameObject WeaponPrefab;
     [field: SerializeField] public GameObject bullet;
     [field: SerializeField] [Range(1, 10)] public int Damage = 1;
     [field: SerializeField] public string ShootAnimation;
