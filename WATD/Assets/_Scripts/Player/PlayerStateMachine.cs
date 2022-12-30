@@ -9,6 +9,7 @@ public class PlayerStateMachine : StateMachine, IHittable
     [field: SerializeField] public PlayerInput InputHandler { get; set; }
     [field: SerializeField] public PlayerDataSO PlayerData { get; set; }
     [field: SerializeField] public Health Health { get; set; }
+    [field: SerializeField] public Power Power { get; set; }
     [field: SerializeField] public UnityEvent OnGetHit { get; set; }
     [field: SerializeField] public UnityEvent OnDie { get; set; }
     [field: SerializeField] public MeleeWeaponHandler MeleeWeaponHandler;
@@ -29,7 +30,7 @@ public class PlayerStateMachine : StateMachine, IHittable
         RangedWeaponHandler = GetComponent<RangedWeaponHandler>();
         AnimatorHandler = GetComponent<AnimatorHandler>();
         Health = GetComponent<Health>();
-        Health.maxHealth = PlayerData.MaxHealth;
+        Power = GetComponent<Power>();
     }
 
     private void Start()

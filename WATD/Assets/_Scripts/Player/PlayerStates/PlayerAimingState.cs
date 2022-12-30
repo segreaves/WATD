@@ -11,6 +11,7 @@ public class PlayerAimingState : PlayerMovementStateBase
     {
         base.Enter();
         stateMachine.InputHandler.AimEvent += OnStopAiming;
+        stateMachine.InputHandler.AttackEvent += OnAttack;
         stateMachine.AnimatorHandler.animator.SetBool(stateMachine.AnimatorHandler.IsAimingHash, true);
         stateMachine.RangedWeaponHandler.AttachToHand();
         stateMachine.RangedWeaponHandler.StartAiming();
@@ -20,6 +21,7 @@ public class PlayerAimingState : PlayerMovementStateBase
     {
         base.Exit();
         stateMachine.InputHandler.AimEvent -= OnStopAiming;
+        stateMachine.InputHandler.AttackEvent -= OnAttack;
         stateMachine.AnimatorHandler.animator.SetBool(stateMachine.AnimatorHandler.IsAimingHash, false);
         stateMachine.RangedWeaponHandler.AttachToHolster();
         stateMachine.RangedWeaponHandler.StopAiming();
@@ -47,6 +49,6 @@ public class PlayerAimingState : PlayerMovementStateBase
     private void OnAttack()
     {
         if (stateMachine.InputHandler.IsInteracting == true) { return; }
-        // shoot
+        stateMachine.RangedWeaponHandler.Shoot(stateMachine.Power.power);
     }
 }

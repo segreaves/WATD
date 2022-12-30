@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.Events;
 
 using UnityEngine.Animations.Rigging;
 
@@ -9,8 +10,9 @@ public class RangedWeaponHandler : MonoBehaviour
 {
     [field: SerializeField] private List<RangedWeapon> RangedWeapons;
     [field: SerializeField] private MultiAimConstraint aimRig;
+    [field: SerializeField] public UnityEvent<float> OnShoot { get; set; }
     public RangedWeapon ActiveWeaponType { get; private set; }
-    private GameObject ActiveWeapon;
+    public GameObject ActiveWeapon { get; private set; }
 
     void Start()
     {
@@ -24,7 +26,7 @@ public class RangedWeaponHandler : MonoBehaviour
         if (index < 0 || index >= RangedWeapons.Count) { return; }
         ActiveWeaponType = RangedWeapons[index];
         ActiveWeapon?.SetActive(false);
-        ActiveWeapon = Instantiate(ActiveWeaponType.weaponData.WeaponPrefab, ActiveWeaponType.holster.transform.position, ActiveWeaponType.holster.transform.rotation);
+        ActiveWeapon = Instantiate(ActiveWeaponType.weaponPrefab, ActiveWeaponType.holster.transform.position, ActiveWeaponType.holster.transform.rotation);
         ActiveWeapon.transform.SetParent(ActiveWeaponType.holster.transform, true);
         ActiveWeapon.SetActive(true);
         AttachToHolster();
@@ -50,19 +52,11 @@ public class RangedWeaponHandler : MonoBehaviour
         aimRig.weight = 0f;
     }
 
-    public void Shoot()
+    public void Shoot(float power)
     {
         var shootable = ActiveWeapon.GetComponent<IShootable>();
         if (shootable == null) { return; }
-        shootable.StartShootting();
-        //Debug.Log("RangedWeaponHandler enabled");
-    }
-
-    public void StopShooting()
-    {
-        var shootable = ActiveWeapon.GetComponent<IShootable>();
-        if (shootable == null) { return; }
-        shootable.StopShootting();
-        //Debug.Log("RangedWeaponHandler disabled");
+        float powerCost =  shootable.Shoot(power);
+        OnShoot.Invoke(powerCost);
     }
 }

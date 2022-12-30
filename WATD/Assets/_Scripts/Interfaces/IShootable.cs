@@ -5,7 +5,6 @@ using UnityEngine.Events;
 
 public interface IShootable
 {
-    void StartShootting();
-    void StopShootting();
+    float Shoot(float currentPower);
     UnityEvent OnShoot { get; set; }
 }

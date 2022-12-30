@@ -5,11 +5,12 @@ using UnityEngine.Events;
 
 public class GunController : MonoBehaviour, IShootable
 {
-    [field: SerializeField] public UnityEvent OnShoot { get; set; }
+    [field: SerializeField] private GameObject Bullet;
     [field: SerializeField] private GameObject BulletSpawn { get; set; }
-    private bool shouldShoot, shooting, readyToShoot;
+    [field: SerializeField] private RangedWeaponSO WeaponData;
+    [field: SerializeField] public UnityEvent OnShoot { get; set; }
+    private bool readyToShoot;
     private int magazineSize = 3, bulletsLeft, bulletsShot;
-    private bool allowInvoke = true;
 
     private void Awake()
     {
@@ -19,44 +20,24 @@ public class GunController : MonoBehaviour, IShootable
 
     private void Start()
     {
-        
-    }
-
-    private void Update()
-    {
-        // Shooting
-        if (readyToShoot && shooting && bulletsLeft > 0)
-        {
-            bulletsShot = 0;
-            //Shoot();
-        }
-    }
-
-    public void StartShootting()
-    {
-        //Debug.Log("GunController.cs shooting enabled");
-    }
-
-    public void StopShootting()
-    {
-        //Debug.Log("GunController.cs shooting disabled");
-    }
-
-    public void SetShooting(bool shoot)
-    {
-        shouldShoot = shoot;
-        shooting = shouldShoot;
-    }
-
-    /*private void ResetShot()
-    {
-        shooting = currentRanged.weaponData.AllowButtonHold && shouldShoot;
         readyToShoot = true;
-        allowInvoke = true;
     }
 
-    private void Shoot()
+    private void ResetShot()
     {
+        readyToShoot = true;
+    }
+
+    public float Shoot(float power)
+    {
+        if (readyToShoot == false) { return 0f; }
+        if (power < WeaponData.PowerCost) { return 0f; }
+        return WeaponData.PowerCost;
+    }
+
+    /*private void Shoot()
+    {
+        if (readyToShoot == false) { return; }
         readyToShoot = false;
         // Shooting direction without spread
         Vector3 directionWithoutSpread = BulletSpawn.transform.forward;

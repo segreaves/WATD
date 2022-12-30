@@ -300,6 +300,7 @@ GameObject:
   - component: {fileID: 3831826507396700388}
   - component: {fileID: 3831826507396700389}
   - component: {fileID: 4260993064750142790}
+  - component: {fileID: 7473387684818943140}
   - component: {fileID: 3831826507396700385}
   - component: {fileID: 1958510825}
   - component: {fileID: 1202187256573972337}
@@ -547,6 +548,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 3
   health: 0
+--- !u!114 &7473387684818943140
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3831826507396700408}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3889f8c6cf788224c8ad2d77225d0cca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxPower: 3
+  power: 0
 --- !u!114 &3831826507396700385
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -631,11 +646,12 @@ MonoBehaviour:
   RangedWeapons:
   - hand: {fileID: 3984322414615656599}
     holster: {fileID: 4379784951295016637}
-    bulletSpawn: {fileID: 0}
-    weaponData: {fileID: 11400000, guid: 4b78bb72a25b7a949b28719c6a63b098, type: 2}
-  BulletSpawn: {fileID: 3984322414615656599}
-  magazineSize: 500
+    weaponPrefab: {fileID: 1947189329703348, guid: b12227c752b72334b9c3d0f15986f1c2,
+      type: 3}
   aimRig: {fileID: 1171732148}
+  <OnShoot>k__BackingField:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &1098842394
 MonoBehaviour:
   m_ObjectHideFlags: 0

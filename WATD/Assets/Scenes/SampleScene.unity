@@ -1180,6 +1180,18 @@ MonoBehaviour:
   m_MaximumFOV: 60
   m_MinimumOrthoSize: 1
   m_MaximumOrthoSize: 5000
+--- !u!114 &2104242745 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7473387684818943140, guid: 6ceab631c3e854245a1e8eebdf2b2aea,
+    type: 3}
+  m_PrefabInstance: {fileID: 3831826507859143829}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3889f8c6cf788224c8ad2d77225d0cca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2146476969
 GameObject:
   m_ObjectHideFlags: 0
@@ -1271,6 +1283,41 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1202187256573972337, guid: 6ceab631c3e854245a1e8eebdf2b2aea,
+        type: 3}
+      propertyPath: <OnShoot>k__BackingField.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1202187256573972337, guid: 6ceab631c3e854245a1e8eebdf2b2aea,
+        type: 3}
+      propertyPath: <OnShoot>k__BackingField.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1202187256573972337, guid: 6ceab631c3e854245a1e8eebdf2b2aea,
+        type: 3}
+      propertyPath: <OnShoot>k__BackingField.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 2104242745}
+    - target: {fileID: 1202187256573972337, guid: 6ceab631c3e854245a1e8eebdf2b2aea,
+        type: 3}
+      propertyPath: <OnShoot>k__BackingField.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1202187256573972337, guid: 6ceab631c3e854245a1e8eebdf2b2aea,
+        type: 3}
+      propertyPath: <OnShoot>k__BackingField.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: UsePower
+      objectReference: {fileID: 0}
+    - target: {fileID: 1202187256573972337, guid: 6ceab631c3e854245a1e8eebdf2b2aea,
+        type: 3}
+      propertyPath: <OnShoot>k__BackingField.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Power, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 1202187256573972337, guid: 6ceab631c3e854245a1e8eebdf2b2aea,
+        type: 3}
+      propertyPath: <OnShoot>k__BackingField.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 3831826507396700388, guid: 6ceab631c3e854245a1e8eebdf2b2aea,
         type: 3}
       propertyPath: <OnLookAt>k__BackingField.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -1337,6 +1384,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5175193189913548736, guid: 6ceab631c3e854245a1e8eebdf2b2aea,
+        type: 3}
+      propertyPath: <Power>k__BackingField
+      value: 
+      objectReference: {fileID: 2104242745}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6ceab631c3e854245a1e8eebdf2b2aea, type: 3}
 --- !u!1001 &5126392516615550523

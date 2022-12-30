@@ -263,7 +263,7 @@ GameObject:
   - component: {fileID: 23119825627996454}
   - component: {fileID: 2880304980499536602}
   m_Layer: 0
-  m_Name: BaseGun
+  m_Name: Revolver
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -350,10 +350,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ecb346f1f46ce7b46a8a1381254f8bee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Bullet: {fileID: 835263807146183893, guid: 9ffca377ef51a3f42ad29f94ef2238c5, type: 3}
+  <BulletSpawn>k__BackingField: {fileID: 3279835917215185345}
+  WeaponData: {fileID: 11400000, guid: 4b78bb72a25b7a949b28719c6a63b098, type: 2}
   <OnShoot>k__BackingField:
     m_PersistentCalls:
       m_Calls: []
-  <BulletSpawn>k__BackingField: {fileID: 3279835917215185345}
 --- !u!1 &1978593677310974
 GameObject:
   m_ObjectHideFlags: 0
