@@ -10,11 +10,10 @@ public class GunController : MonoBehaviour, IShootable
     [field: SerializeField] private RangedWeaponSO WeaponData;
     [field: SerializeField] public UnityEvent OnShoot { get; set; }
     private bool readyToShoot;
-    private int magazineSize = 3, bulletsLeft, bulletsShot;
+    private int bulletsShot;
 
     private void Awake()
     {
-        bulletsLeft = magazineSize;
         readyToShoot = true;
     }
 
@@ -32,41 +31,38 @@ public class GunController : MonoBehaviour, IShootable
     {
         if (readyToShoot == false) { return 0f; }
         if (power < WeaponData.PowerCost) { return 0f; }
+        readyToShoot = false;
+        bulletsShot = 0;
+        SendBullet();
+        // Invoke ResetShot function (if not already invoked)
+        Invoke("ResetShot", WeaponData.TimeBetweenShooting);
         return WeaponData.PowerCost;
     }
 
-    /*private void Shoot()
+    private void SendBullet()
     {
-        if (readyToShoot == false) { return; }
-        readyToShoot = false;
         // Shooting direction without spread
         Vector3 directionWithoutSpread = BulletSpawn.transform.forward;
+        directionWithoutSpread.y = 0f;
         // Calculate spread
-        float spread = Random.Range(-currentRanged.weaponData.Spread, currentRanged.weaponData.Spread);
+        float spread = Random.Range(-WeaponData.Spread, WeaponData.Spread);
         // Shooting direction with spread
         Vector3 directionWithSpread = directionWithoutSpread + new Vector3(spread, 0f, 0f);
         // Instantiate bullet
-        GameObject currentBullet = Instantiate(currentRanged.weaponData.bullet, BulletSpawn.transform.position, Quaternion.identity);
+        GameObject currentBullet = Instantiate(Bullet, BulletSpawn.transform.position, Quaternion.identity);
         currentBullet.transform.forward = directionWithSpread;
         // Instantiate muzzle flash
-        if (currentRanged.weaponData.MuzzleFlash != null)
+        if (WeaponData.MuzzleFlash != null)
         {
-            Instantiate(currentRanged.weaponData.MuzzleFlash, BulletSpawn.transform.position, currentBullet.transform.rotation);
+            Instantiate(WeaponData.MuzzleFlash, BulletSpawn.transform.position, currentBullet.transform.rotation);
         }
         // Add forces to bullet
-        currentBullet.GetComponent<Rigidbody>().AddForce(directionWithSpread.normalized * currentRanged.weaponData.ShootForce, ForceMode.Impulse);
-        // Invoke ResetShot function (if not already invoked)
-        if (allowInvoke)
-        {
-            Invoke("ResetShot", currentRanged.weaponData.TimeBetweenShooting);
-            allowInvoke = false;
-        }
-        bulletsLeft--;
+        currentBullet.GetComponent<Rigidbody>().AddForce(directionWithSpread.normalized * WeaponData.ShootForce, ForceMode.Impulse);
         bulletsShot++;
         // If more than one BulletsPerTap make sure to repeat Shoot function
-        if (bulletsShot < currentRanged.weaponData.BulletsPerTap)
+        if (bulletsShot < WeaponData.BulletsPerTap)
         {
-            Invoke("Shoot", currentRanged.weaponData.TimeBetweenShots);
+            Invoke("SendBullet", WeaponData.TimeBetweenShots);
         }
-    }*/
+    }
 }

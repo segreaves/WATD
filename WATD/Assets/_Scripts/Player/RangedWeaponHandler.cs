@@ -25,8 +25,9 @@ public class RangedWeaponHandler : MonoBehaviour
         if (RangedWeapons == null) { return; }
         if (index < 0 || index >= RangedWeapons.Count) { return; }
         ActiveWeaponType = RangedWeapons[index];
-        ActiveWeapon?.SetActive(false);
         ActiveWeapon = Instantiate(ActiveWeaponType.weaponPrefab, ActiveWeaponType.holster.transform.position, ActiveWeaponType.holster.transform.rotation);
+        if (ActiveWeapon == null) { return; }
+        ActiveWeapon.SetActive(false);
         ActiveWeapon.transform.SetParent(ActiveWeaponType.holster.transform, true);
         ActiveWeapon.SetActive(true);
         AttachToHolster();
@@ -34,11 +35,13 @@ public class RangedWeaponHandler : MonoBehaviour
 
     public void AttachToHand()
     {
+        if (ActiveWeapon == null) { return; }
         ActiveWeapon.transform.SetParent(ActiveWeaponType.hand.transform, false);
     }
 
     public void AttachToHolster()
     {
+        if (ActiveWeapon == null) { return; }
         ActiveWeapon.transform.SetParent(ActiveWeaponType.holster.transform, false);
     }
 
@@ -54,9 +57,10 @@ public class RangedWeaponHandler : MonoBehaviour
 
     public void Shoot(float power)
     {
+        if (ActiveWeapon == null) { return; }
         var shootable = ActiveWeapon.GetComponent<IShootable>();
         if (shootable == null) { return; }
-        float powerCost =  shootable.Shoot(power);
+        float powerCost = shootable.Shoot(power);
         OnShoot.Invoke(powerCost);
     }
 }
