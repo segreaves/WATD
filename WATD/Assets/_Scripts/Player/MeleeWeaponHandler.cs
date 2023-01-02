@@ -123,12 +123,12 @@ public class MeleeWeaponHandler : MonoBehaviour
 
     private Vector3 GetDamageCapsuleStart()
     {
-        return transform.position + currentMelee.weaponData.HitCapsuleForwardOffset * transform.forward;
+        return transform.position + transform.up + currentMelee.weaponData.HitCapsuleForwardOffset * transform.forward;
     }
 
     private Vector3 GetDamageCapsuleEnd()
     {
-        return transform.position + (currentMelee.weaponData.HitCapsuleForwardOffset + (currentMelee.weaponData.HitCapsuleHeight - 1f)) * transform.forward;
+        return transform.position + transform.up + (currentMelee.weaponData.HitCapsuleForwardOffset + (currentMelee.weaponData.HitCapsuleHeight - 1f)) * transform.forward;
     }
 
     private void OnDrawGizmosSelected()

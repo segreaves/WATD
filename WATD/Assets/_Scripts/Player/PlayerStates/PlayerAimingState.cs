@@ -49,6 +49,6 @@ public class PlayerAimingState : PlayerMovementStateBase
     private void OnAttack()
     {
         if (stateMachine.InputHandler.IsInteracting == true) { return; }
-        stateMachine.RangedWeaponHandler.Shoot(stateMachine.Power.power);
+        stateMachine.RangedWeaponHandler.Shoot(stateMachine.AnimatorHandler.LastLookDirection, stateMachine.Power.power);
     }
 }

@@ -55,12 +55,12 @@ public class RangedWeaponHandler : MonoBehaviour
         aimRig.weight = 0f;
     }
 
-    public void Shoot(float power)
+    public void Shoot(Vector3 aimDirection, float power)
     {
         if (ActiveWeapon == null) { return; }
         var shootable = ActiveWeapon.GetComponent<IShootable>();
         if (shootable == null) { return; }
-        float powerCost = shootable.Shoot(power);
+        float powerCost = shootable.Shoot(aimDirection, power);
         OnShoot.Invoke(powerCost);
     }
 }

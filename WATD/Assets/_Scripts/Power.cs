@@ -5,7 +5,7 @@ using UnityEngine;
 public class Power : MonoBehaviour
 {
     public float maxPower = 3;
-    [SerializeField] public float power { get; set; }
+    public float power;
 
     private void Start()
     {
@@ -17,6 +17,5 @@ public class Power : MonoBehaviour
         if (power == 0) { return; }
         // Remove power from maxPower
         power = Mathf.Max(power - powerCost, 0);
-        Debug.Log("Power.cs = " + power);
     }
 }

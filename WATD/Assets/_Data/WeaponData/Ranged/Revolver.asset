@@ -14,10 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Damage: 1
   ShootAnimation: Shoot
-  ShootForce: 25
   PowerCost: 1
   TimeBetweenShooting: 0.1
   TimeBetweenShots: 0
-  Spread: 0.8
-  BulletsPerTap: 3
+  Spread: 1
+  BulletsPerTap: 1
   MuzzleFlash: {fileID: 0}

@@ -11,6 +11,7 @@ public class GunController : MonoBehaviour, IShootable
     [field: SerializeField] public UnityEvent OnShoot { get; set; }
     private bool readyToShoot;
     private int bulletsShot;
+    private Vector3 AimDirection;
 
     private void Awake()
     {
@@ -27,12 +28,13 @@ public class GunController : MonoBehaviour, IShootable
         readyToShoot = true;
     }
 
-    public float Shoot(float power)
+    public float Shoot(Vector3 aimDirection, float power)
     {
         if (readyToShoot == false) { return 0f; }
         if (power < WeaponData.PowerCost) { return 0f; }
         readyToShoot = false;
         bulletsShot = 0;
+        AimDirection = aimDirection;
         SendBullet();
         // Invoke ResetShot function (if not already invoked)
         Invoke("ResetShot", WeaponData.TimeBetweenShooting);
@@ -41,13 +43,10 @@ public class GunController : MonoBehaviour, IShootable
 
     private void SendBullet()
     {
-        // Shooting direction without spread
-        Vector3 directionWithoutSpread = BulletSpawn.transform.forward;
-        directionWithoutSpread.y = 0f;
         // Calculate spread
         float spread = Random.Range(-WeaponData.Spread, WeaponData.Spread);
         // Shooting direction with spread
-        Vector3 directionWithSpread = directionWithoutSpread + new Vector3(spread, 0f, 0f);
+        Vector3 directionWithSpread = Quaternion.Euler(0f, spread, 0f) * AimDirection;
         // Instantiate bullet
         GameObject currentBullet = Instantiate(Bullet, BulletSpawn.transform.position, Quaternion.identity);
         currentBullet.transform.forward = directionWithSpread;
@@ -56,8 +55,6 @@ public class GunController : MonoBehaviour, IShootable
         {
             Instantiate(WeaponData.MuzzleFlash, BulletSpawn.transform.position, currentBullet.transform.rotation);
         }
-        // Add forces to bullet
-        currentBullet.GetComponent<Rigidbody>().AddForce(directionWithSpread.normalized * WeaponData.ShootForce, ForceMode.Impulse);
         bulletsShot++;
         // If more than one BulletsPerTap make sure to repeat Shoot function
         if (bulletsShot < WeaponData.BulletsPerTap)

@@ -350,7 +350,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ecb346f1f46ce7b46a8a1381254f8bee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Bullet: {fileID: 835263807146183893, guid: 9ffca377ef51a3f42ad29f94ef2238c5, type: 3}
+  Bullet: {fileID: 6618317663242988900, guid: 343c5371768f8e743a6ed256ba7a4293, type: 3}
   <BulletSpawn>k__BackingField: {fileID: 3279835917215185345}
   WeaponData: {fileID: 11400000, guid: 4b78bb72a25b7a949b28719c6a63b098, type: 2}
   <OnShoot>k__BackingField:
