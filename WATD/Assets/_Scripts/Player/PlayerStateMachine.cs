@@ -44,7 +44,7 @@ public class PlayerStateMachine : StateMachine, IHittable
         InputHandler.IsInteracting = AnimatorHandler.animator.GetBool(AnimatorHandler.IsInteractingHash);
     }
 
-    public void GetHit(int damage, GameObject damageDealer)
+    public void GetHit(int damage, Vector3 damageDirection)
     {
         // Process hit
         if (!Health.IsAlive()) { return; }
@@ -60,8 +60,8 @@ public class PlayerStateMachine : StateMachine, IHittable
             CameraShake.Instance.ShakeCamera(5f, 0.1f);
         }
         // Add damage impulse
-        Vector3 damageDirection = transform.position - damageDealer.transform.position;
-        damageDirection.y = 0f;
+        //Vector3 damageDirection = transform.position - damageDealer.transform.position;
+        //damageDirection.y = 0f;
         ForceReceiver?.AddForce(damageDirection.normalized * 5f);
     }
 }

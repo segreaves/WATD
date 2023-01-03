@@ -117,7 +117,9 @@ public class MeleeWeaponHandler : MonoBehaviour
         {
             var damageable = collision.GetComponent<IHittable>();
             if (damageable == null) { return; }
-            damageable.GetHit(currentMelee.weaponData.Damage, gameObject);
+            Vector3 damageDirection = collision.gameObject.transform.position - transform.position;
+            damageDirection.y = 0f;
+            damageable.GetHit(currentMelee.weaponData.Damage, damageDirection);
         }
     }
 

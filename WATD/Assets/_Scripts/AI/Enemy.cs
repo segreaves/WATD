@@ -24,7 +24,7 @@ public class Enemy : MonoBehaviour, IHittable
         ForceReceiver = transform.root.GetComponent<ForceReceiver>();
     }
 
-    public void GetHit(int damage, GameObject damageDealer)
+    public void GetHit(int damage, Vector3 damageDirection)
     {
         // Process hit
         if (!Health.IsAlive()) { return; }
@@ -37,8 +37,8 @@ public class Enemy : MonoBehaviour, IHittable
         else
         {
             // Add damage impulse
-            Vector3 damageDirection = transform.position - damageDealer.transform.position;
-            damageDirection.y = 0f;
+            //Vector3 damageDirection = transform.position - damageDealer.transform.position;
+            //damageDirection.y = 0f;
             ForceReceiver?.ResetImpact();
             ForceReceiver?.AddForce(damageDirection.normalized * 5f);
             OnDie?.Invoke();

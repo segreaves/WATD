@@ -5,24 +5,24 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class CustomProjectile : MonoBehaviour
 {
-    public Rigidbody rb;
-    public GameObject explosion;
     public LayerMask damageLayer;
+    private Rigidbody rb;
+    public GameObject shooter;
+    public GameObject explosion;
 
     // Projectile stats
     [Range(0f, 1f)] public float bounciness;
     [Range(1f, 100f)] public float speed = 1f;
     public bool useGravity;
+    public bool isAOE = false;
     // Damage
     public int explosionDamage;
     public float explosionRange;
     // Lifetime
-    public int maxCollisions = 1;
     public float maxLifetime = 0.5f;
     public bool explodeOnTouch = true;
 
-    PhysicMaterial physicMat;
-    public string targetTag;
+    private PhysicMaterial physicMat;
 
     private void Start()
     {
@@ -65,11 +65,19 @@ public class CustomProjectile : MonoBehaviour
             var damageable = collision.GetComponent<IHittable>();
             if (damageable != null)
             {
-                damageable.GetHit(explosionDamage, gameObject);
+                if (isAOE == true)
+                {
+                    Vector3 damageDirection = collision.gameObject.transform.position - transform.position;
+                    damageable.GetHit(explosionDamage, damageDirection);
+                }
+                else
+                {
+                    damageable.GetHit(explosionDamage, transform.forward);
+                }
             }
         }
         // Destroy after a small delay to avoid bugs
-        Invoke("DelayDestroy", 0.025f);
+        Invoke("DelayDestroy", 0.001f);
     }
 
     private void DelayDestroy()
@@ -77,11 +85,8 @@ public class CustomProjectile : MonoBehaviour
         Destroy(gameObject);
     }
 
-    private void OnCollisionEnter(Collision other)
+    private void OnTriggerEnter(Collider other)
     {
-        // Don't explode if hitting other projectiles
-        if (other.collider.CompareTag("Projectile")) { return; }
-
         // Explode if hits enemy directly
         if (explodeOnTouch == true)
         {

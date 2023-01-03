@@ -5,7 +5,7 @@ using UnityEngine.Events;
 
 public interface IHittable
 {
-    void GetHit(int damage, GameObject damageDealer);
+    void GetHit(int damage, Vector3 damageDirection);
     UnityEvent OnGetHit { get; set; }
     UnityEvent OnDie { get; set; }
 }

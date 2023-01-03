@@ -6,6 +6,7 @@ using UnityEngine.Events;
 public class GunController : MonoBehaviour, IShootable
 {
     [field: SerializeField] private GameObject Bullet;
+    [field: SerializeField] private LayerMask damageLayer;
     [field: SerializeField] private GameObject BulletSpawn { get; set; }
     [field: SerializeField] private RangedWeaponSO WeaponData;
     [field: SerializeField] public UnityEvent OnShoot { get; set; }
@@ -50,6 +51,12 @@ public class GunController : MonoBehaviour, IShootable
         // Instantiate bullet
         GameObject currentBullet = Instantiate(Bullet, BulletSpawn.transform.position, Quaternion.identity);
         currentBullet.transform.forward = directionWithSpread;
+        var customProjectile = currentBullet.GetComponent<CustomProjectile>();
+        if (customProjectile != null)
+        {
+            // Set whom the bullet can damage
+            customProjectile.damageLayer = damageLayer;
+        }
         // Instantiate muzzle flash
         if (WeaponData.MuzzleFlash != null)
         {

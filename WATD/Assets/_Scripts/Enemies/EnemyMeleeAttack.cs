@@ -18,7 +18,9 @@ public class EnemyMeleeAttack : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             var hittable = other.GetComponent<IHittable>();
-            hittable?.GetHit(1, gameObject);
+            Vector3 damageDirection = other.transform.position - transform.position;
+            damageDirection.y = 0f;
+            hittable?.GetHit(1, damageDirection);
         }
     }
 

@@ -351,6 +351,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Bullet: {fileID: 6618317663242988900, guid: 343c5371768f8e743a6ed256ba7a4293, type: 3}
+  damageLayer:
+    serializedVersion: 2
+    m_Bits: 128
   <BulletSpawn>k__BackingField: {fileID: 3279835917215185345}
   WeaponData: {fileID: 11400000, guid: 4b78bb72a25b7a949b28719c6a63b098, type: 2}
   <OnShoot>k__BackingField:
