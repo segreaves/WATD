@@ -9,10 +9,11 @@ using UnityEngine.Animations.Rigging;
 public class RangedWeaponHandler : MonoBehaviour
 {
     [field: SerializeField] private List<RangedWeapon> RangedWeapons;
-    [field: SerializeField] private MultiAimConstraint aimRig;
     [field: SerializeField] public UnityEvent<float> OnShoot { get; set; }
+    [field: SerializeField] private MultiAimConstraint aimRig;
     public RangedWeapon ActiveWeaponType { get; private set; }
     public GameObject ActiveWeapon { get; private set; }
+    public RangedWeaponSO WeaponData { get; private set; }
 
     void Start()
     {
@@ -31,6 +32,15 @@ public class RangedWeaponHandler : MonoBehaviour
         ActiveWeapon.transform.SetParent(ActiveWeaponType.holster.transform, true);
         ActiveWeapon.SetActive(true);
         AttachToHolster();
+        var shootable = ActiveWeapon.GetComponent<IShootable>();
+        if (shootable != null)
+        {
+            WeaponData = shootable.GetWeaponData();
+        }
+        else
+        {
+            WeaponData = null;
+        }
     }
 
     public void AttachToHand()
@@ -55,12 +65,18 @@ public class RangedWeaponHandler : MonoBehaviour
         aimRig.weight = 0f;
     }
 
-    public void Shoot(Vector3 aimDirection, float power)
+    public bool Shoot(Vector3 aimDirection, float power)
     {
-        if (ActiveWeapon == null) { return; }
+        if (ActiveWeapon == null) { return false; }
+        if (power < WeaponData.WeaponCost)
+        {
+            // Play can't shoot sound
+            return false;
+        }
         var shootable = ActiveWeapon.GetComponent<IShootable>();
-        if (shootable == null) { return; }
-        float powerCost = shootable.Shoot(aimDirection, power);
-        OnShoot.Invoke(powerCost);
+        if (shootable == null) { return false; }
+        shootable.Shoot(aimDirection);
+        OnShoot.Invoke(WeaponData.WeaponCost);
+        return true;
     }
 }

@@ -74,7 +74,7 @@ public class MeleeWeaponHandler : MonoBehaviour
         renderer.receiveShadows = false;
     }
 
-    public void AttachToHand()
+    public void IgniteBlade()
     {
         //currentMelee.body.transform.SetParent(currentMelee.hand.transform, false);
         if (isActivated == false)
@@ -86,7 +86,7 @@ public class MeleeWeaponHandler : MonoBehaviour
         }
     }
 
-    public void AttachToHolster()
+    public void UnigniteBlade()
     {
         //currentMelee.body.transform.SetParent(currentMelee.holster.transform, false);
         if (isActivated == true)

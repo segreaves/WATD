@@ -7,11 +7,14 @@ public class PlayerAimingState : PlayerMovementStateBase
 {
     public PlayerAimingState(PlayerStateMachine stateMachine) : base(stateMachine) {}
 
+    protected RangedWeaponSO currentWeaponData;
+
     public override void Enter()
     {
         base.Enter();
         stateMachine.InputHandler.AimEvent += OnStopAiming;
-        stateMachine.InputHandler.AttackEvent += OnAttack;
+        stateMachine.InputHandler.ShootEvent += OnShoot;
+        currentWeaponData = stateMachine.RangedWeaponHandler.WeaponData;
         stateMachine.AnimatorHandler.animator.SetBool(stateMachine.AnimatorHandler.IsAimingHash, true);
         stateMachine.RangedWeaponHandler.AttachToHand();
         stateMachine.RangedWeaponHandler.StartAiming();
@@ -21,7 +24,7 @@ public class PlayerAimingState : PlayerMovementStateBase
     {
         base.Exit();
         stateMachine.InputHandler.AimEvent -= OnStopAiming;
-        stateMachine.InputHandler.AttackEvent -= OnAttack;
+        stateMachine.InputHandler.ShootEvent -= OnShoot;
         stateMachine.AnimatorHandler.animator.SetBool(stateMachine.AnimatorHandler.IsAimingHash, false);
         stateMachine.RangedWeaponHandler.AttachToHolster();
         stateMachine.RangedWeaponHandler.StopAiming();
@@ -46,9 +49,13 @@ public class PlayerAimingState : PlayerMovementStateBase
         stateMachine.SwitchState(new PlayerDashState(stateMachine));
     }
 
-    private void OnAttack()
+    private void OnShoot()
     {
         if (stateMachine.InputHandler.IsInteracting == true) { return; }
-        stateMachine.RangedWeaponHandler.Shoot(stateMachine.AnimatorHandler.LastLookDirection, stateMachine.Power.power);
+        bool shotSuccessful = stateMachine.RangedWeaponHandler.Shoot(stateMachine.AnimatorHandler.LastLookDirection, stateMachine.Power.power);
+        if (shotSuccessful)
+        {
+            stateMachine.AnimatorHandler.PlayTargetAnimation(currentWeaponData.ShootAnimation, true, 0f);
+        }
     }
 }

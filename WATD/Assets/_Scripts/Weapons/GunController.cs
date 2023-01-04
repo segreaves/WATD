@@ -29,17 +29,15 @@ public class GunController : MonoBehaviour, IShootable
         readyToShoot = true;
     }
 
-    public float Shoot(Vector3 aimDirection, float power)
+    public void Shoot(Vector3 aimDirection)
     {
-        if (readyToShoot == false) { return 0f; }
-        if (power < WeaponData.PowerCost) { return 0f; }
+        if (readyToShoot == false) { return; }
         readyToShoot = false;
         bulletsShot = 0;
         AimDirection = aimDirection;
         SendBullet();
         // Invoke ResetShot function (if not already invoked)
         Invoke("ResetShot", WeaponData.TimeBetweenShooting);
-        return WeaponData.PowerCost;
     }
 
     private void SendBullet()
@@ -68,5 +66,10 @@ public class GunController : MonoBehaviour, IShootable
         {
             Invoke("SendBullet", WeaponData.TimeBetweenShots);
         }
+    }
+
+    public RangedWeaponSO GetWeaponData()
+    {
+        return(WeaponData);
     }
 }

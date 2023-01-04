@@ -5,6 +5,7 @@ using UnityEngine.Events;
 
 public interface IShootable
 {
-    float Shoot(Vector3 aimDirection, float currentPower);
+    void Shoot(Vector3 aimDirection);
+    RangedWeaponSO GetWeaponData();
     UnityEvent OnShoot { get; set; }
 }

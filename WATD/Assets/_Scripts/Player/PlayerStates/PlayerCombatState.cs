@@ -11,7 +11,7 @@ public class PlayerCombatState : PlayerMovementStateBase
         base.Enter();
         stateMachine.InputHandler.AttackEvent += OnAttack;
         stateMachine.Animator.SetLayerWeight(stateMachine.Animator.GetLayerIndex("ArmR"), 0.75f);
-        stateMachine.MeleeWeaponHandler.AttachToHand();
+        stateMachine.MeleeWeaponHandler.IgniteBlade();
         //stateMachine.Animator.CrossFadeInFixedTime(stateMachine.MeleeWeaponHandler.currentMelee.weaponData.WeaponName + "Equip", 0.0f, LayerMask.NameToLayer("ArmR"));
     }
 
@@ -19,7 +19,7 @@ public class PlayerCombatState : PlayerMovementStateBase
     {
         base.Exit();
         stateMachine.InputHandler.AttackEvent -= OnAttack;
-        stateMachine.MeleeWeaponHandler.AttachToHolster();
+        stateMachine.MeleeWeaponHandler.UnigniteBlade();
         //stateMachine.Animator.CrossFadeInFixedTime(stateMachine.MeleeWeaponHandler.currentMelee.weaponData.WeaponName + "Unequip", 0.0f, LayerMask.NameToLayer("UpperBody"));
     }
 
