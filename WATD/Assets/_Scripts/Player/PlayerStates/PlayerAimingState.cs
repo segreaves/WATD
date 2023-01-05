@@ -5,7 +5,10 @@ using UnityEngine;
 
 public class PlayerAimingState : PlayerMovementStateBase
 {
-    public PlayerAimingState(PlayerStateMachine stateMachine) : base(stateMachine) {}
+    public PlayerAimingState(PlayerStateMachine stateMachine, Vector3 lookDirection) : base(stateMachine)
+    {
+        stateMachine.AnimatorHandler.LastLookDirection = lookDirection;
+    }
 
     protected RangedWeaponSO currentWeaponData;
 
@@ -14,6 +17,7 @@ public class PlayerAimingState : PlayerMovementStateBase
         base.Enter();
         stateMachine.InputHandler.AimEvent += OnStopAiming;
         stateMachine.InputHandler.ShootEvent += OnShoot;
+        //stateMachine.AnimatorHandler.LastLookDirection = stateMachine.transform.forward;
         currentWeaponData = stateMachine.RangedWeaponHandler.WeaponData;
         stateMachine.AnimatorHandler.animator.SetBool(stateMachine.AnimatorHandler.IsAimingHash, true);
         stateMachine.RangedWeaponHandler.AttachToHand();

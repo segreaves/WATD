@@ -8,5 +8,6 @@ public class RangedWeapon
 {
     [SerializeField] public GameObject hand;
     [SerializeField] public GameObject holster;
-    [SerializeField] public GameObject weaponPrefab;
+    [field: SerializeField] public LayerMask damageLayer;
+    [SerializeField] public RangedWeaponSO weaponData;
 }

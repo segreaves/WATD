@@ -16,7 +16,7 @@ public class PlayerFreeMovementState : PlayerMovementStateBase
         stateMachine.InputHandler.AimEvent += OnAim;
         if (stateMachine.InputHandler.IsAimingPressed)
         {
-            stateMachine.SwitchState(new PlayerAimingState(stateMachine));
+            stateMachine.SwitchState(new PlayerAimingState(stateMachine, stateMachine.AnimatorHandler.LastLookDirection));
         }
     }
 
@@ -50,6 +50,6 @@ public class PlayerFreeMovementState : PlayerMovementStateBase
     private void OnAim(bool aim)
     {
         if (aim == false) { return; }
-        stateMachine.SwitchState(new PlayerAimingState(stateMachine));
+        stateMachine.SwitchState(new PlayerAimingState(stateMachine, stateMachine.AnimatorHandler.LastLookDirection));
     }
 }

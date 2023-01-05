@@ -69,7 +69,7 @@ public partial class PlayerInput : MonoBehaviour, Controls.IPlayerActions
     public void OnLook(InputAction.CallbackContext context)
     {
         Vector2 lookValueXY = context.ReadValue<Vector2>();
-        if (lookValueXY.magnitude < 0.75f)
+        if (lookValueXY.magnitude < 0.5f)
         {
             lookInput = false;
             LookValue = Vector3.zero;
@@ -97,6 +97,7 @@ public partial class PlayerInput : MonoBehaviour, Controls.IPlayerActions
 
     public void OnAim(InputAction.CallbackContext context)
     {
+        Debug.Log(context.performed);
         IsAimingPressed = context.performed;
         AimEvent?.Invoke(context.performed);
     }

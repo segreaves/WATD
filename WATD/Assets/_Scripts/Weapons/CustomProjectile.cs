@@ -37,7 +37,6 @@ public class CustomProjectile : MonoBehaviour
         physicMat.bounceCombine = PhysicMaterialCombine.Maximum;
         // Assign material to collider
         GetComponent<SphereCollider>().material = physicMat;
-        GetComponent<SphereCollider>().radius = ColliderRadius;
 
         // Set gravity
         rb.useGravity = useGravity;
@@ -94,15 +93,6 @@ public class CustomProjectile : MonoBehaviour
     private void DelayDestroy()
     {
         Destroy(gameObject);
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        // Explode if hits enemy directly
-        if (explodeOnTouch == true)
-        {
-            Explode(transform.position);
-        }
     }
 
     private void RayTrace()

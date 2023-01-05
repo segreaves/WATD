@@ -11,7 +11,7 @@ public abstract class PlayerMovementStateBase : State
     public override void Enter()
     {
         stateMachine.AnimatorHandler.LastBodyDirection = stateMachine.transform.forward;
-        stateMachine.AnimatorHandler.LastLookDirection = stateMachine.transform.forward;
+        //stateMachine.AnimatorHandler.LastLookDirection = stateMachine.transform.forward;
         stateMachine.AnimatorHandler.LookIKControl.StartLooking();
     }
 

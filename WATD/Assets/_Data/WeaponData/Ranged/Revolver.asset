@@ -12,9 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 554b5f557542481478b8203b11cb0444, type: 3}
   m_Name: Revolver
   m_EditorClassIdentifier: 
+  WeaponPrefab: {fileID: 1947189329703348, guid: b12227c752b72334b9c3d0f15986f1c2,
+    type: 3}
   Damage: 1
   ShootAnimation: Shoot
-  PowerCost: 1
+  WeaponCost: 1
   TimeBetweenShooting: 0.1
   TimeBetweenShots: 0
   Spread: 1

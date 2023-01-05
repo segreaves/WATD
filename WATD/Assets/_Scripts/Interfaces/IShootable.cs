@@ -5,7 +5,6 @@ using UnityEngine.Events;
 
 public interface IShootable
 {
-    void Shoot(Vector3 aimDirection);
-    RangedWeaponSO GetWeaponData();
-    UnityEvent OnShoot { get; set; }
+    void Shoot(GameObject bulletSpawn, Vector3 aimDirection, LayerMask damageLayer);
+    void SetWeaponData(RangedWeaponSO weaponData);
 }

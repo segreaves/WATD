@@ -6,13 +6,9 @@ using UnityEngine.Events;
 public class GunController : MonoBehaviour, IShootable
 {
     [field: SerializeField] private GameObject Bullet;
-    [field: SerializeField] private LayerMask damageLayer;
-    [field: SerializeField] private GameObject BulletSpawn { get; set; }
-    [field: SerializeField] private RangedWeaponSO WeaponData;
-    [field: SerializeField] public UnityEvent OnShoot { get; set; }
+    private RangedWeaponSO WeaponData;
     private bool readyToShoot;
     private int bulletsShot;
-    private Vector3 AimDirection;
 
     private void Awake()
     {
@@ -29,25 +25,25 @@ public class GunController : MonoBehaviour, IShootable
         readyToShoot = true;
     }
 
-    public void Shoot(Vector3 aimDirection)
+    public void Shoot(GameObject bulletSpawn, Vector3 aimDirection, LayerMask damageLayer)
     {
         if (readyToShoot == false) { return; }
         readyToShoot = false;
         bulletsShot = 0;
-        AimDirection = aimDirection;
-        SendBullet();
+        SendBullet(bulletSpawn, aimDirection, damageLayer);
         // Invoke ResetShot function (if not already invoked)
         Invoke("ResetShot", WeaponData.TimeBetweenShooting);
     }
 
-    private void SendBullet()
+    private void SendBullet(GameObject bulletSpawn, Vector3 aimDirection, LayerMask damageLayer)
     {
         // Calculate spread
         float spread = Random.Range(-WeaponData.Spread, WeaponData.Spread);
         // Shooting direction with spread
-        Vector3 directionWithSpread = Quaternion.Euler(0f, spread, 0f) * AimDirection;
+        aimDirection.y = 0f;
+        Vector3 directionWithSpread = Quaternion.Euler(0f, spread, 0f) * aimDirection;
         // Instantiate bullet
-        GameObject currentBullet = Instantiate(Bullet, BulletSpawn.transform.position, Quaternion.identity);
+        GameObject currentBullet = Instantiate(Bullet, bulletSpawn.transform.position, Quaternion.identity);
         currentBullet.transform.forward = directionWithSpread;
         var customProjectile = currentBullet.GetComponent<CustomProjectile>();
         if (customProjectile != null)
@@ -58,7 +54,7 @@ public class GunController : MonoBehaviour, IShootable
         // Instantiate muzzle flash
         if (WeaponData.MuzzleFlash != null)
         {
-            Instantiate(WeaponData.MuzzleFlash, BulletSpawn.transform.position, currentBullet.transform.rotation);
+            Instantiate(WeaponData.MuzzleFlash, bulletSpawn.transform.position, currentBullet.transform.rotation);
         }
         bulletsShot++;
         // If more than one BulletsPerTap make sure to repeat Shoot function
@@ -68,8 +64,8 @@ public class GunController : MonoBehaviour, IShootable
         }
     }
 
-    public RangedWeaponSO GetWeaponData()
+    public void SetWeaponData(RangedWeaponSO weaponData)
     {
-        return(WeaponData);
+        WeaponData = weaponData;
     }
 }
