@@ -16,7 +16,7 @@ public partial class PlayerInput : MonoBehaviour, Controls.IPlayerActions
     [field: SerializeField] public UnityEvent<Vector3> OnFaceDirection { get; set; }
     [field: SerializeField] public UnityEvent<Vector3, float> OnRotateTowards { get; set; }
     public event Action AttackEvent;
-    public event Action ShootEvent;
+    public event Action<bool> ShootEvent;
     public event Action<bool> AimEvent;
     public bool IsAimingPressed;
     public event Action DashEvent;
@@ -97,7 +97,6 @@ public partial class PlayerInput : MonoBehaviour, Controls.IPlayerActions
 
     public void OnAim(InputAction.CallbackContext context)
     {
-        Debug.Log(context.performed);
         IsAimingPressed = context.performed;
         AimEvent?.Invoke(context.performed);
     }
@@ -111,13 +110,20 @@ public partial class PlayerInput : MonoBehaviour, Controls.IPlayerActions
 
     public void OnAttack(InputAction.CallbackContext context)
     {
-        if (!context.performed) { return; }
         if (IsAimingPressed == true)
         {
-            ShootEvent?.Invoke();
+            if (context.started)
+            {
+                ShootEvent?.Invoke(false);
+            }
+            if (context.canceled)
+            {
+                ShootEvent?.Invoke(true);
+            }
         }
         else
         {
+            if (!context.performed) { return; }
             AttackEvent?.Invoke();
         }
     }

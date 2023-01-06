@@ -10,15 +10,14 @@ public class PlayerAimingState : PlayerMovementStateBase
         stateMachine.AnimatorHandler.LastLookDirection = lookDirection;
     }
 
-    protected RangedWeaponSO currentWeaponData;
+    private RangedWeaponSO currentWeaponData;
 
     public override void Enter()
     {
         base.Enter();
         stateMachine.InputHandler.AimEvent += OnStopAiming;
         stateMachine.InputHandler.ShootEvent += OnShoot;
-        //stateMachine.AnimatorHandler.LastLookDirection = stateMachine.transform.forward;
-        currentWeaponData = stateMachine.RangedWeaponHandler.WeaponData;
+        currentWeaponData = stateMachine.RangedWeaponHandler.ActiveWeaponInfo.weaponData;
         stateMachine.AnimatorHandler.animator.SetBool(stateMachine.AnimatorHandler.IsAimingHash, true);
         stateMachine.RangedWeaponHandler.AttachToHand();
         stateMachine.RangedWeaponHandler.StartAiming();
@@ -38,6 +37,7 @@ public class PlayerAimingState : PlayerMovementStateBase
     {
         base.Tick(deltaTime);
         stateMachine.InputHandler.OnMovement?.Invoke(stateMachine.InputHandler.MovementValue);
+        stateMachine.RangedWeaponHandler?.AimWeapon(stateMachine.AnimatorHandler.LastLookDirection);
     }
 
     private void OnStopAiming(bool aim)
@@ -53,13 +53,21 @@ public class PlayerAimingState : PlayerMovementStateBase
         stateMachine.SwitchState(new PlayerDashState(stateMachine));
     }
 
-    private void OnShoot()
+    private void OnShoot(bool pressed)
     {
         if (stateMachine.InputHandler.IsInteracting == true) { return; }
-        bool shotSuccessful = stateMachine.RangedWeaponHandler.Shoot(stateMachine.AnimatorHandler.LastLookDirection, stateMachine.Power.power);
-        if (shotSuccessful)
+        if (pressed)
         {
-            stateMachine.AnimatorHandler.PlayTargetAnimation(currentWeaponData.ShootAnimation, true, 0f);
+            stateMachine.RangedWeaponHandler.PullTrigger(stateMachine.Power.power);
         }
+        else
+        {
+            stateMachine.RangedWeaponHandler.ReleaseTrigger();
+        }
+    }
+
+    public void EnterShootingState()
+    {
+        stateMachine.AnimatorHandler.PlayTargetAnimation(currentWeaponData.ShootAnimation, true, 0f);
     }
 }

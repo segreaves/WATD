@@ -5,7 +5,7 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class CustomProjectile : MonoBehaviour
 {
-    public LayerMask damageLayer;
+    [field: SerializeField] private LayerMask damageLayer;
     [field: SerializeField] private LayerMask RayCastLayer;
     [field: SerializeField] private float ColliderRadius = 0.25f;
     private Rigidbody rb;
@@ -107,7 +107,10 @@ public class CustomProjectile : MonoBehaviour
         if (Physics.CapsuleCast(prevPos, transform.position, ColliderRadius, transform.forward, out hit, 1f, RayCastLayer))
         {
             //Debug.DrawLine(prevPos, hit.point, Color.yellow, 1f);
-            Explode(hit.point);
+            if (explodeOnTouch == true)
+            {
+                Explode(hit.point);
+            }
         }
     }
 

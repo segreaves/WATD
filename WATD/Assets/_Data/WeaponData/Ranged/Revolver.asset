@@ -14,9 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   WeaponPrefab: {fileID: 1947189329703348, guid: b12227c752b72334b9c3d0f15986f1c2,
     type: 3}
+  Bullet: {fileID: 6618317663242988900, guid: 343c5371768f8e743a6ed256ba7a4293, type: 3}
   Damage: 1
   ShootAnimation: Shoot
   WeaponCost: 1
+  IsChargeShot: 0
   TimeBetweenShooting: 0.1
   TimeBetweenShots: 0
   Spread: 1

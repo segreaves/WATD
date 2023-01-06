@@ -11,10 +11,17 @@ public class RangedWeaponHandler : MonoBehaviour
     [field: SerializeField] private GameObject BulletSpawn;
     [field: SerializeField] private List<RangedWeapon> RangedWeapons;
     [field: SerializeField] public UnityEvent<float> OnShoot { get; set; }
-    [field: SerializeField] private MultiAimConstraint aimRig;
-    public RangedWeapon ActiveWeapon { get; private set; }
+    [field: SerializeField] public UnityEvent OnShootFailed { get; set; }
+    [field: SerializeField] private MultiAimConstraint AimRig;
+    public RangedWeapon ActiveWeaponInfo { get; private set; }
     public GameObject CurrentWeapon { get; private set; }
-    public RangedWeaponSO WeaponData { get; private set; }
+    private IShootable shootable;
+    private Vector3 AimDirection;
+    private float chargeTimer;
+    private bool chargeTimerOn;
+    private bool readyToShoot;
+    private int bulletsShot;
+    private bool triggerPressed;
 
     void Start()
     {
@@ -30,57 +37,118 @@ public class RangedWeaponHandler : MonoBehaviour
         if (RangedWeapons[index].weaponData.WeaponPrefab == null) { return; }
         if (RangedWeapons[index].holster == null) { return; }
         if (RangedWeapons[index].hand == null) { return; }
-        ActiveWeapon = RangedWeapons[index];
-        WeaponData = ActiveWeapon.weaponData;
+        ActiveWeaponInfo = RangedWeapons[index];
         if (CurrentWeapon != null)
         {
             Destroy(CurrentWeapon);
         }
-        CurrentWeapon = Instantiate(WeaponData.WeaponPrefab, ActiveWeapon.holster.transform.position, ActiveWeapon.holster.transform.rotation);
+        CurrentWeapon = Instantiate(ActiveWeaponInfo.weaponData.WeaponPrefab, ActiveWeaponInfo.holster.transform.position, ActiveWeaponInfo.holster.transform.rotation);
         CurrentWeapon.SetActive(true);
-        CurrentWeapon.transform.SetParent(ActiveWeapon.holster.transform, true);
+        CurrentWeapon.transform.SetParent(ActiveWeaponInfo.holster.transform, true);
         // Attach gun to holster
         AttachToHolster();
+        ReadyToShoot();
         // Set weapon data in gun controller
-        var shootable = CurrentWeapon.GetComponent<IShootable>();
+        shootable = CurrentWeapon.GetComponent<IShootable>();
         if (shootable == null) { return; }
-        shootable.SetWeaponData(WeaponData);
+        shootable.SetWeaponData(ActiveWeaponInfo.weaponData);
     }
 
     public void AttachToHand()
     {
         if (CurrentWeapon == null) { return; }
-        CurrentWeapon.transform.SetParent(ActiveWeapon.hand.transform, false);
+        CurrentWeapon.transform.SetParent(ActiveWeaponInfo.hand.transform, false);
     }
 
     public void AttachToHolster()
     {
         if (CurrentWeapon == null) { return; }
-        CurrentWeapon.transform.SetParent(ActiveWeapon.holster.transform, false);
+        CurrentWeapon.transform.SetParent(ActiveWeaponInfo.holster.transform, false);
     }
 
     public void StartAiming()
     {
-        aimRig.weight = 1f;
+        AimRig.weight = 1f;
+    }
+
+    public void AimWeapon(Vector3 aimDirection)
+    {
+        AimDirection = aimDirection;
+        AimDirection.y = 0f;
     }
 
     public void StopAiming()
     {
-        aimRig.weight = 0f;
+        AimRig.weight = 0f;
     }
 
-    public bool Shoot(Vector3 aimDirection, float power)
+    private void ReadyToShoot()
+    {
+        readyToShoot = true;
+    }
+
+    public void PullTrigger(float power)
+    {
+        Debug.Log("Trigger pressed.");
+        if (power >= ActiveWeaponInfo.weaponData.WeaponCost)
+        {
+            // Pull trigger on weapon
+        }
+        else
+        {
+            // Play can't shoot sound
+        }
+    }
+
+    public void ReleaseTrigger()
+    {
+        Debug.Log("Trigger released.");
+        // Release trigger on weapon
+    }
+
+    public bool Shoot_(Vector3 aimDirection, float power)
     {
         if (CurrentWeapon == null) { return false; }
-        if (power < WeaponData.WeaponCost)
+        if (power < ActiveWeaponInfo.weaponData.WeaponCost)
         {
             // Play can't shoot sound
             return false;
         }
-        var shootable = CurrentWeapon.GetComponent<IShootable>();
         if (shootable == null) { return false; }
-        shootable.Shoot(BulletSpawn, aimDirection, ActiveWeapon.damageLayer);
-        OnShoot.Invoke(WeaponData.WeaponCost);
+        shootable.Shoot(BulletSpawn, aimDirection);
+        OnShoot.Invoke(ActiveWeaponInfo.weaponData.WeaponCost);
         return true;
+    }
+
+    public void Shoot()
+    {
+        if (readyToShoot == false) { return; }
+        readyToShoot = false;
+        bulletsShot = 0;
+        SendBullet();
+        // Invoke ResetShot function (if not already invoked)
+        Invoke("ResetShot", ActiveWeaponInfo.weaponData.TimeBetweenShooting);
+    }
+
+    private void SendBullet()
+    {
+        // Calculate spread
+        float spread = Random.Range(-ActiveWeaponInfo.weaponData.Spread, ActiveWeaponInfo.weaponData.Spread);
+        // Shooting direction with spread
+        Vector3 directionWithSpread = Quaternion.Euler(0f, spread, 0f) * AimDirection;
+        // Instantiate bullet
+        GameObject currentBullet = Instantiate(ActiveWeaponInfo.weaponData.Bullet, BulletSpawn.transform.position, Quaternion.identity);
+        currentBullet.transform.forward = directionWithSpread;
+        // Instantiate muzzle flash
+        if (ActiveWeaponInfo.weaponData.MuzzleFlash != null)
+        {
+            Instantiate(ActiveWeaponInfo.weaponData.MuzzleFlash, BulletSpawn.transform.position, currentBullet.transform.rotation);
+        }
+        bulletsShot++;
+        // If more than one BulletsPerTap make sure to repeat Shoot function
+        if (bulletsShot < ActiveWeaponInfo.weaponData.BulletsPerTap)
+        {
+            Invoke("SendBullet", ActiveWeaponInfo.weaponData.TimeBetweenShots);
+        }
     }
 }

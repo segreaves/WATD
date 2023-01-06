@@ -6,9 +6,13 @@ using UnityEngine.Events;
 public class GunController : MonoBehaviour, IShootable
 {
     [field: SerializeField] private GameObject Bullet;
+    [field: SerializeField] public UnityEvent OnTriggerPress { get; set; }
+    [field: SerializeField] public UnityEvent OnTriggerRelease { get; set; }
+    [field: SerializeField] public UnityEvent OnShoot { get; set; }
     private RangedWeaponSO WeaponData;
     private bool readyToShoot;
     private int bulletsShot;
+    private bool triggerPressed;
 
     private void Awake()
     {
@@ -20,22 +24,30 @@ public class GunController : MonoBehaviour, IShootable
         readyToShoot = true;
     }
 
+    private void Update()
+    {
+        if (triggerPressed == true && readyToShoot)
+        {
+            //Shoot(GameObject bulletSpawn, AimDirection)
+        }
+    }
+
     private void ResetShot()
     {
         readyToShoot = true;
     }
 
-    public void Shoot(GameObject bulletSpawn, Vector3 aimDirection, LayerMask damageLayer)
+    public void Shoot(GameObject bulletSpawn, Vector3 aimDirection)
     {
         if (readyToShoot == false) { return; }
         readyToShoot = false;
         bulletsShot = 0;
-        SendBullet(bulletSpawn, aimDirection, damageLayer);
+        SendBullet(bulletSpawn, aimDirection);
         // Invoke ResetShot function (if not already invoked)
         Invoke("ResetShot", WeaponData.TimeBetweenShooting);
     }
 
-    private void SendBullet(GameObject bulletSpawn, Vector3 aimDirection, LayerMask damageLayer)
+    private void SendBullet(GameObject bulletSpawn, Vector3 aimDirection)
     {
         // Calculate spread
         float spread = Random.Range(-WeaponData.Spread, WeaponData.Spread);
@@ -45,12 +57,6 @@ public class GunController : MonoBehaviour, IShootable
         // Instantiate bullet
         GameObject currentBullet = Instantiate(Bullet, bulletSpawn.transform.position, Quaternion.identity);
         currentBullet.transform.forward = directionWithSpread;
-        var customProjectile = currentBullet.GetComponent<CustomProjectile>();
-        if (customProjectile != null)
-        {
-            // Set whom the bullet can damage
-            customProjectile.damageLayer = damageLayer;
-        }
         // Instantiate muzzle flash
         if (WeaponData.MuzzleFlash != null)
         {
@@ -67,5 +73,10 @@ public class GunController : MonoBehaviour, IShootable
     public void SetWeaponData(RangedWeaponSO weaponData)
     {
         WeaponData = weaponData;
+    }
+
+    public void Trigger(bool pressed)
+    {
+        triggerPressed = pressed;
     }
 }

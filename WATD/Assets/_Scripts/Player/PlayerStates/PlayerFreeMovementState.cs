@@ -50,6 +50,7 @@ public class PlayerFreeMovementState : PlayerMovementStateBase
     private void OnAim(bool aim)
     {
         if (aim == false) { return; }
+        if (stateMachine.RangedWeaponHandler.ActiveWeaponInfo == null) { return; }
         stateMachine.SwitchState(new PlayerAimingState(stateMachine, stateMachine.AnimatorHandler.LastLookDirection));
     }
 }

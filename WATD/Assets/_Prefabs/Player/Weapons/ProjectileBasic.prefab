@@ -264,10 +264,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damageLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 128
   RayCastLayer:
     serializedVersion: 2
-    m_Bits: 449
+    m_Bits: 385
   ColliderRadius: 0.25
   explosion: {fileID: 8605103616659545111, guid: 045e08e7c5eb8c9419b9f54333b801b2,
     type: 3}
